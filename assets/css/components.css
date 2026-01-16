@@ -1,12 +1,459 @@
 /* =========================================================
-   GOR PRODUCT EDITOR – PREMIUM UI UPGRADE
-   (Kompatibel mit deinem bestehenden components.css)
+   GOR PRODUCT ADMIN – COMPONENTS
+   Buttons, Cards, Logos, UI-Elemente
    ========================================================= */
 
 
 /* ---------------------------------------------------------
-   EDITOR GRID LAYOUT
+   LOGIN LOGO
    --------------------------------------------------------- */
+.login-logo {
+    height: 60px;
+    width: auto;
+    display: block;
+    margin: 0 auto 20px;
+    filter: drop-shadow(0 0 8px rgba(255, 211, 0, 0.5));
+}
+
+
+/* ---------------------------------------------------------
+   HEADER LOGO
+   --------------------------------------------------------- */
+.header-logo {
+    height: 36px;
+    width: auto;
+    margin-right: 12px;
+}
+
+
+/* ---------------------------------------------------------
+   BUTTONS (mit Laser-Hover)
+   --------------------------------------------------------- */
+button {
+    font-family: inherit;
+    font-size: 14px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+button.primary {
+    background: var(--color-primary);
+    color: #000;
+}
+
+button.danger {
+    background: var(--color-danger);
+    color: #fff;
+}
+
+button.icon-btn {
+    background: transparent;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+/* Laser Hover Effekt */
+button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 80%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent 0%,
+        rgba(255,211,0,0.4) 50%,
+        transparent 100%
+    );
+    transform: skewX(-20deg);
+    transition: 0.4s;
+}
+
+button:hover::before {
+    left: 120%;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 12px var(--color-primary);
+}
+
+
+/* ---------------------------------------------------------
+   CARDS
+   --------------------------------------------------------- */
+.card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   GOR PRODUCT ADMIN – COMPONENTS EXTENDED
+   Modals, Tooltips, Badges, Panels, Toasts, Tabs
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   MODAL (Popup)
+   --------------------------------------------------------- */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 900;
+}
+
+.modal {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 24px;
+    width: 420px;
+    max-width: 90%;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5), var(--glow-primary);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal h2 {
+    margin-top: 0;
+    color: var(--color-primary);
+    text-shadow: var(--glow-primary);
+    margin-bottom: 16px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+
+/* ---------------------------------------------------------
+   TOOLTIP
+   --------------------------------------------------------- */
+.tooltip {
+    position: relative;
+    cursor: help;
+}
+
+.tooltip:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-bg-card);
+    color: var(--color-text);
+    padding: 6px 10px;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+    white-space: nowrap;
+    font-size: 12px;
+    box-shadow: var(--glow-primary);
+    z-index: 500;
+}
+
+
+/* ---------------------------------------------------------
+   BADGES
+   --------------------------------------------------------- */
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-primary {
+    background: rgba(255, 211, 0, 0.15);
+    color: var(--color-primary);
+    text-shadow: var(--glow-primary);
+}
+
+.badge-danger {
+    background: rgba(255, 59, 59, 0.15);
+    color: var(--color-danger);
+    text-shadow: var(--glow-danger);
+}
+
+.badge-success {
+    background: rgba(0, 255, 136, 0.15);
+    color: var(--color-success);
+    text-shadow: var(--glow-success);
+}
+
+
+/* ---------------------------------------------------------
+   HUD PANEL
+   --------------------------------------------------------- */
+.hud-panel {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+.hud-panel h3 {
+    margin-top: 0;
+    color: var(--color-primary);
+    text-shadow: var(--glow-primary);
+}
+
+
+/* ---------------------------------------------------------
+   TABS
+   --------------------------------------------------------- */
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab {
+    padding: 10px 16px;
+    border-radius: var(--radius);
+    background: rgba(255,255,255,0.06);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.tab:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.tab.active {
+    background: var(--color-primary);
+    color: #000;
+    font-weight: 600;
+    box-shadow: var(--glow-primary);
+}
+
+
+/* ---------------------------------------------------------
+   TOAST NOTIFICATION
+   --------------------------------------------------------- */
+.toast-container {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.toast {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    box-shadow: var(--glow-primary);
+    animation: slideLeft 0.4s ease-out;
+}
+
+.toast.success {
+    border-color: var(--color-success);
+    text-shadow: var(--glow-success);
+}
+
+.toast.error {
+    border-color: var(--color-danger);
+    text-shadow: var(--glow-danger);
+}
+
+
+/* ---------------------------------------------------------
+   DIVIDER LINE
+   --------------------------------------------------------- */
+.divider {
+    height: 1px;
+    background: var(--color-border);
+    margin: 20px 0;
+}
+
+
+/* ---------------------------------------------------------
+   ICON BUTTON
+   --------------------------------------------------------- */
+.icon-btn {
+    background: rgba(255,255,255,0.05);
+    border-radius: 6px;
+    padding: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.icon-btn:hover {
+    background: rgba(255,255,255,0.12);
+    color: var(--color-primary);
+    text-shadow: var(--glow-primary);
+}
+
+
+/* =========================================================
+   HOLOGRAFISCHE SIDEBAR – GOR CYBER EDITION
+   ========================================================= */
+.sidebar {
+    background: rgba(0,0,0,0.35);
+    border-right: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 25px rgba(255,211,0,0.15);
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: 240px;
+    z-index: 20;
+}
+
+.nav-item {
+    padding: 14px 18px;
+    margin: 6px 0;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.03);
+    transition: 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-item:hover {
+    background: rgba(255,211,0,0.12);
+    box-shadow: 0 0 12px rgba(255,211,0,0.25);
+    transform: translateX(6px);
+}
+
+.nav-item.active {
+    background: rgba(255,211,0,0.25);
+    color: #000;
+    font-weight: 700;
+    box-shadow: 0 0 18px rgba(255,211,0,0.4);
+}
+
+
+/* =========================================================
+   DASHBOARD FUTURISTISCHER BACKGROUND
+   ========================================================= */
+#dash-grid {
+    position: fixed;
+    inset: 0;
+    background:
+        repeating-linear-gradient(
+            to right,
+            rgba(255,211,0,0.06) 0px,
+            rgba(255,211,0,0.06) 1px,
+            transparent 1px,
+            transparent 40px
+        ),
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255,211,0,0.06) 0px,
+            rgba(255,211,0,0.06) 1px,
+            transparent 1px,
+            transparent 40px
+        );
+    transform: perspective(900px) rotateX(55deg);
+    transform-origin: top;
+    animation: dashGridPulse 5s infinite ease-in-out;
+    opacity: 0.18;
+    z-index: 0;
+}
+
+@keyframes dashGridPulse {
+    0% { opacity: 0.12; }
+    50% { opacity: 0.22; }
+    100% { opacity: 0.12; }
+}
+
+#dash-scanlines {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.03) 0px,
+        rgba(255,255,255,0.03) 2px,
+        transparent 2px,
+        transparent 4px
+    );
+    pointer-events: none;
+    opacity: 0.25;
+    z-index: 1;
+}
+
+#dash-noise {
+    position: fixed;
+    inset: 0;
+    background: url('https://i.imgur.com/8QfQZ4C.png');
+    opacity: 0.06;
+    animation: dashNoise 0.25s infinite;
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes dashNoise {
+    0% { opacity: 0.04; }
+    50% { opacity: 0.10; }
+    100% { opacity: 0.04; }
+}
+
+
+/* =========================================================
+   KPI CARDS – CYBER HUD
+   ========================================================= */
+.kpi-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 0 18px rgba(255,211,0,0.15);
+    transition: 0.25s;
+    position: relative;
+    overflow: hidden;
+}
+
+.kpi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 25px rgba(255,211,0,0.35);
+}
+
+.kpi-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        120deg,
+        transparent 0%,
+        rgba(255,211,0,0.12) 50%,
+        transparent 100%
+    );
+    opacity: 0;
+    transition: 0.4s;
+}
+
+.kpi-card:hover::after {
+    opacity: 1;
+}
+
+
+/* =========================================================
+   GOR PRODUCT EDITOR – PREMIUM UI UPGRADE
+   ========================================================= */
 .editor-grid {
     display: grid;
     grid-template-columns: 320px 1fr;
@@ -19,10 +466,6 @@
     }
 }
 
-
-/* ---------------------------------------------------------
-   PRODUKT LIST ROWS
-   --------------------------------------------------------- */
 .product-row {
     padding: 12px;
     background: rgba(255,255,255,0.04);
@@ -37,10 +480,6 @@
     box-shadow: 0 0 10px rgba(255,255,255,0.08);
 }
 
-
-/* ---------------------------------------------------------
-   DROPZONE (Bilder Upload)
-   --------------------------------------------------------- */
 .dropzone {
     padding: 30px;
     border: 2px dashed var(--color-primary);
@@ -61,10 +500,6 @@
     box-shadow: 0 0 12px var(--color-primary);
 }
 
-
-/* ---------------------------------------------------------
-   IMAGE PREVIEW GRID
-   --------------------------------------------------------- */
 .image-preview {
     display: flex;
     flex-wrap: wrap;
@@ -72,10 +507,6 @@
     margin-top: 15px;
 }
 
-
-/* ---------------------------------------------------------
-   IMAGE THUMBNAILS
-   --------------------------------------------------------- */
 .image-thumb {
     position: relative;
     width: 110px;
@@ -104,10 +535,11 @@
     right: 4px;
 }
 
+.image-thumb.dragging {
+    opacity: 0.4;
+    transform: scale(0.9);
+}
 
-/* ---------------------------------------------------------
-   MINI THUMBNAILS (Produktliste)
-   --------------------------------------------------------- */
 .mini-thumb {
     width: 42px;
     height: 42px;
@@ -117,10 +549,6 @@
     background: rgba(0,0,0,0.3);
 }
 
-
-/* ---------------------------------------------------------
-   DESCRIPTION LIVE PREVIEW
-   --------------------------------------------------------- */
 .preview-box {
     padding: 15px;
     background: rgba(255,255,255,0.04);
@@ -131,18 +559,9 @@
 }
 
 
-/* ---------------------------------------------------------
-   DRAG-SORT HIGHLIGHT
-   --------------------------------------------------------- */
-.image-thumb.dragging {
-    opacity: 0.4;
-    transform: scale(0.9);
-}
 /* =========================================================
    GOR AUDIT LOG – PREMIUM TABLE UPGRADE
-   Icons, Badges, Glow, Hover, Responsive
    ========================================================= */
-
 .data-table {
     width: 100%;
     border-collapse: collapse;
@@ -172,14 +591,12 @@
     transition: 0.2s;
 }
 
-/* ICONS */
 .audit-icon {
     font-size: 18px;
     margin-right: 6px;
     text-shadow: var(--glow-primary);
 }
 
-/* BADGES */
 .audit-badge {
     padding: 4px 10px;
     border-radius: 12px;
@@ -212,9 +629,7 @@
     text-shadow: var(--glow-primary);
 }
 
-/* DETAILS COLUMN */
 .audit-details {
     opacity: 0.9;
     font-size: 13px;
 }
-
