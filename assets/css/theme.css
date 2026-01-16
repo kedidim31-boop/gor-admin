@@ -373,4 +373,74 @@ input:focus, select:focus, textarea:focus {
     text-shadow: var(--glow-cyan);
     display: block;
 }
+/* ---------------------------------------------------------
+   SIDEBAR ICONS
+   --------------------------------------------------------- */
+.sidebar .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar-icon {
+    font-size: 20px;
+    color: var(--color-cyan);
+    text-shadow: var(--glow-cyan);
+}
+
+/* ---------------------------------------------------------
+   HEADER AVATAR + DROPDOWN
+   --------------------------------------------------------- */
+.header-user {
+    position: relative;
+    cursor: pointer;
+}
+
+.header-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--color-cyan);
+    box-shadow: var(--glow-cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #000;
+    user-select: none;
+}
+
+.header-dropdown {
+    position: absolute;
+    top: 48px;
+    right: 0;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 10px 0;
+    width: 160px;
+    display: none;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.header-dropdown a {
+    display: block;
+    padding: 10px 16px;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.header-dropdown a:hover {
+    background: var(--color-bg-hover);
+    color: var(--color-primary);
+    text-shadow: var(--glow-primary);
+}
+
+/* Dropdown sichtbar */
+.header-dropdown.show {
+    display: block;
+}
+
+
 
