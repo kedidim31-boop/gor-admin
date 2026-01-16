@@ -10,14 +10,14 @@
     <link rel="stylesheet" href="assets/css/animations.css">
 </head>
 
-<body data-page="product-edit" onload="requireRole('admin'); initPage(); loadProductList();">
+<body data-page="product-edit" onload="requireRole('admin'); initPage(); renderProductList();">
 
     <!-- SIDEBAR -->
     <div class="sidebar">
         <a class="nav-item" href="dashboard.html"><span class="sidebar-icon">📊</span> Dashboard</a>
         <a class="nav-item active" href="product-edit.html"><span class="sidebar-icon">🛒</span> Produkte</a>
-        <a class="nav-item" href="settings.html"><span class="sidebar-icon">⚙️</span> Einstellungen</a>
         <a class="nav-item" href="audit-log.html"><span class="sidebar-icon">📜</span> Audit Log</a>
+        <a class="nav-item" href="settings.html"><span class="sidebar-icon">⚙️</span> Einstellungen</a>
         <a class="nav-item" onclick="logout()"><span class="sidebar-icon">🚪</span> Abmelden</a>
     </div>
 
@@ -39,66 +39,95 @@
             </div>
         </div>
 
-        <!-- PRODUCT EDITOR LAYOUT -->
+        <!-- PRODUCT EDITOR GRID -->
         <div class="editor-grid">
 
             <!-- LEFT: PRODUCT LIST -->
-            <div class="editor-list card">
+            <div class="card">
                 <h2>Produkte</h2>
 
-                <button class="primary full mt-10" onclick="createNewProduct()">
+                <button class="primary full mt-10" onclick="clearProductForm()">
                     Neues Produkt erstellen
                 </button>
 
-                <div id="product-list" class="product-list mt-20">
+                <div id="product-list" class="mt-20">
                     <!-- Dynamisch -->
                 </div>
             </div>
 
             <!-- RIGHT: PRODUCT FORM -->
-            <div class="editor-form card">
+            <div class="card">
                 <h2>Produktdetails</h2>
 
                 <div class="form-grid">
 
                     <div>
                         <label>Produktname</label>
-                        <input type="text" id="p-name">
+                        <input type="text" id="product-name">
                     </div>
 
                     <div>
                         <label>Preis (CHF)</label>
-                        <input type="number" id="p-price" step="0.01">
+                        <input type="number" id="product-price" step="0.01">
+                    </div>
+
+                    <div>
+                        <label>EAN</label>
+                        <input type="text" id="product-ean">
+                    </div>
+
+                    <div>
+                        <label>Kollektionen</label>
+                        <input type="text" id="product-collections">
                     </div>
 
                     <div>
                         <label>SKU</label>
-                        <input type="text" id="p-sku">
+                        <input type="text" id="product-sku">
                     </div>
 
                     <div>
-                        <label>Kategorie</label>
-                        <input type="text" id="p-category">
+                        <label>Bestand</label>
+                        <input type="number" id="product-stock">
+                    </div>
+
+                    <div>
+                        <label>Anbieter</label>
+                        <input type="text" id="product-vendor">
+                    </div>
+
+                    <div>
+                        <label>Produkttyp</label>
+                        <input type="text" id="product-type">
                     </div>
 
                     <div class="full">
                         <label>Beschreibung</label>
-                        <textarea id="p-description" rows="5"></textarea>
+                        <textarea id="product-description" rows="5"></textarea>
                     </div>
 
+                    <!-- LIVE PREVIEW -->
+                    <div class="full">
+                        <label>Live Vorschau</label>
+                        <div id="description-preview" class="preview-box"></div>
+                    </div>
+
+                    <!-- IMAGE UPLOAD -->
                     <div class="full">
                         <label>Bilder</label>
+
                         <div id="image-dropzone" class="dropzone">
                             Bilder hier ablegen oder klicken
                         </div>
+
                         <div id="image-preview" class="image-preview"></div>
                     </div>
 
                 </div>
 
-                <div class="editor-actions mt-20">
-                    <button class="primary" onclick="saveProduct()">Speichern</button>
-                    <button class="danger" onclick="deleteCurrentProduct()">Löschen</button>
+                <div class="editor-actions mt-20 flex gap-10">
+                    <button class="primary" onclick="addProduct()">Speichern</button>
+                    <button class="danger" onclick="clearProductForm()">Leeren</button>
                 </div>
 
             </div>
