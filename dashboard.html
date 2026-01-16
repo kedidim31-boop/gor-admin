@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>GoR Dashboard</title>
+    <title>Gaming of Republic – Dashboard</title>
 
     <link rel="stylesheet" href="assets/css/theme.css">
     <link rel="stylesheet" href="assets/css/layout.css">
@@ -36,14 +36,14 @@
 
         <!-- HEADER -->
         <div class="page-header">
-            <h1 class="header-title">Dashboard</h1>
+            <h1 class="header-title">Administrationsübersicht</h1>
 
             <!-- USER AVATAR + DROPDOWN -->
             <div class="header-user" onclick="toggleUserDropdown()">
                 <div class="header-avatar">A</div>
 
                 <div class="header-dropdown" id="user-dropdown">
-                    <a href="settings.html">Profil / Einstellungen</a>
+                    <a href="settings.html">Profil & Einstellungen</a>
                     <a href="audit-log.html">Audit Log</a>
                     <a onclick="logout()">Abmelden</a>
                 </div>
@@ -55,19 +55,19 @@
 
             <div class="kpi-card">
                 <span class="kpi-icon">🛒</span>
-                <div class="kpi-title">Produkte</div>
+                <div class="kpi-title">Gesamtprodukte</div>
                 <div class="kpi-value" id="kpi-products">–</div>
             </div>
 
             <div class="kpi-card">
                 <span class="kpi-icon">👤</span>
-                <div class="kpi-title">Benutzer</div>
+                <div class="kpi-title">Registrierte Benutzer</div>
                 <div class="kpi-value" id="kpi-users">–</div>
             </div>
 
             <div class="kpi-card">
                 <span class="kpi-icon">📜</span>
-                <div class="kpi-title">Audit Einträge</div>
+                <div class="kpi-title">Audit‑Einträge</div>
                 <div class="kpi-value" id="kpi-audit">–</div>
             </div>
 
@@ -77,24 +77,24 @@
         <div class="module-grid">
 
             <div class="module-card">
-                <h3>Produkte</h3>
-                <p>Produkte verwalten und bearbeiten.</p>
+                <h3>Produktverwaltung</h3>
+                <p>Produkte erstellen, bearbeiten und verwalten.</p>
                 <button class="primary mt-10" onclick="window.location.href='product-edit.html'">
                     Produkteditor öffnen
                 </button>
             </div>
 
             <div class="module-card">
-                <h3>Einstellungen</h3>
-                <p>Benutzerverwaltung, Rollen & Systemoptionen.</p>
+                <h3>Systemeinstellungen</h3>
+                <p>Benutzerrollen, Konten und Systemparameter verwalten.</p>
                 <button class="primary mt-10" onclick="window.location.href='settings.html'">
                     Einstellungen öffnen
                 </button>
             </div>
 
             <div class="module-card">
-                <h3>Audit Log</h3>
-                <p>Systemaktivitäten überwachen & exportieren.</p>
+                <h3>Audit‑Protokolle</h3>
+                <p>Systemaktivitäten einsehen, filtern und exportieren.</p>
                 <button class="primary mt-10" onclick="window.location.href='audit-log.html'">
                     Audit Log öffnen
                 </button>
