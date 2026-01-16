@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Gaming of Republic – Dashboard</title>
+    <title>Dashboard – Gaming of Republic</title>
 
     <link rel="stylesheet" href="assets/css/theme.css">
     <link rel="stylesheet" href="assets/css/layout.css">
@@ -14,21 +14,11 @@
 
     <!-- SIDEBAR -->
     <div class="sidebar">
-        <a class="nav-item active" href="dashboard.html">
-            <span class="sidebar-icon">📊</span> Dashboard
-        </a>
-        <a class="nav-item" href="product-edit.html">
-            <span class="sidebar-icon">🛒</span> Produkte
-        </a>
-        <a class="nav-item" href="settings.html">
-            <span class="sidebar-icon">⚙️</span> Einstellungen
-        </a>
-        <a class="nav-item" href="audit-log.html">
-            <span class="sidebar-icon">📜</span> Audit Log
-        </a>
-        <a class="nav-item" onclick="logout()">
-            <span class="sidebar-icon">🚪</span> Abmelden
-        </a>
+        <a class="nav-item active" href="dashboard.html"><span class="sidebar-icon">📊</span> Dashboard</a>
+        <a class="nav-item" href="product-edit.html"><span class="sidebar-icon">🛒</span> Produkte</a>
+        <a class="nav-item" href="audit-log.html"><span class="sidebar-icon">📜</span> Audit Log</a>
+        <a class="nav-item" href="settings.html"><span class="sidebar-icon">⚙️</span> Einstellungen</a>
+        <a class="nav-item" onclick="logout()"><span class="sidebar-icon">🚪</span> Abmelden</a>
     </div>
 
     <!-- MAIN CONTENT -->
@@ -38,7 +28,6 @@
         <div class="page-header">
             <h1 class="header-title">Administrationsübersicht</h1>
 
-            <!-- USER AVATAR + DROPDOWN -->
             <div class="header-user" onclick="toggleUserDropdown()">
                 <div class="header-avatar">A</div>
 
@@ -50,7 +39,7 @@
             </div>
         </div>
 
-        <!-- KPI WIDGETS -->
+        <!-- KPI GRID -->
         <div class="kpi-grid">
 
             <div class="kpi-card">
@@ -61,7 +50,7 @@
 
             <div class="kpi-card">
                 <span class="kpi-icon">👤</span>
-                <div class="kpi-title">Registrierte Benutzer</div>
+                <div class="kpi-title">Benutzer</div>
                 <div class="kpi-value" id="kpi-users">–</div>
             </div>
 
@@ -73,7 +62,7 @@
 
         </div>
 
-        <!-- MODULE CARDS -->
+        <!-- MODULE GRID -->
         <div class="module-grid">
 
             <div class="module-card">
