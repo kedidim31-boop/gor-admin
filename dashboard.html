@@ -12,6 +12,11 @@
 
 <body data-page="dashboard" onload="requireRole('admin'); initPage(); loadKPI();">
 
+    <!-- FUTURISTISCHER BACKGROUND -->
+    <div id="dash-grid"></div>
+    <div id="dash-scanlines"></div>
+    <div id="dash-noise"></div>
+
     <!-- SIDEBAR -->
     <div class="sidebar">
         <a class="nav-item active" href="dashboard.html"><span class="sidebar-icon">📊</span> Dashboard</a>
@@ -96,6 +101,19 @@
     <script src="assets/js/state.js"></script>
     <script src="assets/js/auth.js"></script>
     <script src="assets/js/kpi.js"></script>
+
+    <script>
+        // Parallax für Header
+        document.addEventListener("mousemove", e => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 10;
+            const y = (e.clientY / window.innerHeight - 0.5) * 10;
+
+            const header = document.querySelector(".page-header");
+            header.style.setProperty("--px", x + "px");
+            header.style.setProperty("--py", y + "px");
+            header.classList.add("parallax");
+        });
+    </script>
 
 </body>
 </html>
