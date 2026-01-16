@@ -1,6 +1,6 @@
 /* =========================================================
    GOR PRODUCT ADMIN – AUDIT LOG (NEUE VERSION)
-   Anzeige, Filter, Export
+   Anzeige, Filter, Export + Icons + Badges
    ========================================================= */
 
 
@@ -10,9 +10,9 @@
 function loadAuditLog() {
     let entries = getAuditLog(); // aus state.js
 
-    const typeFilter = document.getElementById("filter-type").value.trim();
-    const userFilter = document.getElementById("filter-user").value.trim().toLowerCase();
-    const dateFilter = document.getElementById("filter-date").value;
+    const typeFilter = document.getElementById("filter-type")?.value.trim() || "";
+    const userFilter = document.getElementById("filter-user")?.value.trim().toLowerCase() || "";
+    const dateFilter = document.getElementById("filter-date")?.value || "";
 
     // Filter anwenden
     entries = entries.filter(entry => {
@@ -34,10 +34,34 @@ function loadAuditLog() {
 
 
 /* ---------------------------------------------------------
-   TABELLE RENDERN
+   ICONS + BADGES MAPPING
+   --------------------------------------------------------- */
+function getAuditIcon(type) {
+    return {
+        "product_save": "💾",
+        "product_delete": "🗑️",
+        "login_success": "🔓",
+        "login_fail": "⛔",
+        "system": "⚙️"
+    }[type] || "📄";
+}
+
+function getAuditBadgeClass(type) {
+    return {
+        "product_save": "audit-badge audit-save",
+        "product_delete": "audit-badge audit-delete",
+        "login_success": "audit-badge audit-login",
+        "login_fail": "audit-badge audit-delete",
+        "system": "audit-badge audit-system"
+    }[type] || "audit-badge audit-system";
+}
+
+
+/* ---------------------------------------------------------
+   TABELLE RENDERN (NEUE PREMIUM VERSION)
    --------------------------------------------------------- */
 function renderAuditTable(entries) {
-    const body = document.getElementById("audit-body");
+    const body = document.getElementById("audit-table");
     body.innerHTML = "";
 
     if (entries.length === 0) {
@@ -51,13 +75,19 @@ function renderAuditTable(entries) {
     }
 
     entries.forEach(entry => {
+        const icon = getAuditIcon(entry.type);
+        const badgeClass = getAuditBadgeClass(entry.type);
+
         const row = document.createElement("tr");
 
         row.innerHTML = `
             <td>${formatDateTime(entry.timestamp)}</td>
-            <td>${entry.type}</td>
             <td>${entry.user}</td>
-            <td>${entry.message}</td>
+            <td>
+                <span class="audit-icon">${icon}</span>
+                <span class="${badgeClass}">${entry.type}</span>
+            </td>
+            <td class="audit-details">${entry.message}</td>
         `;
 
         body.appendChild(row);
