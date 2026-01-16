@@ -363,3 +363,14 @@ input:focus, select:focus, textarea:focus {
     color: var(--color-danger);
     text-shadow: var(--glow-danger);
 }
+/* ---------------------------------------------------------
+   KPI ICONS
+   --------------------------------------------------------- */
+.kpi-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+    color: var(--color-cyan);
+    text-shadow: var(--glow-cyan);
+    display: block;
+}
+
