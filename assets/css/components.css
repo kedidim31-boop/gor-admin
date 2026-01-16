@@ -138,3 +138,83 @@
     opacity: 0.4;
     transform: scale(0.9);
 }
+/* =========================================================
+   GOR AUDIT LOG – PREMIUM TABLE UPGRADE
+   Icons, Badges, Glow, Hover, Responsive
+   ========================================================= */
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.data-table th {
+    text-align: left;
+    padding: 12px;
+    background: rgba(255,255,255,0.06);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-primary);
+    text-shadow: var(--glow-primary);
+    font-size: 14px;
+}
+
+.data-table td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 14px;
+}
+
+.data-table tr:hover {
+    background: rgba(255,255,255,0.05);
+    box-shadow: 0 0 12px rgba(255,255,255,0.08);
+    transform: translateX(4px);
+    transition: 0.2s;
+}
+
+/* ICONS */
+.audit-icon {
+    font-size: 18px;
+    margin-right: 6px;
+    text-shadow: var(--glow-primary);
+}
+
+/* BADGES */
+.audit-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.audit-save {
+    background: rgba(0,255,136,0.15);
+    color: var(--color-success);
+    text-shadow: var(--glow-success);
+}
+
+.audit-delete {
+    background: rgba(255,59,59,0.15);
+    color: var(--color-danger);
+    text-shadow: var(--glow-danger);
+}
+
+.audit-login {
+    background: rgba(0,180,255,0.15);
+    color: #00b4ff;
+    text-shadow: 0 0 6px #00b4ff;
+}
+
+.audit-system {
+    background: rgba(255,211,0,0.15);
+    color: var(--color-primary);
+    text-shadow: var(--glow-primary);
+}
+
+/* DETAILS COLUMN */
+.audit-details {
+    opacity: 0.9;
+    font-size: 13px;
+}
+
