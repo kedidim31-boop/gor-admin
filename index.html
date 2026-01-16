@@ -2,63 +2,78 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>GOR Admin Login</title>
+    <title>Gaming of Republic – Administrationszugang</title>
 
     <link rel="stylesheet" href="assets/css/theme.css">
     <link rel="stylesheet" href="assets/css/layout.css">
-    <link rel="stylesheet" href="assets/css/forms.css">
     <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+
+    <style>
+        .login-container {
+            max-width: 420px;
+            margin: 120px auto;
+            background: var(--color-bg-card);
+            padding: 30px;
+            border-radius: var(--radius);
+            border: 1px solid var(--color-border);
+            box-shadow: 0 0 25px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .login-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--color-primary);
+            text-shadow: var(--glow-primary);
+            margin-bottom: 20px;
+        }
+
+        .login-error {
+            color: var(--color-danger);
+            text-shadow: var(--glow-danger);
+            margin-bottom: 12px;
+            display: none;
+        }
+    </style>
 </head>
 
-<body class="login-page">
+<body class="fade-in">
 
-    <div class="login-container card fade-in">
-        <img src="assets/img/logo.png" class="login-logo">
+    <div class="login-container">
 
-        <h1 class="text-center text-primary">GoR Verwaltung Login</h1>
+        <div class="login-title">Gaming of Republic – Administrationszugang</div>
 
-        <div class="form-group mt-20">
-            <label>Benutzername</label>
-            <input type="text" id="login-user" placeholder="Gib deinen Benutzernamen ein">
+        <div id="login-error" class="login-error">
+            Die eingegebenen Zugangsdaten sind ungültig.
         </div>
 
-        <div class="form-group">
-            <label>Passwort</label>
-            <input type="password" id="login-pass" placeholder="Gib deinen Password ein *">
-        </div>
+        <input type="text" id="username" placeholder="Benutzername eingeben">
+        <input type="password" id="password" placeholder="Passwort eingeben">
 
-        <button class="primary w-100 mt-20" onclick="doLogin()">Anmelden</button>
+        <button class="primary mt-10" onclick="handleLogin()">Anmelden</button>
+
     </div>
 
     <script src="assets/js/state.js"></script>
     <script src="assets/js/auth.js"></script>
-    <script src="assets/js/toast.js"></script>
 
     <script>
-        function doLogin() {
-            const user = document.getElementById("login-user").value.trim();
-            const pass = document.getElementById("login-pass").value.trim();
-
-            if (!user || !pass) {
-                showToast("Bitte Benutzername und Passwort eingeben", "error");
-                return;
-            }
+        function handleLogin() {
+            const user = document.getElementById("username").value.trim();
+            const pass = document.getElementById("password").value.trim();
+            const errorBox = document.getElementById("login-error");
 
             const result = login(user, pass);
 
             if (!result.success) {
-                showToast("Falscher Benutzer oder Passwort", "error");
+                errorBox.style.display = "block";
                 return;
             }
 
-            if (result.role === "admin") {
-                window.location.href = "dashboard.html";
-            } else {
-                window.location.href = "product-edit.html";
-            }
+            window.location.href = "dashboard.html";
         }
     </script>
 
 </body>
 </html>
-
