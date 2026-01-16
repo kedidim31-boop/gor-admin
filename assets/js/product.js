@@ -1,17 +1,35 @@
 /* =========================================================
    GOR PRODUCT ADMIN – PRODUKTVERWALTUNG (Neues System)
-   Mehrere Produkte, Liste, CSV Export, Auto-SKU
+   Mehrere Produkte, Liste, CSV Export, Auto-SKU, Bilder
    ========================================================= */
 
 /* ---------------------------------------------------------
    PRODUKTE LADEN & SPEICHERN
    --------------------------------------------------------- */
 function getProducts() {
-    return JSON.parse(localStorage.getItem("gor_products")) || [];
+    try {
+        return JSON.parse(localStorage.getItem("gor_products")) || [];
+    } catch {
+        return [];
+    }
 }
 
 function saveProducts(list) {
     localStorage.setItem("gor_products", JSON.stringify(list));
+}
+
+/* ---------------------------------------------------------
+   AUTO-SKU GENERATOR
+   --------------------------------------------------------- */
+function generateSKU() {
+    const seed = parseInt(localStorage.getItem("gor_sku_seed") || "1000");
+    const newSKU = "GOR-" + seed;
+    return newSKU;
+}
+
+function incrementSKUSeed() {
+    const seed = parseInt(localStorage.getItem("gor_sku_seed") || "1000");
+    localStorage.setItem("gor_sku_seed", seed + 1);
 }
 
 /* ---------------------------------------------------------
@@ -40,8 +58,11 @@ function addProduct() {
     list.push(product);
     saveProducts(list);
 
-    // SKU Seed erhöhen
     incrementSKUSeed();
+
+    if (typeof addAuditEntry === "function") {
+        addAuditEntry("product_save", `Produkt "${product.name}" wurde hinzugefügt`);
+    }
 
     showToast("Produkt hinzugefügt", "success");
 
@@ -57,7 +78,7 @@ function clearProductForm() {
     document.getElementById("product-price").value = "";
     document.getElementById("product-ean").value = "";
     document.getElementById("product-collections").value = "";
-    document.getElementById("product-sku").value = "";
+    document.getElementById("product-sku").value = generateSKU();
     document.getElementById("product-stock").value = "";
     document.getElementById("product-vendor").value = "";
     document.getElementById("product-type").value = "";
@@ -108,8 +129,14 @@ function renderProductList() {
    --------------------------------------------------------- */
 function deleteProduct(index) {
     const list = getProducts();
+    const removed = list[index];
+
     list.splice(index, 1);
     saveProducts(list);
+
+    if (typeof addAuditEntry === "function") {
+        addAuditEntry("product_delete", `Produkt "${removed?.name}" wurde gelöscht`);
+    }
 
     renderProductList();
     showToast("Produkt gelöscht", "success");
@@ -164,4 +191,90 @@ function downloadCSV() {
     URL.revokeObjectURL(url);
 
     showToast("CSV exportiert", "success");
+}
+
+/* ---------------------------------------------------------
+   BILDER – DRAG & DROP
+   --------------------------------------------------------- */
+window.currentImages = [];
+
+const dropzone = document.getElementById("image-dropzone");
+
+if (dropzone) {
+    dropzone.addEventListener("dragover", e => {
+        e.preventDefault();
+        dropzone.classList.add("dragover");
+    });
+
+    dropzone.addEventListener("dragleave", () => {
+        dropzone.classList.remove("dragover");
+    });
+
+    dropzone.addEventListener("drop", e => {
+        e.preventDefault();
+        dropzone.classList.remove("dragover");
+
+        const files = Array.from(e.dataTransfer.files);
+        handleImageUpload(files);
+    });
+
+    dropzone.addEventListener("click", () => {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "image/*";
+        input.multiple = true;
+
+        input.onchange = () => {
+            const files = Array.from(input.files);
+            handleImageUpload(files);
+        };
+
+        input.click();
+    });
+}
+
+/* ---------------------------------------------------------
+   BILDER VERARBEITEN
+   --------------------------------------------------------- */
+function handleImageUpload(files) {
+    files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            window.currentImages.push(e.target.result);
+            renderImagePreview();
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+/* ---------------------------------------------------------
+   BILDER ANZEIGEN
+   --------------------------------------------------------- */
+function renderImagePreview() {
+    const preview = document.getElementById("image-preview");
+    if (!preview) return;
+
+    preview.innerHTML = "";
+
+    if (window.currentImages.length === 0) {
+        preview.innerHTML = `<p>Keine Bilder hochgeladen.</p>`;
+        return;
+    }
+
+    window.currentImages.forEach((img, index) => {
+        preview.innerHTML += `
+            <div class="image-thumb">
+                <img src="${img}">
+                <button class="danger small" onclick="removeImage(${index})">✕</button>
+            </div>
+        `;
+    });
+}
+
+/* ---------------------------------------------------------
+   BILD LÖSCHEN
+   --------------------------------------------------------- */
+function removeImage(index) {
+    window.currentImages.splice(index, 1);
+    renderImagePreview();
 }
