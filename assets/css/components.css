@@ -1,278 +1,140 @@
 /* =========================================================
-   GOR PRODUCT ADMIN – COMPONENTS
-   Buttons, Cards, Logos, UI-Elemente
+   GOR PRODUCT EDITOR – PREMIUM UI UPGRADE
+   (Kompatibel mit deinem bestehenden components.css)
    ========================================================= */
 
 
 /* ---------------------------------------------------------
-   LOGIN LOGO
+   EDITOR GRID LAYOUT
    --------------------------------------------------------- */
-.login-logo {
-    height: 60px;
-    width: auto;
-    display: block;
-    margin: 0 auto 20px;
-    filter: drop-shadow(0 0 8px rgba(255, 211, 0, 0.5));
+.editor-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 900px) {
+    .editor-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 
 /* ---------------------------------------------------------
-   HEADER LOGO
+   PRODUKT LIST ROWS
    --------------------------------------------------------- */
-.header-logo {
-    height: 36px;
-    width: auto;
-    margin-right: 12px;
-}
-
-
-/* ---------------------------------------------------------
-   BUTTONS
-   --------------------------------------------------------- */
-button {
-    font-family: inherit;
-    font-size: 14px;
-    padding: 8px 14px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-button.primary {
-    background: var(--color-primary);
-    color: #000;
-}
-
-button.danger {
-    background: var(--color-danger);
-    color: #fff;
-}
-
-button.icon-btn {
-    background: transparent;
-    padding: 4px;
-    border-radius: 4px;
-}
-
-
-/* ---------------------------------------------------------
-   CARDS
-   --------------------------------------------------------- */
-.card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+.product-row {
+    padding: 12px;
+    background: rgba(255,255,255,0.04);
     border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 20px;
+    transition: 0.2s;
+    cursor: pointer;
 }
 
-
-/* =========================================================
-   GOR PRODUCT ADMIN – COMPONENTS EXTENDED
-   Modals, Tooltips, Badges, Panels, Toasts, Tabs
-   ========================================================= */
-
-
-/* ---------------------------------------------------------
-   MODAL (Popup)
-   --------------------------------------------------------- */
-.modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.65);
-    backdrop-filter: blur(6px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 900;
-}
-
-.modal {
-    background: var(--color-bg-card);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: 24px;
-    width: 420px;
-    max-width: 90%;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5), var(--glow-primary);
-    animation: fadeIn 0.3s ease-out;
-}
-
-.modal h2 {
-    margin-top: 0;
-    color: var(--color-primary);
-    text-shadow: var(--glow-primary);
-    margin-bottom: 16px;
-}
-
-.modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 20px;
+.product-row:hover {
+    background: rgba(255,255,255,0.08);
+    transform: translateX(4px);
+    box-shadow: 0 0 10px rgba(255,255,255,0.08);
 }
 
 
 /* ---------------------------------------------------------
-   TOOLTIP
+   DROPZONE (Bilder Upload)
    --------------------------------------------------------- */
-.tooltip {
-    position: relative;
-    cursor: help;
-}
-
-.tooltip:hover::after {
-    content: attr(data-tip);
-    position: absolute;
-    bottom: 120%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--color-bg-card);
-    color: var(--color-text);
-    padding: 6px 10px;
-    border-radius: var(--radius);
-    border: 1px solid var(--color-border);
-    white-space: nowrap;
-    font-size: 12px;
-    box-shadow: var(--glow-primary);
-    z-index: 500;
-}
-
-
-/* ---------------------------------------------------------
-   BADGES
-   --------------------------------------------------------- */
-.badge {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.badge-primary {
-    background: rgba(255, 211, 0, 0.15);
-    color: var(--color-primary);
-    text-shadow: var(--glow-primary);
-}
-
-.badge-danger {
-    background: rgba(255, 59, 59, 0.15);
-    color: var(--color-danger);
-    text-shadow: var(--glow-danger);
-}
-
-.badge-success {
-    background: rgba(0, 255, 136, 0.15);
-    color: var(--color-success);
-    text-shadow: var(--glow-success);
-}
-
-
-/* ---------------------------------------------------------
-   HUD PANEL
-   --------------------------------------------------------- */
-.hud-panel {
+.dropzone {
+    padding: 30px;
+    border: 2px dashed var(--color-primary);
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
     background: rgba(255,255,255,0.03);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: 20px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.4);
 }
 
-.hud-panel h3 {
-    margin-top: 0;
-    color: var(--color-primary);
-    text-shadow: var(--glow-primary);
-}
-
-
-/* ---------------------------------------------------------
-   TABS
-   --------------------------------------------------------- */
-.tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.tab {
-    padding: 10px 16px;
-    border-radius: var(--radius);
+.dropzone:hover {
     background: rgba(255,255,255,0.06);
-    cursor: pointer;
-    transition: 0.2s;
 }
 
-.tab:hover {
-    background: rgba(255,255,255,0.1);
-}
-
-.tab.active {
-    background: var(--color-primary);
-    color: #000;
-    font-weight: 600;
-    box-shadow: var(--glow-primary);
+.dropzone.dragover {
+    background: rgba(0, 255, 255, 0.12);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 12px var(--color-primary);
 }
 
 
 /* ---------------------------------------------------------
-   TOAST NOTIFICATION
+   IMAGE PREVIEW GRID
    --------------------------------------------------------- */
-.toast-container {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 999;
+.image-preview {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 12px;
+    margin-top: 15px;
 }
 
-.toast {
-    background: var(--color-bg-card);
+
+/* ---------------------------------------------------------
+   IMAGE THUMBNAILS
+   --------------------------------------------------------- */
+.image-thumb {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    border-radius: 8px;
+    overflow: hidden;
     border: 1px solid var(--color-border);
-    padding: 12px 16px;
-    border-radius: var(--radius);
-    box-shadow: var(--glow-primary);
-    animation: slideLeft 0.4s ease-out;
-}
-
-.toast.success {
-    border-color: var(--color-success);
-    text-shadow: var(--glow-success);
-}
-
-.toast.error {
-    border-color: var(--color-danger);
-    text-shadow: var(--glow-danger);
-}
-
-
-/* ---------------------------------------------------------
-   DIVIDER LINE
-   --------------------------------------------------------- */
-.divider {
-    height: 1px;
-    background: var(--color-border);
-    margin: 20px 0;
-}
-
-
-/* ---------------------------------------------------------
-   ICON BUTTON
-   --------------------------------------------------------- */
-.icon-btn {
-    background: rgba(255,255,255,0.05);
-    border-radius: 6px;
-    padding: 6px;
-    cursor: pointer;
     transition: 0.2s;
+    background: rgba(0,0,0,0.3);
 }
 
-.icon-btn:hover {
-    background: rgba(255,255,255,0.12);
-    color: var(--color-primary);
-    text-shadow: var(--glow-primary);
+.image-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-thumb:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px var(--color-primary);
+}
+
+.image-thumb button {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+}
+
+
+/* ---------------------------------------------------------
+   MINI THUMBNAILS (Produktliste)
+   --------------------------------------------------------- */
+.mini-thumb {
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+    background: rgba(0,0,0,0.3);
+}
+
+
+/* ---------------------------------------------------------
+   DESCRIPTION LIVE PREVIEW
+   --------------------------------------------------------- */
+.preview-box {
+    padding: 15px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    min-height: 80px;
+    white-space: pre-wrap;
+    border: 1px solid rgba(255,255,255,0.06);
+}
+
+
+/* ---------------------------------------------------------
+   DRAG-SORT HIGHLIGHT
+   --------------------------------------------------------- */
+.image-thumb.dragging {
+    opacity: 0.4;
+    transform: scale(0.9);
 }
