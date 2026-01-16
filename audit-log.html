@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Audit Log – GoR Admin</title>
+    <title>Audit Log – Gaming of Republic</title>
 
     <link rel="stylesheet" href="assets/css/theme.css">
     <link rel="stylesheet" href="assets/css/layout.css">
@@ -16,8 +16,8 @@
     <div class="sidebar">
         <a class="nav-item" href="dashboard.html"><span class="sidebar-icon">📊</span> Dashboard</a>
         <a class="nav-item" href="product-edit.html"><span class="sidebar-icon">🛒</span> Produkte</a>
-        <a class="nav-item" href="settings.html"><span class="sidebar-icon">⚙️</span> Einstellungen</a>
         <a class="nav-item active" href="audit-log.html"><span class="sidebar-icon">📜</span> Audit Log</a>
+        <a class="nav-item" href="settings.html"><span class="sidebar-icon">⚙️</span> Einstellungen</a>
         <a class="nav-item" onclick="logout()"><span class="sidebar-icon">🚪</span> Abmelden</a>
     </div>
 
@@ -26,72 +26,67 @@
 
         <!-- HEADER -->
         <div class="page-header">
-            <h1 class="header-title">Audit Log</h1>
+            <h1 class="header-title">Audit‑Protokolle</h1>
 
-            <!-- USER AVATAR -->
             <div class="header-user" onclick="toggleUserDropdown()">
                 <div class="header-avatar">A</div>
 
                 <div class="header-dropdown" id="user-dropdown">
-                    <a href="settings.html">Profil / Einstellungen</a>
+                    <a href="settings.html">Profil & Einstellungen</a>
                     <a href="audit-log.html">Audit Log</a>
                     <a onclick="logout()">Abmelden</a>
                 </div>
             </div>
         </div>
 
-        <!-- FILTER -->
-        <div class="card">
+        <!-- FILTER BAR -->
+        <div class="card mb-20">
             <h2>Filter</h2>
 
             <div class="form-grid">
 
                 <div>
-                    <label>Typ</label>
-                    <select id="filter-type" onchange="loadAuditLog()">
-                        <option value="">Alle</option>
-                        <option value="login">Login</option>
-                        <option value="logout">Logout</option>
-                        <option value="product_save">Produkt gespeichert</option>
-                        <option value="product_delete">Produkt gelöscht</option>
-                        <option value="user_add">Benutzer hinzugefügt</option>
-                        <option value="user_delete">Benutzer gelöscht</option>
-                    </select>
+                    <label>Benutzer</label>
+                    <input type="text" id="filter-user" placeholder="z. B. admin">
                 </div>
 
                 <div>
-                    <label>Benutzer</label>
-                    <input type="text" id="filter-user" placeholder="z.B. admin" oninput="loadAuditLog()">
+                    <label>Aktion</label>
+                    <input type="text" id="filter-action" placeholder="z. B. product_save">
                 </div>
 
                 <div>
                     <label>Datum</label>
-                    <input type="date" id="filter-date" oninput="loadAuditLog()">
+                    <input type="date" id="filter-date">
                 </div>
 
                 <div>
                     <label>&nbsp;</label>
-                    <button class="primary" onclick="exportAuditCSV()">CSV Export</button>
+                    <button class="primary full" onclick="applyAuditFilter()">Filter anwenden</button>
                 </div>
 
             </div>
         </div>
 
         <!-- AUDIT TABLE -->
-        <div class="table-wrapper mt-20">
-            <table class="data-table" id="audit-table">
-                <thead>
-                    <tr>
-                        <th>Zeit</th>
-                        <th>Typ</th>
-                        <th>Benutzer</th>
-                        <th>Nachricht</th>
-                    </tr>
-                </thead>
-                <tbody id="audit-body">
-                    <!-- Dynamisch -->
-                </tbody>
-            </table>
+        <div class="card">
+            <h2>Protokolle</h2>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Zeitpunkt</th>
+                            <th>Benutzer</th>
+                            <th>Aktion</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="audit-table">
+                        <!-- Dynamisch -->
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>
