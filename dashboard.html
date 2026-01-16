@@ -14,11 +14,21 @@
 
     <!-- SIDEBAR -->
     <div class="sidebar">
-        <a class="nav-item active" href="dashboard.html">Dashboard</a>
-        <a class="nav-item" href="product-edit.html">Produkte</a>
-        <a class="nav-item" href="settings.html">Einstellungen</a>
-        <a class="nav-item" href="audit-log.html">Audit Log</a>
-        <a class="nav-item" onclick="logout()">Abmelden</a>
+        <a class="nav-item active" href="dashboard.html">
+            <span class="sidebar-icon">📊</span> Dashboard
+        </a>
+        <a class="nav-item" href="product-edit.html">
+            <span class="sidebar-icon">🛒</span> Produkte
+        </a>
+        <a class="nav-item" href="settings.html">
+            <span class="sidebar-icon">⚙️</span> Einstellungen
+        </a>
+        <a class="nav-item" href="audit-log.html">
+            <span class="sidebar-icon">📜</span> Audit Log
+        </a>
+        <a class="nav-item" onclick="logout()">
+            <span class="sidebar-icon">🚪</span> Abmelden
+        </a>
     </div>
 
     <!-- MAIN CONTENT -->
@@ -27,7 +37,17 @@
         <!-- HEADER -->
         <div class="page-header">
             <h1 class="header-title">Dashboard</h1>
-            <div class="user-pill">Admin</div>
+
+            <!-- USER AVATAR + DROPDOWN -->
+            <div class="header-user" onclick="toggleUserDropdown()">
+                <div class="header-avatar">A</div>
+
+                <div class="header-dropdown" id="user-dropdown">
+                    <a href="settings.html">Profil / Einstellungen</a>
+                    <a href="audit-log.html">Audit Log</a>
+                    <a onclick="logout()">Abmelden</a>
+                </div>
+            </div>
         </div>
 
         <!-- KPI WIDGETS -->
