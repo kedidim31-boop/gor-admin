@@ -2,31 +2,207 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Gaming of Republic – Administrationszugang</title>
+    <title>Gaming of Republic – Login</title>
 
     <link rel="stylesheet" href="assets/css/theme.css">
-    <link rel="stylesheet" href="assets/css/layout.css">
     <link rel="stylesheet" href="assets/css/components.css">
     <link rel="stylesheet" href="assets/css/animations.css">
 
     <style>
-        .login-container {
-            max-width: 420px;
-            margin: 120px auto;
-            background: var(--color-bg-card);
-            padding: 30px;
-            border-radius: var(--radius);
-            border: 1px solid var(--color-border);
-            box-shadow: 0 0 25px rgba(0,0,0,0.5);
-            text-align: center;
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+            font-family: inherit;
+        }
+
+        /* ============================================
+           1) NEON GRID (Animated Distortion)
+        ============================================ */
+        #neon-grid {
+            position: fixed;
+            inset: 0;
+            background:
+                repeating-linear-gradient(
+                    to right,
+                    rgba(255,211,0,0.08) 0px,
+                    rgba(255,211,0,0.08) 1px,
+                    transparent 1px,
+                    transparent 40px
+                ),
+                repeating-linear-gradient(
+                    to bottom,
+                    rgba(255,211,0,0.08) 0px,
+                    rgba(255,211,0,0.08) 1px,
+                    transparent 1px,
+                    transparent 40px
+                );
+            transform: perspective(900px) rotateX(55deg);
+            transform-origin: top;
+            animation: gridPulse 4s infinite ease-in-out,
+                       gridDistort 6s infinite ease-in-out;
+            opacity: 0.25;
+            z-index: 0;
+        }
+
+        @keyframes gridPulse {
+            0% { opacity: 0.18; }
+            50% { opacity: 0.32; }
+            100% { opacity: 0.18; }
+        }
+
+        @keyframes gridDistort {
+            0% { transform: perspective(900px) rotateX(55deg) translateY(0px); }
+            50% { transform: perspective(900px) rotateX(55deg) translateY(12px); }
+            100% { transform: perspective(900px) rotateX(55deg) translateY(0px); }
+        }
+
+        /* ============================================
+           2) LASER SWEEP (Diagonal Light Beam)
+        ============================================ */
+        #laser-sweep {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(
+                120deg,
+                transparent 0%,
+                rgba(255,211,0,0.15) 50%,
+                transparent 100%
+            );
+            mix-blend-mode: screen;
+            animation: laserSweep 6s infinite linear;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        @keyframes laserSweep {
+            0% { transform: translateX(-100%) translateY(-100%); }
+            100% { transform: translateX(100%) translateY(100%); }
+        }
+
+        /* ============================================
+           3) HOLOGRAM NOISE (Static Flicker)
+        ============================================ */
+        #holo-noise {
+            position: fixed;
+            inset: 0;
+            background: url('https://i.imgur.com/8QfQZ4C.png'); /* transparent noise */
+            opacity: 0.08;
+            animation: noiseFlicker 0.25s infinite;
+            pointer-events: none;
+            z-index: 4;
+        }
+
+        @keyframes noiseFlicker {
+            0% { opacity: 0.04; }
+            50% { opacity: 0.10; }
+            100% { opacity: 0.04; }
+        }
+
+        /* ============================================
+           4) PARTICLES
+        ============================================ */
+        #particles {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* ============================================
+           5) LOGIN BOX (Parallax + Glow)
+        ============================================ */
+        .login-box {
+            position: relative;
+            z-index: 10;
+            width: 420px;
+            padding: 40px;
+            margin: auto;
+            margin-top: 12vh;
+
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+
+            box-shadow: 0 0 25px rgba(0,0,0,0.5), 0 0 20px rgba(255,211,0,0.2);
+            animation: fadeIn 0.8s ease-out;
+            backdrop-filter: blur(6px);
+
+            transition: transform 0.2s ease-out;
+        }
+
+        .login-box.parallax {
+            transform: translate(var(--px), var(--py));
+        }
+
+        /* ============================================
+           LOGO PULSE
+        ============================================ */
+        .login-logo {
+            width: 140px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 12px var(--color-primary));
+            animation: glowPulse 2.4s infinite ease-in-out;
+        }
+
+        @keyframes glowPulse {
+            0% { filter: drop-shadow(0 0 6px var(--color-primary)); }
+            50% { filter: drop-shadow(0 0 18px var(--color-primary)); }
+            100% { filter: drop-shadow(0 0 6px var(--color-primary)); }
         }
 
         .login-title {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 700;
             color: var(--color-primary);
             text-shadow: var(--glow-primary);
             margin-bottom: 20px;
+        }
+
+        /* ============================================
+           INPUTS
+        ============================================ */
+        .login-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: var(--color-text);
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .login-input:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 10px var(--color-primary);
+        }
+
+        /* ============================================
+           BUTTON PULSE
+        ============================================ */
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            background: var(--color-primary);
+            color: #000;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 600;
+            animation: buttonPulse 2.2s infinite ease-in-out;
+        }
+
+        @keyframes buttonPulse {
+            0% { box-shadow: 0 0 6px var(--color-primary); }
+            50% { box-shadow: 0 0 18px var(--color-primary); }
+            100% { box-shadow: 0 0 6px var(--color-primary); }
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
         }
 
         .login-error {
@@ -38,20 +214,29 @@
     </style>
 </head>
 
-<body class="fade-in">
+<body>
 
-    <div class="login-container">
+    <!-- LAYERS -->
+    <div id="neon-grid"></div>
+    <canvas id="particles"></canvas>
+    <div id="laser-sweep"></div>
+    <div id="holo-noise"></div>
 
-        <div class="login-title">Gaming of Republic – Administrationszugang</div>
+    <!-- LOGIN BOX -->
+    <div class="login-box" id="loginBox">
+
+        <img src="assets/img/logo.png" class="login-logo" alt="GOR Logo">
+
+        <div class="login-title">GOR Admin Login</div>
 
         <div id="login-error" class="login-error">
             Die eingegebenen Zugangsdaten sind ungültig.
         </div>
 
-        <input type="text" id="username" placeholder="Benutzername eingeben">
-        <input type="password" id="password" placeholder="Passwort eingeben">
+        <input type="text" id="username" class="login-input" placeholder="Benutzername eingeben">
+        <input type="password" id="password" class="login-input" placeholder="Passwort eingeben">
 
-        <button class="primary mt-10" onclick="handleLogin()">Anmelden</button>
+        <button class="login-btn" onclick="handleLogin()">Anmelden</button>
 
     </div>
 
@@ -59,6 +244,7 @@
     <script src="assets/js/auth.js"></script>
 
     <script>
+        /* LOGIN */
         function handleLogin() {
             const user = document.getElementById("username").value.trim();
             const pass = document.getElementById("password").value.trim();
@@ -73,6 +259,67 @@
 
             window.location.href = "dashboard.html";
         }
+
+        /* PARTICLES */
+        const canvas = document.getElementById("particles");
+        const ctx = canvas.getContext("2d");
+
+        let particles = [];
+        const count = 80;
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener("resize", resize);
+        resize();
+
+        for (let i = 0; i < count; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 2 + 1,
+                dx: (Math.random() - 0.5) * 0.6,
+                dy: (Math.random() - 0.5) * 0.6
+            });
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = "rgba(255, 211, 0, 0.8)";
+                ctx.shadowBlur = 12;
+                ctx.shadowColor = "rgba(255, 211, 0, 0.8)";
+                ctx.fill();
+
+                p.x += p.dx;
+                p.y += p.dy;
+
+                if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+            });
+
+            requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+
+        /* PARALLAX */
+        const loginBox = document.getElementById("loginBox");
+
+        document.addEventListener("mousemove", e => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+
+            loginBox.style.setProperty("--px", x + "px");
+            loginBox.style.setProperty("--py", y + "px");
+
+            loginBox.classList.add("parallax");
+        });
     </script>
 
 </body>
