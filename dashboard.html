@@ -10,52 +10,80 @@
     <link rel="stylesheet" href="assets/css/animations.css">
 </head>
 
-<body data-page="dashboard" onload="requireRole('admin'); initPage();">
+<body data-page="dashboard" onload="requireRole('admin'); initPage(); loadKPI();">
 
-    <div class="page-container fade-in">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <a class="nav-item active" href="dashboard.html">Dashboard</a>
+        <a class="nav-item" href="product-edit.html">Produkte</a>
+        <a class="nav-item" href="settings.html">Einstellungen</a>
+        <a class="nav-item" href="audit-log.html">Audit Log</a>
+        <a class="nav-item" onclick="logout()">Abmelden</a>
+    </div>
 
+    <!-- MAIN CONTENT -->
+    <div class="dashboard-content fade-in">
+
+        <!-- HEADER -->
         <div class="page-header">
-            <h1>Dashboard</h1>
-            <button class="danger" onclick="logout()">Abmelden</button>
+            <h1 class="header-title">Dashboard</h1>
+            <div class="user-pill">Admin</div>
         </div>
 
-        <div class="card">
-            <h2>Systemübersicht</h2>
+        <!-- KPI WIDGETS -->
+        <div class="kpi-grid">
 
-            <div class="form-grid">
-
-                <div class="hud-panel">
-                    <h3>Produkte</h3>
-                    <p>Produkte verwalten und bearbeiten.</p>
-                    <button class="primary mt-10" onclick="window.location.href='product-edit.html'">
-                        Produkteditor öffnen
-                    </button>
-                </div>
-
-                <div class="hud-panel">
-                    <h3>Einstellungen</h3>
-                    <p>Benutzerverwaltung, Rollen & Systemoptionen.</p>
-                    <button class="primary mt-10" onclick="window.location.href='settings.html'">
-                        Einstellungen öffnen
-                    </button>
-                </div>
-
-                <div class="hud-panel">
-                    <h3>Audit Log</h3>
-                    <p>Systemaktivitäten überwachen & exportieren.</p>
-                    <button class="primary mt-10" onclick="window.location.href='audit-log.html'">
-                        Audit Log öffnen
-                    </button>
-                </div>
-
+            <div class="kpi-card">
+                <div class="kpi-title">Produkte</div>
+                <div class="kpi-value" id="kpi-products">–</div>
             </div>
+
+            <div class="kpi-card">
+                <div class="kpi-title">Benutzer</div>
+                <div class="kpi-value" id="kpi-users">–</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-title">Audit Einträge</div>
+                <div class="kpi-value" id="kpi-audit">–</div>
+            </div>
+
+        </div>
+
+        <!-- MODULE CARDS -->
+        <div class="module-grid">
+
+            <div class="module-card">
+                <h3>Produkte</h3>
+                <p>Produkte verwalten und bearbeiten.</p>
+                <button class="primary mt-10" onclick="window.location.href='product-edit.html'">
+                    Produkteditor öffnen
+                </button>
+            </div>
+
+            <div class="module-card">
+                <h3>Einstellungen</h3>
+                <p>Benutzerverwaltung, Rollen & Systemoptionen.</p>
+                <button class="primary mt-10" onclick="window.location.href='settings.html'">
+                    Einstellungen öffnen
+                </button>
+            </div>
+
+            <div class="module-card">
+                <h3>Audit Log</h3>
+                <p>Systemaktivitäten überwachen & exportieren.</p>
+                <button class="primary mt-10" onclick="window.location.href='audit-log.html'">
+                    Audit Log öffnen
+                </button>
+            </div>
+
         </div>
 
     </div>
 
     <script src="assets/js/state.js"></script>
     <script src="assets/js/auth.js"></script>
+    <script src="assets/js/kpi.js"></script>
 
 </body>
 </html>
-
