@@ -1,175 +1,90 @@
 /* =========================================================
-   GOR PRODUCT ADMIN – AUDIT SYSTEM
-   Icons, Farben, Filter, Suche, Pagination, CSV Export
+   GOR PRODUCT ADMIN – AUDIT LOG (NEUE VERSION)
+   Anzeige, Filter, Export
    ========================================================= */
 
+
 /* ---------------------------------------------------------
-   AUDIT LOG LADEN & SPEICHERN
+   AUDIT LOG LADEN + FILTERN
    --------------------------------------------------------- */
-function getAuditLog() {
-    return JSON.parse(localStorage.getItem("gor_audit")) || [];
-}
+function loadAuditLog() {
+    let entries = getAuditLog(); // aus state.js
 
-function addAuditEntry(action, details = "") {
-    const session = getSession();
-    const user = session ? session.user : "Unbekannt";
-    const role = session ? session.role : "none";
+    const typeFilter = document.getElementById("filter-type").value.trim();
+    const userFilter = document.getElementById("filter-user").value.trim().toLowerCase();
+    const dateFilter = document.getElementById("filter-date").value;
 
-    const log = getAuditLog();
+    // Filter anwenden
+    entries = entries.filter(entry => {
 
-    log.push({
-        timestamp: Date.now(),
-        user: user,
-        role: role,
-        action: action,
-        details: details
+        if (typeFilter && entry.type !== typeFilter) return false;
+
+        if (userFilter && !entry.user.toLowerCase().includes(userFilter)) return false;
+
+        if (dateFilter) {
+            const entryDate = entry.timestamp.split("T")[0];
+            if (entryDate !== dateFilter) return false;
+        }
+
+        return true;
     });
 
-    localStorage.setItem("gor_audit", JSON.stringify(log));
+    renderAuditTable(entries);
 }
 
-/* ---------------------------------------------------------
-   ICONS & FARBEN
-   --------------------------------------------------------- */
-function getAuditIcon(entry) {
-    if (entry.action === "login") return "🔐";
-    if (entry.action === "logout") return "🚪";
-    if (entry.action.includes("Produkt")) return "📦";
-    if (entry.action.includes("CSV")) return "📄";
-    if (entry.action.includes("Einstellung")) return "⚙️";
-    return "📝";
-}
-
-function getAuditColor(entry) {
-    if (entry.action === "login") return "var(--color-success)";
-    if (entry.action === "logout") return "var(--color-danger)";
-    if (entry.action.includes("Produkt")) return "var(--color-primary)";
-    if (entry.action.includes("CSV")) return "var(--color-info)";
-    if (entry.action.includes("Einstellung")) return "var(--color-warning)";
-    return "var(--color-text)";
-}
-
-/* ---------------------------------------------------------
-   FILTER & SUCHE
-   --------------------------------------------------------- */
-function filterAuditLog(type = "all", search = "") {
-    let log = getAuditLog();
-
-    // Kategorie
-    if (type !== "all") {
-        log = log.filter(entry => {
-            if (type === "login") return entry.action === "login";
-            if (type === "logout") return entry.action === "logout";
-            if (type === "product") return entry.action.includes("Produkt");
-            if (type === "csv") return entry.action.includes("CSV");
-            if (type === "settings") return entry.action.includes("Einstellung");
-            return true;
-        });
-    }
-
-    // Suche
-    if (search.trim() !== "") {
-        const s = search.toLowerCase();
-        log = log.filter(entry =>
-            entry.user.toLowerCase().includes(s) ||
-            entry.role.toLowerCase().includes(s) ||
-            entry.action.toLowerCase().includes(s) ||
-            entry.details.toLowerCase().includes(s)
-        );
-    }
-
-    return log;
-}
-
-/* ---------------------------------------------------------
-   PAGINATION
-   --------------------------------------------------------- */
-let auditPage = 1;
-const auditPerPage = 20;
 
 /* ---------------------------------------------------------
    TABELLE RENDERN
    --------------------------------------------------------- */
-function renderAuditTable(filterType = "all", search = "") {
-    const tbody = document.getElementById("audit-table-body");
-    if (!tbody) return;
+function renderAuditTable(entries) {
+    const body = document.getElementById("audit-body");
+    body.innerHTML = "";
 
-    const log = filterAuditLog(filterType, search);
+    if (entries.length === 0) {
+        body.innerHTML = `
+            <tr>
+                <td colspan="4" style="text-align:center; opacity:0.6;">
+                    Keine Einträge gefunden
+                </td>
+            </tr>`;
+        return;
+    }
 
-    const start = (auditPage - 1) * auditPerPage;
-    const end = start + auditPerPage;
-    const pageLog = log.slice(start, end);
+    entries.forEach(entry => {
+        const row = document.createElement("tr");
 
-    tbody.innerHTML = "";
-
-    pageLog.forEach(entry => {
-        const tr = document.createElement("tr");
-        tr.classList.add("fade-in");
-
-        tr.innerHTML = `
-            <td class="audit-icon" style="color:${getAuditColor(entry)}">${getAuditIcon(entry)}</td>
+        row.innerHTML = `
             <td>${formatDateTime(entry.timestamp)}</td>
+            <td>${entry.type}</td>
             <td>${entry.user}</td>
-            <td>${entry.role}</td>
-            <td>${entry.action}</td>
-            <td>${entry.details}</td>
+            <td>${entry.message}</td>
         `;
 
-        tbody.appendChild(tr);
+        body.appendChild(row);
     });
-
-    renderAuditPagination(log.length);
 }
 
-/* ---------------------------------------------------------
-   PAGINATION RENDERN
-   --------------------------------------------------------- */
-function renderAuditPagination(total) {
-    const container = document.getElementById("audit-pagination");
-    if (!container) return;
-
-    const pages = Math.ceil(total / auditPerPage);
-
-    container.innerHTML = "";
-
-    if (pages <= 1) return;
-
-    for (let i = 1; i <= pages; i++) {
-        const btn = document.createElement("button");
-        btn.innerText = i;
-        btn.className = (i === auditPage) ? "primary" : "";
-        btn.onclick = () => {
-            auditPage = i;
-            renderAuditTable(
-                document.getElementById("audit-filter-type").value,
-                document.getElementById("audit-filter-search").value
-            );
-        };
-        container.appendChild(btn);
-    }
-}
 
 /* ---------------------------------------------------------
    CSV EXPORT
    --------------------------------------------------------- */
-function exportAuditToCSV() {
-    const log = getAuditLog();
+function exportAuditCSV() {
+    const entries = getAuditLog();
+    if (entries.length === 0) return;
 
-    if (log.length === 0) {
-        alert("Keine Audit-Daten vorhanden.");
-        return;
-    }
+    let csv = "Zeit;Typ;Benutzer;Nachricht\n";
 
-    const csvData = log.map(entry => ({
-        timestamp: formatDateTime(entry.timestamp),
-        user: entry.user,
-        role: entry.role,
-        action: entry.action,
-        details: entry.details
-    }));
+    entries.forEach(e => {
+        csv += `${formatDateTime(e.timestamp)};${e.type};${e.user};${e.message}\n`;
+    });
 
-    const csv = buildCSV(csvData);
-    downloadFile("audit-log.csv", csv);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
 
-    addAuditEntry("CSV Export", "Audit-Log exportiert.");
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "audit-log.csv";
+    a.click();
+
+    URL.revokeObjectURL(url);
 }
