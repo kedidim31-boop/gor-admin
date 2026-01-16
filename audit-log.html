@@ -2,83 +2,96 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Audit Log</title>
+    <title>Audit Log – GoR Admin</title>
 
     <link rel="stylesheet" href="assets/css/theme.css">
     <link rel="stylesheet" href="assets/css/layout.css">
-    <link rel="stylesheet" href="assets/css/forms.css">
-    <link rel="stylesheet" href="assets/css/table.css">
     <link rel="stylesheet" href="assets/css/components.css">
     <link rel="stylesheet" href="assets/css/animations.css">
 </head>
 
-<body data-page="audit-log" onload="requireRole('admin'); initPage(); renderAuditTable();">
+<body data-page="audit-log" onload="requireRole('admin'); initPage(); loadAuditLog();">
 
-    <div class="page-container fade-in">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <a class="nav-item" href="dashboard.html"><span class="sidebar-icon">📊</span> Dashboard</a>
+        <a class="nav-item" href="product-edit.html"><span class="sidebar-icon">🛒</span> Produkte</a>
+        <a class="nav-item" href="settings.html"><span class="sidebar-icon">⚙️</span> Einstellungen</a>
+        <a class="nav-item active" href="audit-log.html"><span class="sidebar-icon">📜</span> Audit Log</a>
+        <a class="nav-item" onclick="logout()"><span class="sidebar-icon">🚪</span> Abmelden</a>
+    </div>
 
+    <!-- MAIN CONTENT -->
+    <div class="dashboard-content fade-in">
+
+        <!-- HEADER -->
         <div class="page-header">
-            <h1>Audit Log</h1>
+            <h1 class="header-title">Audit Log</h1>
 
-            <div class="flex gap-10">
-                <button onclick="window.location.href='dashboard.html'">Dashboard</button>
-                <button class="danger" onclick="logout()">Logout</button>
+            <!-- USER AVATAR -->
+            <div class="header-user" onclick="toggleUserDropdown()">
+                <div class="header-avatar">A</div>
+
+                <div class="header-dropdown" id="user-dropdown">
+                    <a href="settings.html">Profil / Einstellungen</a>
+                    <a href="audit-log.html">Audit Log</a>
+                    <a onclick="logout()">Abmelden</a>
+                </div>
             </div>
         </div>
 
-        <!-- ============================
-             FILTER UI
-        ============================= -->
+        <!-- FILTER -->
         <div class="card">
             <h2>Filter</h2>
 
-            <div class="audit-filter-bar">
+            <div class="form-grid">
 
-                <div class="form-group">
-                    <label>Kategorie</label>
-                    <select id="audit-filter-type" onchange="updateAuditFilter()">
-                        <option value="all">Alle</option>
+                <div>
+                    <label>Typ</label>
+                    <select id="filter-type" onchange="loadAuditLog()">
+                        <option value="">Alle</option>
                         <option value="login">Login</option>
                         <option value="logout">Logout</option>
-                        <option value="product">Produkt</option>
-                        <option value="csv">CSV</option>
-                        <option value="settings">Einstellungen</option>
+                        <option value="product_save">Produkt gespeichert</option>
+                        <option value="product_delete">Produkt gelöscht</option>
+                        <option value="user_add">Benutzer hinzugefügt</option>
+                        <option value="user_delete">Benutzer gelöscht</option>
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label>Suche</label>
-                    <input type="text" id="audit-filter-search" oninput="updateAuditFilter()" placeholder="Benutzer, Aktion, Details...">
+                <div>
+                    <label>Benutzer</label>
+                    <input type="text" id="filter-user" placeholder="z.B. admin" oninput="loadAuditLog()">
                 </div>
 
-                <div class="form-group">
+                <div>
+                    <label>Datum</label>
+                    <input type="date" id="filter-date" oninput="loadAuditLog()">
+                </div>
+
+                <div>
                     <label>&nbsp;</label>
-                    <button class="primary w-100" onclick="exportAuditToCSV()">CSV Export</button>
+                    <button class="primary" onclick="exportAuditCSV()">CSV Export</button>
                 </div>
 
             </div>
         </div>
 
-        <!-- ============================
-             AUDIT TABLE
-        ============================= -->
-        <div class="card mt-20">
-            <h2>Systemaktivitäten</h2>
-
-            <table class="data-table mt-20">
+        <!-- AUDIT TABLE -->
+        <div class="table-wrapper mt-20">
+            <table class="data-table" id="audit-table">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th>Datum</th>
+                        <th>Zeit</th>
+                        <th>Typ</th>
                         <th>Benutzer</th>
-                        <th>Rolle</th>
-                        <th>Aktion</th>
-                        <th>Details</th>
+                        <th>Nachricht</th>
                     </tr>
                 </thead>
-                <tbody id="audit-table-body"></tbody>
+                <tbody id="audit-body">
+                    <!-- Dynamisch -->
+                </tbody>
             </table>
-
-            <div id="audit-pagination" class="audit-pagination mt-20"></div>
         </div>
 
     </div>
@@ -86,14 +99,6 @@
     <script src="assets/js/state.js"></script>
     <script src="assets/js/auth.js"></script>
     <script src="assets/js/audit.js"></script>
-
-    <script>
-        function updateAuditFilter() {
-            const type = document.getElementById("audit-filter-type").value;
-            const search = document.getElementById("audit-filter-search").value;
-            renderAuditTable(type, search);
-        }
-    </script>
 
 </body>
 </html>
