@@ -11,44 +11,75 @@
 
 <body>
 
-<header class="nav-header flex-between">
-    <div class="flex gap-10">
-        <img src="assets/img/logo.png" class="header-logo">
-        <h2 class="text-primary">GOR Admin</h2>
-    </div>
+<!-- GOR SIDEBAR NAVIGATION -->
+<div class="sidebar">
 
-    <nav class="nav-links flex gap-20">
-        <a href="dashboard.html">Dashboard</a>
-        <a href="product-edit.html">Produkte</a>
-        <a href="audit-log.html">Audit Log</a>
-        <a href="settings.html">Einstellungen</a>
-    </nav>
+    <a class="nav-item" href="dashboard.html">
+        <span class="sidebar-icon">📊</span> Dashboard
+    </a>
 
-    <button class="danger" onclick="logout()">Logout</button>
-</header>
+    <a class="nav-item" href="product-edit.html">
+        <span class="sidebar-icon">🛒</span> Produkte
+    </a>
+
+    <a class="nav-item" href="audit-log.html">
+        <span class="sidebar-icon">📜</span> Audit Log
+    </a>
+
+    <a class="nav-item" href="settings.html">
+        <span class="sidebar-icon">⚙️</span> Einstellungen
+    </a>
+
+    <a class="nav-item" onclick="logout()">
+        <span class="sidebar-icon">🚪</span> Abmelden
+    </a>
+
+</div>
 
 <style>
-    .nav-header {
-        padding: 14px 20px;
+    .sidebar {
+        width: 240px;
         background: rgba(255,255,255,0.04);
-        border-bottom: 1px solid var(--color-border);
+        border-right: 1px solid var(--color-border);
+        height: 100vh;
+        padding: 20px 0;
+        position: fixed;
+        top: 0;
+        left: 0;
         box-shadow: 0 0 12px rgba(0,0,0,0.4);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
     }
 
-    .nav-links a {
+    .nav-item {
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
         color: var(--color-text);
         text-decoration: none;
         transition: 0.2s;
+        font-size: 16px;
     }
 
-    .nav-links a:hover {
+    .nav-item:hover {
+        background: rgba(255,255,255,0.06);
         color: var(--color-primary);
         text-shadow: var(--glow-primary);
     }
 
-    .header-logo {
-        height: 34px;
-        filter: drop-shadow(0 0 6px var(--color-primary));
+    .nav-item.active {
+        background: rgba(255,255,255,0.08);
+        border-left: 3px solid var(--color-primary);
+        color: var(--color-primary);
+        text-shadow: var(--glow-primary);
+    }
+
+    .sidebar-icon {
+        font-size: 20px;
+        color: var(--color-primary);
+        text-shadow: var(--glow-primary);
     }
 </style>
 
