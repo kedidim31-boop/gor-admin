@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>GOR Admin Login</title>
+
+    <link rel="stylesheet" href="assets/css/theme.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="stylesheet" href="assets/css/forms.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+</head>
+
+<body class="login-page">
+
+    <div class="login-container card fade-in">
+        <img src="assets/img/logo.png" class="login-logo">
+
+        <h1 class="text-center text-primary">GoR Verwaltung Login</h1>
+
+        <div class="form-group mt-20">
+            <label>Benutzername</label>
+            <input type="text" id="login-user" placeholder="admin oder mitarbeiter">
+        </div>
+
+        <div class="form-group">
+            <label>Passwort</label>
+            <input type="password" id="login-pass" placeholder="admin oder 1234">
+        </div>
+
+        <button class="primary w-100 mt-20" onclick="doLogin()">Login</button>
+    </div>
+
+    <script src="assets/js/state.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/toast.js"></script>
+
+    <script>
+        function doLogin() {
+            const user = document.getElementById("login-user").value.trim();
+            const pass = document.getElementById("login-pass").value.trim();
+
+            if (!user || !pass) {
+                showToast("Bitte Benutzername und Passwort eingeben", "error");
+                return;
+            }
+
+            const result = login(user, pass);
+
+            if (!result.success) {
+                showToast("Falscher Benutzer oder Passwort", "error");
+                return;
+            }
+
+            if (result.role === "admin") {
+                window.location.href = "dashboard.html";
+            } else {
+                window.location.href = "product-edit.html";
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Einstellungen – Benutzerverwaltung</title>
+
+    <link rel="stylesheet" href="assets/css/theme.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="stylesheet" href="assets/css/forms.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+</head>
+
+<body data-page="settings" onload="requireRole('admin'); initPage(); loadUserList();">
+
+    <div class="page-container fade-in">
+
+        <div class="page-header">
+            <h1>Einstellungen</h1>
+
+            <div class="flex gap-10">
+                <button onclick="window.location.href='dashboard.html'">Dashboard</button>
+                <button class="danger" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- ============================
+             BENUTZERLISTE
+        ============================= -->
+        <div class="card">
+            <h2>Benutzerverwaltung</h2>
+
+            <div id="user-list" class="mt-20"></div>
+
+            <div class="divider mt-20 mb-20"></div>
+
+            <!-- ============================
+                 NEUEN BENUTZER ANLEGEN
+            ============================= -->
+            <h3>Neuen Benutzer anlegen</h3>
+
+            <div class="form-grid mt-10">
+                <div class="form-group">
+                    <label>Benutzername</label>
+                    <input type="text" id="new-user-name">
+                </div>
+
+                <div class="form-group">
+                    <label>Passwort</label>
+                    <input type="password" id="new-user-pass">
+                </div>
+
+                <div class="form-group">
+                    <label>Rolle</label>
+                    <select id="new-user-role">
+                        <option value="admin">Admin</option>
+                        <option value="staff">Mitarbeiter</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="primary mt-20" onclick="createNewUser()">Benutzer erstellen</button>
+        </div>
+
+    </div>
+
+    <script src="assets/js/state.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/settings.js"></script>
+    <script src="assets/js/modal.js"></script>
+    <script src="assets/js/toast.js"></script>
+
+</body>
+</html>
