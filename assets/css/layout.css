@@ -20,6 +20,15 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 25px;
+
+    /* FUTURISTISCHE ERWEITERUNG */
+    position: relative;
+    z-index: 10;
+    transition: transform 0.2s ease-out;
+}
+
+.page-header.parallax {
+    transform: translate(var(--px), var(--py));
 }
 
 .page-header h1 {
@@ -205,4 +214,70 @@
     .page-header h1 {
         font-size: 22px;
     }
+}
+
+/* =========================================================
+   FUTURISTISCHE ERWEITERUNG – NEON GRID + SCANLINES + NOISE
+   ========================================================= */
+
+#dash-grid {
+    position: fixed;
+    inset: 0;
+    background:
+        repeating-linear-gradient(
+            to right,
+            rgba(255,211,0,0.06) 0px,
+            rgba(255,211,0,0.06) 1px,
+            transparent 1px,
+            transparent 40px
+        ),
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255,211,0,0.06) 0px,
+            rgba(255,211,0,0.06) 1px,
+            transparent 1px,
+            transparent 40px
+        );
+    transform: perspective(900px) rotateX(55deg);
+    transform-origin: top;
+    animation: dashGridPulse 5s infinite ease-in-out;
+    opacity: 0.18;
+    z-index: 0;
+}
+
+@keyframes dashGridPulse {
+    0% { opacity: 0.12; }
+    50% { opacity: 0.22; }
+    100% { opacity: 0.12; }
+}
+
+#dash-scanlines {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.03) 0px,
+        rgba(255,255,255,0.03) 2px,
+        transparent 2px,
+        transparent 4px
+    );
+    pointer-events: none;
+    opacity: 0.25;
+    z-index: 1;
+}
+
+#dash-noise {
+    position: fixed;
+    inset: 0;
+    background: url('https://i.imgur.com/8QfQZ4C.png');
+    opacity: 0.06;
+    animation: dashNoise 0.25s infinite;
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes dashNoise {
+    0% { opacity: 0.04; }
+    50% { opacity: 0.10; }
+    100% { opacity: 0.04; }
 }
