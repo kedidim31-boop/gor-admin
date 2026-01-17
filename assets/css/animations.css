@@ -3,57 +3,105 @@
    Saubere, performante UI-Animationen für das gesamte System
    ========================================================= */
 
-
 /* ---------------------------------------------------------
    FADE IN
    --------------------------------------------------------- */
 .fade-in {
     animation: fadeIn 0.35s ease-out forwards;
     opacity: 0;
+    will-change: opacity, transform;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
+    from { opacity: 0; transform: translateY(8px); }
     to   { opacity: 1; transform: translateY(0); }
 }
 
-
 /* ---------------------------------------------------------
-   SLIDE IN (für Modals, Dropdowns, Panels)
+   SLIDE IN (Modals, Dropdowns, Panels)
    --------------------------------------------------------- */
 .slide-in {
     animation: slideIn 0.35s ease-out forwards;
     opacity: 0;
+    will-change: opacity, transform;
 }
 
 @keyframes slideIn {
-    from { opacity: 0; transform: translateY(12px); }
+    from { opacity: 0; transform: translateY(16px); }
     to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ---------------------------------------------------------
+   SLIDE LEFT / RIGHT
+   --------------------------------------------------------- */
+.slide-left {
+    animation: slideLeft 0.35s ease-out forwards;
+    opacity: 0;
+    will-change: opacity, transform;
+}
+
+@keyframes slideLeft {
+    from { opacity: 0; transform: translateX(-20px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+.slide-right {
+    animation: slideRight 0.35s ease-out forwards;
+    opacity: 0;
+    will-change: opacity, transform;
+}
+
+@keyframes slideRight {
+    from { opacity: 0; transform: translateX(20px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
 
 /* ---------------------------------------------------------
-   GLOW PULSE (für Icons, Buttons, KPI Cards)
+   GLOW PULSE (Icons, Buttons, KPI Cards)
    --------------------------------------------------------- */
 .glow-pulse {
     animation: glowPulse 2.4s ease-in-out infinite;
+    will-change: box-shadow;
 }
 
 @keyframes glowPulse {
     0%   { box-shadow: 0 0 6px rgba(255,211,0,0.25); }
-    50%  { box-shadow: 0 0 14px rgba(255,211,0,0.55); }
+    50%  { box-shadow: 0 0 16px rgba(255,211,0,0.65); }
     100% { box-shadow: 0 0 6px rgba(255,211,0,0.25); }
 }
 
+/* ---------------------------------------------------------
+   SCALE PULSE (für KPI Zahlen)
+   --------------------------------------------------------- */
+.scale-pulse {
+    animation: scalePulse 1.8s ease-in-out infinite;
+    will-change: transform;
+}
+
+@keyframes scalePulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.06); }
+}
 
 /* ---------------------------------------------------------
-   HOVER FLOAT (für Cards, Module, Produktreihen)
+   NEON BLINK (für Warnungen, Errors)
+   --------------------------------------------------------- */
+.neon-blink {
+    animation: neonBlink 1.2s ease-in-out infinite;
+}
+
+@keyframes neonBlink {
+    0%, 100% { text-shadow: 0 0 6px rgba(255,0,0,0.6); }
+    50%      { text-shadow: 0 0 14px rgba(255,0,0,1); }
+}
+
+/* ---------------------------------------------------------
+   HOVER FLOAT (Cards, Module, Produktreihen)
    --------------------------------------------------------- */
 .hover-float:hover {
     transform: translateY(-4px);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
-
 
 /* ---------------------------------------------------------
    BUTTON PRESS
@@ -62,9 +110,8 @@ button:active {
     transform: scale(0.96);
 }
 
-
 /* ---------------------------------------------------------
-   SCANLINE EFFECT (für Hintergrund)
+   SCANLINE EFFECT (Hintergrund)
    --------------------------------------------------------- */
 @keyframes scanlineMove {
     0%   { background-position: 0 0; }
@@ -75,20 +122,18 @@ button:active {
     animation: scanlineMove 0.12s linear infinite;
 }
 
-
 /* ---------------------------------------------------------
-   NOISE FLICKER (für Cyberpunk Noise Layer)
+   NOISE FLICKER (Cyberpunk Noise Layer)
    --------------------------------------------------------- */
 @keyframes noiseFlicker {
     0%   { opacity: 0.04; }
-    50%  { opacity: 0.10; }
+    50%  { opacity: 0.12; }
     100% { opacity: 0.04; }
 }
 
 .noise-animation {
     animation: noiseFlicker 0.25s infinite;
 }
-
 
 /* ---------------------------------------------------------
    SIDEBAR LINK HOVER
@@ -100,7 +145,6 @@ button:active {
 .nav-item:hover {
     transform: translateX(6px);
 }
-
 
 /* ---------------------------------------------------------
    DROPDOWN FADE
@@ -115,7 +159,6 @@ button:active {
     to   { opacity: 1; transform: translateY(0); }
 }
 
-
 /* ---------------------------------------------------------
    MODAL BACKDROP FADE
    --------------------------------------------------------- */
@@ -127,7 +170,6 @@ button:active {
 .modal-backdrop {
     animation: backdropFade 0.25s ease-out forwards;
 }
-
 
 /* ---------------------------------------------------------
    LOADING SPINNER
