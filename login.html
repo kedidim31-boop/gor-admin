@@ -5,84 +5,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login – Gaming of Republic</title>
   <link rel="stylesheet" href="assets/css/layout.css">
-  <style>
-    body {
-      background-color: #191833;
-      color: #fff;
-      font-family: sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .login-card {
-      background-color: #111827;
-      padding: 2rem;
-      border-radius: 8px;
-      width: 350px;
-      text-align: center;
-    }
-    h1 {
-      color: #ffd700;
-      margin-bottom: 1.5rem;
-    }
-    label {
-      display: block;
-      margin-bottom: 0.3rem;
-      font-weight: bold;
-      color: #ffd700;
-      text-align: left;
-    }
-    input, select {
-      width: 100%;
-      padding: 0.6rem;
-      margin-bottom: 1rem;
-      border: 2px solid #ffd700;
-      background-color: #191833;
-      color: #fff;
-      border-radius: 4px;
-    }
-    .btn {
-      background-color: #ffd700;
-      color: #000;
-      padding: 0.8rem 1.5rem;
-      border: none;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-      border-radius: 4px;
-      width: 100%;
-    }
-  </style>
 </head>
 <body>
-  <div class="login-card">
-    <h1>🕹️ Gaming of Republic</h1>
-    <form id="loginForm">
-      <label for="username">Benutzername</label>
-      <input type="text" id="username" required>
+  <!-- Einheitliche Navigation -->
+  <nav class="navbar">
+    <div class="logo">🕹️ Gaming of Republic</div>
+    <ul>
+      <li><a href="index.html">Dashboard</a></li>
+      <li><a href="products.html">Produkte</a></li>
+      <li><a href="users.html">Benutzerverwaltung</a></li>
+    </ul>
+  </nav>
 
-      <label for="role">Rolle</label>
+  <main class="content">
+    <div class="login-card">
+      <h1>Login</h1>
+      <label for="username">Benutzername</label>
+      <input type="text" id="username" />
+      <label for="password">Passwort</label>
+      <input type="password" id="password" />
       <select id="role">
         <option value="viewer">Viewer</option>
         <option value="editor">Editor</option>
         <option value="admin">Admin</option>
       </select>
-
-      <button type="submit" class="btn">✅ Login</button>
-    </form>
-  </div>
+      <button id="loginBtn" class="btn">Anmelden</button>
+    </div>
+  </main>
 
 <script>
-  document.getElementById("loginForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+  document.getElementById("loginBtn").addEventListener("click", () => {
     const username = document.getElementById("username").value;
     const role = document.getElementById("role").value;
 
+    if (!username) {
+      alert("Bitte Benutzername eingeben!");
+      return;
+    }
+
     localStorage.setItem("loggedInUser", username);
     localStorage.setItem("userRole", role);
-
-    alert("Willkommen " + username + " (" + role + ")");
+    alert("Login erfolgreich!");
     window.location.href = "index.html";
   });
 </script>
