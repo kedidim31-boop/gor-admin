@@ -21,29 +21,28 @@
         <a class="nav-item" onclick="logout()"><span class="sidebar-icon">🚪</span> Abmelden</a>
     </div>
 
-    <!-- MAIN CONTENT -->
+    <!-- MAIN -->
     <div class="dashboard-content fade-in">
 
-        <!-- HEADER -->
         <div class="page-header">
-            <h1 class="header-title">Administrationsübersicht</h1>
+            <h1>Dein Admin‑Bereich</h1>
 
             <div class="header-user" onclick="toggleUserDropdown()">
                 <div class="header-avatar">A</div>
                 <div class="header-dropdown" id="user-dropdown">
-                    <a href="settings.html">Profil & Einstellungen</a>
+                    <a href="settings.html">Dein Profil</a>
                     <a href="audit-log.html">Audit Log</a>
                     <a onclick="logout()">Abmelden</a>
                 </div>
             </div>
         </div>
 
-        <!-- KPI GRID -->
+        <!-- KPIs -->
         <div class="kpi-grid">
 
             <div class="kpi-card">
                 <span class="kpi-icon">🛒</span>
-                <div class="kpi-title">Gesamtprodukte</div>
+                <div class="kpi-title">Produkte</div>
                 <div class="kpi-value" id="kpi-products">–</div>
             </div>
 
@@ -61,31 +60,25 @@
 
         </div>
 
-        <!-- MODULE GRID -->
+        <!-- MODULES -->
         <div class="module-grid mt-20">
 
             <div class="card module-card">
-                <h3>Produktverwaltung</h3>
-                <p>Produkte erstellen, bearbeiten und verwalten.</p>
-                <button class="primary mt-10" onclick="window.location.href='product-edit.html'">
-                    Produkteditor öffnen
-                </button>
+                <h3>Produkte verwalten</h3>
+                <p>Erstelle, bearbeite und organisiere deine Produkte.</p>
+                <button class="primary mt-10" onclick="location.href='product-edit.html'">Produkteditor öffnen</button>
             </div>
 
             <div class="card module-card">
-                <h3>Systemeinstellungen</h3>
-                <p>Benutzerrollen, Konten und Systemparameter verwalten.</p>
-                <button class="primary mt-10" onclick="window.location.href='settings.html'">
-                    Einstellungen öffnen
-                </button>
+                <h3>Einstellungen</h3>
+                <p>Konfiguriere dein System und passe alles an deine Bedürfnisse an.</p>
+                <button class="primary mt-10" onclick="location.href='settings.html'">Einstellungen öffnen</button>
             </div>
 
             <div class="card module-card">
                 <h3>Audit‑Protokolle</h3>
-                <p>Systemaktivitäten einsehen, filtern und exportieren.</p>
-                <button class="primary mt-10" onclick="window.location.href='audit-log.html'">
-                    Audit Log öffnen
-                </button>
+                <p>Überwache Aktivitäten und behalte den Überblick.</p>
+                <button class="primary mt-10" onclick="location.href='audit-log.html'">Audit Log öffnen</button>
             </div>
 
         </div>
