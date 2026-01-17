@@ -4,19 +4,23 @@
    ========================================================= */
 
 /* ---------------------------------------------------------
-   SPACING
+   SPACING (Margin & Padding)
    --------------------------------------------------------- */
 .mt-5   { margin-top: 5px; }
 .mt-10  { margin-top: 10px; }
 .mt-20  { margin-top: 20px; }
 .mt-30  { margin-top: 30px; }
+.mt-40  { margin-top: 40px; }
 
 .mb-5   { margin-bottom: 5px; }
 .mb-10  { margin-bottom: 10px; }
 .mb-20  { margin-bottom: 20px; }
 .mb-30  { margin-bottom: 30px; }
+.mb-40  { margin-bottom: 40px; }
 
+.ml-5   { margin-left: 5px; }
 .ml-10  { margin-left: 10px; }
+.mr-5   { margin-right: 5px; }
 .mr-10  { margin-right: 10px; }
 
 .pt-10  { padding-top: 10px; }
@@ -50,6 +54,12 @@
     flex-direction: column;
 }
 
+.flex-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
 .grid-2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -59,6 +69,12 @@
 .grid-3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 16px;
 }
 
@@ -139,12 +155,20 @@
     border: 1px solid var(--color-danger);
 }
 
+.border-success {
+    border: 1px solid var(--color-success);
+}
+
 .shadow-soft {
     box-shadow: var(--shadow-soft);
 }
 
 .shadow-strong {
     box-shadow: var(--shadow-strong);
+}
+
+.shadow-glow {
+    box-shadow: 0 0 12px rgba(255,211,0,0.45);
 }
 
 /* ---------------------------------------------------------
@@ -156,6 +180,7 @@
 .max-w-400 { max-width: 400px; }
 .max-w-600 { max-width: 600px; }
 .max-w-800 { max-width: 800px; }
+.max-w-1200 { max-width: 1200px; }
 
 /* ---------------------------------------------------------
    VISIBILITY
@@ -178,3 +203,4 @@
 .cursor-pointer { cursor: pointer; }
 .cursor-default { cursor: default; }
 .cursor-not-allowed { cursor: not-allowed; }
+.cursor-wait { cursor: wait; }
