@@ -11,9 +11,11 @@
     <div class="logo">🕹️ Gaming of Republic</div>
     <ul>
       <li><a href="index.html">Dashboard</a></li>
-      <li><a href="add-product.html">Neues Produkt</a></li>
+      <li id="navAddProduct"><a href="add-product.html">Neues Produkt</a></li>
       <li><a href="products.html" class="active">Produkte</a></li>
       <li><a href="#" id="exportBtn">CSV Export</a></li>
+      <li id="userNav" style="display:none;"><a href="users.html">Benutzerverwaltung</a></li>
+      <li><button id="logoutBtn" class="btn delete">🚪 Abmelden</button></li>
     </ul>
   </nav>
 
@@ -41,7 +43,7 @@
           <td>Produkt für CSV Export</td>
           <td>19</td>
           <td>50</td>
-          <td>
+          <td class="actions">
             <button class="btn edit">✏️ Edit</button>
             <button class="btn delete">🗑️ Delete</button>
           </td>
@@ -52,7 +54,7 @@
           <td>Erstes Bulk Produkt</td>
           <td>29</td>
           <td>25</td>
-          <td>
+          <td class="actions">
             <button class="btn edit">✏️ Edit</button>
             <button class="btn delete">🗑️ Delete</button>
           </td>
@@ -63,7 +65,7 @@
           <td>Zweites Bulk Produkt</td>
           <td>39</td>
           <td>30</td>
-          <td>
+          <td class="actions">
             <button class="btn edit">✏️ Edit</button>
             <button class="btn delete">🗑️ Delete</button>
           </td>
@@ -73,23 +75,71 @@
   </main>
 
   <script>
+    // Zugriffsschutz
+    const user = localStorage.getItem("loggedInUser");
+    const role = localStorage.getItem("userRole");
+
+    if(!user) {
+      window.location.href = "login.html";
+    }
+
+    // Navigation: Benutzerverwaltung nur für Admin
+    if(role === "admin") {
+      document.getElementById("userNav").style.display = "inline-block";
+    }
+
+    // Rollenbasierte Rechte
+    const actionCells = document.querySelectorAll(".actions");
+
+    actionCells.forEach(cell => {
+      if(role === "admin") {
+        // Admin darf alles
+      } else if(role === "editor") {
+        // Editor darf bearbeiten, aber nicht löschen
+        const deleteBtn = cell.querySelector(".delete");
+        if(deleteBtn) deleteBtn.style.display = "none";
+      } else if(role === "viewer") {
+        // Viewer darf nur ansehen
+        cell.innerHTML = "Nur Ansicht";
+      }
+    });
+
+    // CSV Export & Bulk Import nur für Admin/Editor
+    if(role === "viewer") {
+      document.getElementById("exportBtn").style.display = "none";
+      document.getElementById("importFile").style.display = "none";
+      document.getElementById("navAddProduct").style.display = "none";
+    }
+
     // Edit/Delete Logik
     document.querySelectorAll('.edit').forEach(btn => {
       btn.addEventListener('click', () => {
-        alert("Produkt bearbeiten – hier kannst du ein Edit-Formular öffnen.");
+        if(role === "viewer") {
+          alert("Nur Ansicht – keine Bearbeitung erlaubt.");
+        } else {
+          alert("Produkt bearbeiten – hier kannst du ein Edit-Formular öffnen.");
+        }
       });
     });
 
     document.querySelectorAll('.delete').forEach(btn => {
       btn.addEventListener('click', () => {
-        if(confirm("Willst du dieses Produkt wirklich löschen?")) {
-          btn.closest('tr').remove();
+        if(role === "admin") {
+          if(confirm("Willst du dieses Produkt wirklich löschen?")) {
+            btn.closest('tr').remove();
+          }
+        } else {
+          alert("Löschen ist nur für Admin erlaubt.");
         }
       });
     });
 
     // CSV Export Funktion
     document.getElementById('exportBtn').addEventListener('click', () => {
+      if(role === "viewer") {
+        alert("Export ist nur für Admin/Editor erlaubt.");
+        return;
+      }
       const table = document.getElementById('productTable');
       let csv = [];
       const rows = table.querySelectorAll('tr');
@@ -97,7 +147,7 @@
       rows.forEach(row => {
         const cols = row.querySelectorAll('td, th');
         const rowData = [];
-        cols.forEach(col => rowData.push(col.innerText.replace(/,/g, ""))); // Kommas entfernen
+        cols.forEach(col => rowData.push(col.innerText.replace(/,/g, "")));
         csv.push(rowData.join(","));
       });
 
@@ -112,6 +162,10 @@
 
     // Bulk Import Funktion
     document.getElementById('importFile').addEventListener('change', function(e) {
+      if(role === "viewer") {
+        alert("Import ist nur für Admin/Editor erlaubt.");
+        return;
+      }
       const file = e.target.files[0];
       if (!file) return;
 
@@ -122,7 +176,7 @@
 
         const tbody = document.querySelector("#productTable tbody");
         rows.slice(1).forEach(row => {
-          if(row.length < 5) return; // Mindestspalten prüfen
+          if(row.length < 5) return;
           const tr = document.createElement("tr");
           tr.innerHTML = `
             <td>${row[0]}</td>
@@ -130,7 +184,7 @@
             <td>${row[2]}</td>
             <td>${row[3]}</td>
             <td>${row[4]}</td>
-            <td>
+            <td class="actions">
               <button class="btn edit">✏️ Edit</button>
               <button class="btn delete">🗑️ Delete</button>
             </td>
@@ -139,6 +193,15 @@
         });
       };
       reader.readAsText(file);
+    });
+
+    // Logout-Funktion
+    const logoutBtn = document.getElementById("logoutBtn");
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("loggedInUser");
+      localStorage.removeItem("userRole");
+      alert("Du wurdest abgemeldet.");
+      window.location.href = "login.html";
     });
   </script>
 </body>
