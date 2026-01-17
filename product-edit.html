@@ -41,118 +41,135 @@
             </div>
         </div>
 
-        <!-- GRID -->
-        <div class="editor-grid">
+        <!-- SHOPIFY-STYLE PRODUCT PAGE -->
+        <div class="product-page">
 
-            <!-- LEFT: PRODUCT LIST -->
-            <div class="card">
-                <h2>Produkte</h2>
+            <!-- LEFT: MAIN PRODUCT CONTENT -->
+            <div class="product-main">
 
-                <button class="primary full mt-10" onclick="clearProductForm()">
-                    Neues Produkt erstellen
-                </button>
+                <!-- PRODUCT INFO -->
+                <div class="card section-card">
+                    <h2 class="section-title">Produktinformationen</h2>
+                    <p class="section-subtitle">Name, Preis, Beschreibung und Details</p>
 
-                <div id="product-list" class="mt-20"></div>
-            </div>
+                    <div class="form-grid">
 
-            <!-- RIGHT: PRODUCT FORM -->
-            <div class="card">
-                <h2>Produktdetails</h2>
+                        <div class="form-field full">
+                            <label>Produktname</label>
+                            <input type="text" id="product-name" class="input-shopify">
+                        </div>
 
-                <div class="form-grid">
+                        <div class="form-field">
+                            <label>Preis (CHF)</label>
+                            <input type="number" id="product-price" class="input-shopify" step="0.01">
+                        </div>
 
-                    <div>
-                        <label>Name</label>
-                        <input type="text" id="product-name">
+                        <div class="form-field">
+                            <label>EAN</label>
+                            <input type="text" id="product-ean" class="input-shopify">
+                        </div>
+
+                        <div class="form-field">
+                            <label>SKU</label>
+                            <input type="text" id="product-sku" class="input-shopify">
+                        </div>
+
+                        <div class="form-field">
+                            <label>Bestand</label>
+                            <input type="number" id="product-stock" class="input-shopify">
+                        </div>
+
+                        <div class="form-field">
+                            <label>Vendor</label>
+                            <input type="text" id="product-vendor" class="input-shopify">
+                        </div>
+
+                        <div class="form-field">
+                            <label>Produkttyp</label>
+                            <input type="text" id="product-type" class="input-shopify">
+                        </div>
+
+                        <!-- DESCRIPTION -->
+                        <div class="form-field full">
+                            <label>Beschreibung</label>
+                            <div id="editor-container" class="editor-box"></div>
+                        </div>
+
                     </div>
-
-                    <div>
-                        <label>Preis (CHF)</label>
-                        <input type="number" id="product-price" step="0.01">
-                    </div>
-
-                    <div>
-                        <label>EAN</label>
-                        <input type="text" id="product-ean">
-                    </div>
-
-                    <div>
-                        <label>SKU</label>
-                        <input type="text" id="product-sku">
-                    </div>
-
-                    <div>
-                        <label>Bestand</label>
-                        <input type="number" id="product-stock">
-                    </div>
-
-                    <div>
-                        <label>Vendor</label>
-                        <input type="text" id="product-vendor">
-                    </div>
-
-                    <div>
-                        <label>Typ</label>
-                        <input type="text" id="product-type">
-                    </div>
-
-                    <!-- DESCRIPTION -->
-                    <div class="full">
-                        <label>Beschreibung</label>
-                        <div id="editor-container" class="editor-box"></div>
-                    </div>
-
-                    <!-- IMAGES -->
-                    <div class="full">
-                        <label>Bilder</label>
-                        <div id="image-dropzone" class="dropzone">Bilder hier ablegen oder klicken</div>
-                        <div id="image-preview" class="image-preview"></div>
-                    </div>
-
                 </div>
 
-                <div class="form-actions">
-                    <button class="primary" onclick="saveProduct()">Speichern</button>
-                    <button class="danger" onclick="clearProductForm()">Leeren</button>
+                <!-- MEDIA -->
+                <div class="card section-card">
+                    <h2 class="section-title">Medien</h2>
+                    <p class="section-subtitle">Ziehe Bilder hierher oder klicke zum Hochladen</p>
+
+                    <div id="image-dropzone" class="media-dropzone">
+                        <div class="media-dropzone-inner">
+                            <span class="media-icon">🖼️</span>
+                            <p>Bilder hinzufügen</p>
+                        </div>
+                    </div>
+
+                    <div id="image-preview" class="media-preview"></div>
                 </div>
 
-            </div>
+                <!-- LIVE PREVIEW -->
+                <div class="card section-card">
+                    <h2 class="section-title">Live‑Produktvorschau</h2>
+                    <p class="section-subtitle">So könnte dein Produkt im Shop aussehen</p>
 
-        </div>
+                    <div id="product-preview" class="product-preview">
 
-        <!-- LIVE PREVIEW -->
-        <div class="card mt-20">
-            <h2>Live‑Produktvorschau</h2>
+                        <div class="preview-images">
+                            <div id="preview-image-slider"></div>
+                        </div>
 
-            <div id="product-preview" class="product-preview">
+                        <div class="preview-info">
+                            <h3 id="preview-title">Produktname</h3>
+                            <div class="preview-price" id="preview-price">CHF 0.00</div>
 
-                <div class="preview-images">
-                    <div id="preview-image-slider"></div>
-                </div>
+                            <div class="preview-meta">
+                                <span id="preview-vendor">Vendor</span> • 
+                                <span id="preview-type">Typ</span>
+                            </div>
 
-                <div class="preview-info">
-                    <h3 id="preview-title">Produktname</h3>
-                    <div class="preview-price" id="preview-price">CHF 0.00</div>
+                            <div class="preview-sku">
+                                SKU: <span id="preview-sku">–</span>
+                            </div>
 
-                    <div class="preview-meta">
-                        <span id="preview-vendor">Vendor</span> • 
-                        <span id="preview-type">Typ</span>
-                    </div>
+                            <div class="preview-stock">
+                                Bestand: <span id="preview-stock">0</span>
+                            </div>
 
-                    <div class="preview-sku">
-                        SKU: <span id="preview-sku">–</span>
-                    </div>
+                            <div class="preview-description" id="preview-description">
+                                Beschreibung erscheint hier…
+                            </div>
+                        </div>
 
-                    <div class="preview-stock">
-                        Bestand: <span id="preview-stock">0</span>
-                    </div>
-
-                    <div class="preview-description" id="preview-description">
-                        Beschreibung erscheint hier…
                     </div>
                 </div>
 
             </div>
+
+            <!-- RIGHT: SIDEBAR (ACTIONS + PRODUCT LIST) -->
+            <div class="product-sidebar">
+
+                <div class="card sidebar-card">
+                    <h3>Aktionen</h3>
+                    <button class="primary full" onclick="saveProduct()">Produkt speichern</button>
+                    <button class="danger full mt-10" onclick="clearProductForm()">Zurücksetzen</button>
+                </div>
+
+                <div class="card sidebar-card">
+                    <h3>Produkte</h3>
+                    <button class="primary full mt-10" onclick="clearProductForm()">
+                        Neues Produkt erstellen
+                    </button>
+                    <div id="product-list" class="mt-20"></div>
+                </div>
+
+            </div>
+
         </div>
 
     </div>
