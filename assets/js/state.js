@@ -1,168 +1,133 @@
 /* =========================================================
-   GOR PRODUCT ADMIN – STATE MANAGEMENT (NEUE VERSION)
-   Produkte, Benutzer, Audit-Log, Utility-Funktionen
+   GOR – STATE MANAGER
+   Globale Verwaltung von Session, Settings, Produkten & Audit
    ========================================================= */
 
+const GOR_STATE = {
+    user: null,
+    settings: {
+        shopName: "Gaming of Republic",
+        supportEmail: "support@gamingofrepublic.com",
+        currency: "CHF",
+        language: "de"
+    },
+    products: [],
+    audit: []
+};
 
-/* =========================================================
-   PRODUKTE
-   ========================================================= */
+/* ---------------------------------------------------------
+   SESSION MANAGEMENT
+   --------------------------------------------------------- */
+function login(username, role = "admin") {
+    GOR_STATE.user = { username, role };
+    localStorage.setItem("gor_user", JSON.stringify(GOR_STATE.user));
+    logAudit("login_success", `User ${username} hat sich erfolgreich eingeloggt.`);
+    window.location.href = "dashboard.html";
+}
 
-function getProducts() {
-    try {
-        return JSON.parse(localStorage.getItem("gor_products") || "[]");
-    } catch (e) {
-        return [];
+function logout() {
+    logAudit("logout", `User ${GOR_STATE.user?.username || "?"} hat sich ausgeloggt.`);
+    GOR_STATE.user = null;
+    localStorage.removeItem("gor_user");
+    window.location.href = "index.html";
+}
+
+function requireRole(role) {
+    const user = GOR_STATE.user || JSON.parse(localStorage.getItem("gor_user"));
+    if (!user || user.role !== role) {
+        alert("Du hast keine Berechtigung für diesen Bereich.");
+        window.location.href = "index.html";
     }
 }
 
-function saveProducts(products) {
-    if (!Array.isArray(products)) return;
-    localStorage.setItem("gor_products", JSON.stringify(products));
-}
-
-/**
- * Produkt nach ID finden
- */
-function getProductById(id) {
-    const products = getProducts();
-    return products.find(p => String(p.id) === String(id));
-}
-
-/**
- * Produkt speichern (neu oder update)
- */
-function upsertProduct(product) {
-    const products = getProducts();
-
-    if (!product.id) {
-        // Neue ID vergeben (einfacher Auto-Increment)
-        const maxId = products.reduce((max, p) => Math.max(max, Number(p.id) || 0), 0);
-        product.id = maxId + 1;
-        products.push(product);
-    } else {
-        const index = products.findIndex(p => String(p.id) === String(product.id));
-        if (index !== -1) {
-            products[index] = product;
-        } else {
-            products.push(product);
-        }
+/* ---------------------------------------------------------
+   SETTINGS MANAGEMENT
+   --------------------------------------------------------- */
+function loadSettings() {
+    const saved = localStorage.getItem("gor_settings");
+    if (saved) {
+        GOR_STATE.settings = JSON.parse(saved);
     }
-
-    saveProducts(products);
-
-    if (typeof addAuditEntry === "function") {
-        addAuditEntry("product_save", `Produkt #${product.id} wurde gespeichert`);
-    }
+    document.getElementById("setting-shop-name").value = GOR_STATE.settings.shopName;
+    document.getElementById("setting-support-email").value = GOR_STATE.settings.supportEmail;
+    document.getElementById("setting-currency").value = GOR_STATE.settings.currency;
+    document.getElementById("setting-language").value = GOR_STATE.settings.language;
 }
 
-/**
- * Produkt löschen
- */
-function deleteProduct(id) {
-    let products = getProducts();
-    const before = products.length;
-    products = products.filter(p => String(p.id) !== String(id));
-    saveProducts(products);
+function saveSettings() {
+    GOR_STATE.settings.shopName = document.getElementById("setting-shop-name").value;
+    GOR_STATE.settings.supportEmail = document.getElementById("setting-support-email").value;
+    GOR_STATE.settings.currency = document.getElementById("setting-currency").value;
+    GOR_STATE.settings.language = document.getElementById("setting-language").value;
 
-    if (products.length !== before && typeof addAuditEntry === "function") {
-        addAuditEntry("product_delete", `Produkt #${id} wurde gelöscht`);
+    localStorage.setItem("gor_settings", JSON.stringify(GOR_STATE.settings));
+    logAudit("settings_save", "Systemeinstellungen gespeichert.");
+    alert("Einstellungen erfolgreich gespeichert!");
+}
+
+/* ---------------------------------------------------------
+   PRODUCT MANAGEMENT
+   --------------------------------------------------------- */
+function addProduct(product) {
+    GOR_STATE.products.push(product);
+    localStorage.setItem("gor_products", JSON.stringify(GOR_STATE.products));
+    logAudit("product_save", `Produkt gespeichert: ${product.name}`);
+}
+
+function loadProductsFromStorage() {
+    const saved = localStorage.getItem("gor_products");
+    if (saved) {
+        GOR_STATE.products = JSON.parse(saved);
     }
 }
 
-
-/* =========================================================
-   BENUTZER (ERGÄNZUNG ZU auth.js)
-   ========================================================= */
-
-function saveUsers(users) {
-    if (!Array.isArray(users)) return;
-    localStorage.setItem("gor_users", JSON.stringify(users));
-}
-
-function addUser(user) {
-    const users = getUsers(); // aus auth.js
-    users.push(user);
-    saveUsers(users);
-
-    if (typeof addAuditEntry === "function") {
-        addAuditEntry("user_add", `Benutzer ${user.username} wurde angelegt`);
-    }
-}
-
-function deleteUser(username) {
-    let users = getUsers();
-    const before = users.length;
-    users = users.filter(u => u.username !== username);
-    saveUsers(users);
-
-    if (users.length !== before && typeof addAuditEntry === "function") {
-        addAuditEntry("user_delete", `Benutzer ${username} wurde gelöscht`);
-    }
-}
-
-
-/* =========================================================
+/* ---------------------------------------------------------
    AUDIT LOG
-   ========================================================= */
-
-function getAuditLog() {
-    try {
-        return JSON.parse(localStorage.getItem("gor_audit") || "[]");
-    } catch (e) {
-        return [];
-    }
-}
-
-function saveAuditLog(entries) {
-    if (!Array.isArray(entries)) return;
-    localStorage.setItem("gor_audit", JSON.stringify(entries));
-}
-
-/**
- * Audit-Eintrag hinzufügen
- * type: z.B. "login", "logout", "product_save", "user_add"
- * message: Beschreibung
- */
-function addAuditEntry(type, message) {
-    const entries = getAuditLog();
-    const session = getSession && typeof getSession === "function" ? getSession() : null;
-
-    entries.unshift({
+   --------------------------------------------------------- */
+function logAudit(type, details) {
+    const entry = {
         timestamp: new Date().toISOString(),
-        type: type,
-        message: message,
-        user: session && session.user ? session.user : "unbekannt"
+        user: GOR_STATE.user?.username || "System",
+        type,
+        details
+    };
+    GOR_STATE.audit.push(entry);
+    localStorage.setItem("gor_audit", JSON.stringify(GOR_STATE.audit));
+    console.log(`[AUDIT] ${type}: ${details}`);
+}
+
+function loadAuditLog() {
+    const saved = localStorage.getItem("gor_audit");
+    if (saved) {
+        GOR_STATE.audit = JSON.parse(saved);
+    }
+    const table = document.getElementById("audit-table");
+    if (!table) return;
+
+    table.innerHTML = "";
+    GOR_STATE.audit.forEach(entry => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${new Date(entry.timestamp).toLocaleString()}</td>
+            <td>${entry.user}</td>
+            <td>${entry.type}</td>
+            <td>${entry.details}</td>
+        `;
+        table.appendChild(row);
     });
-
-    saveAuditLog(entries);
 }
 
+/* ---------------------------------------------------------
+   INIT
+   --------------------------------------------------------- */
+document.addEventListener("DOMContentLoaded", () => {
+    // Lade gespeicherte Daten
+    loadProductsFromStorage();
+    loadSettings();
 
-/* =========================================================
-   GENERISCHE HILFSFUNKTIONEN
-   ========================================================= */
-
-/**
- * Formatiert ein ISO-Datum schön lesbar
- */
-function formatDateTime(isoString) {
-    if (!isoString) return "";
-    const d = new Date(isoString);
-    if (isNaN(d.getTime())) return isoString;
-
-    const day = String(d.getDate()).padStart(2, "0");
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const year = d.getFullYear();
-    const hours = String(d.getHours()).padStart(2, "0");
-    const minutes = String(d.getMinutes()).padStart(2, "0");
-
-    return `${day}.${month}.${year} ${hours}:${minutes}`;
-}
-
-/**
- * Einfache UUID für interne IDs
- */
-function generateId() {
-    return "gor_" + Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
-}
+    // Lade User aus Storage
+    const savedUser = localStorage.getItem("gor_user");
+    if (savedUser) {
+        GOR_STATE.user = JSON.parse(savedUser);
+    }
+});
