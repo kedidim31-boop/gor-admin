@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Produkteditor – Gaming of Republic</title>
 
+    <!-- GOR Styles -->
     <link rel="stylesheet" href="assets/css/theme.css">
     <link rel="stylesheet" href="assets/css/layout.css">
     <link rel="stylesheet" href="assets/css/components.css">
@@ -12,7 +13,7 @@
     <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
 </head>
 
-<body data-page="product-edit" onload="initEditor(); loadProductList();">
+<body data-page="product-edit" onload="initEditor(); loadProductList(); updatePreview();">
 
     <!-- SIDEBAR -->
     <div class="sidebar">
@@ -40,7 +41,7 @@
             </div>
         </div>
 
-        <!-- EDITOR GRID -->
+        <!-- GRID -->
         <div class="editor-grid">
 
             <!-- LEFT: PRODUCT LIST -->
@@ -117,6 +118,41 @@
 
             </div>
 
+        </div>
+
+        <!-- LIVE PREVIEW -->
+        <div class="card mt-20">
+            <h2>Live‑Produktvorschau</h2>
+
+            <div id="product-preview" class="product-preview">
+
+                <div class="preview-images">
+                    <div id="preview-image-slider"></div>
+                </div>
+
+                <div class="preview-info">
+                    <h3 id="preview-title">Produktname</h3>
+                    <div class="preview-price" id="preview-price">CHF 0.00</div>
+
+                    <div class="preview-meta">
+                        <span id="preview-vendor">Vendor</span> • 
+                        <span id="preview-type">Typ</span>
+                    </div>
+
+                    <div class="preview-sku">
+                        SKU: <span id="preview-sku">–</span>
+                    </div>
+
+                    <div class="preview-stock">
+                        Bestand: <span id="preview-stock">0</span>
+                    </div>
+
+                    <div class="preview-description" id="preview-description">
+                        Beschreibung erscheint hier…
+                    </div>
+                </div>
+
+            </div>
         </div>
 
     </div>
