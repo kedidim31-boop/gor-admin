@@ -1,128 +1,142 @@
 /* =========================================================
-   GOR PRODUCT ADMIN – ANIMATIONS
-   Neon Glow, HUD Effects, Transitions, Loaders
+   GOR – ANIMATIONS
+   Saubere, performante UI-Animationen für das gesamte System
    ========================================================= */
+
 
 /* ---------------------------------------------------------
    FADE IN
    --------------------------------------------------------- */
 .fade-in {
-    animation: fadeIn 0.4s ease-out;
+    animation: fadeIn 0.35s ease-out forwards;
+    opacity: 0;
 }
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
+    to   { opacity: 1; transform: translateY(0); }
 }
+
 
 /* ---------------------------------------------------------
-   SLIDE UP
+   SLIDE IN (für Modals, Dropdowns, Panels)
    --------------------------------------------------------- */
-.slide-up {
-    animation: slideUp 0.5s ease-out;
+.slide-in {
+    animation: slideIn 0.35s ease-out forwards;
+    opacity: 0;
 }
 
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
+
 
 /* ---------------------------------------------------------
-   SLIDE LEFT
+   GLOW PULSE (für Icons, Buttons, KPI Cards)
    --------------------------------------------------------- */
-.slide-left {
-    animation: slideLeft 0.5s ease-out;
+.glow-pulse {
+    animation: glowPulse 2.4s ease-in-out infinite;
 }
 
-@keyframes slideLeft {
-    from { opacity: 0; transform: translateX(20px); }
-    to { opacity: 1; transform: translateX(0); }
+@keyframes glowPulse {
+    0%   { box-shadow: 0 0 6px rgba(255,211,0,0.25); }
+    50%  { box-shadow: 0 0 14px rgba(255,211,0,0.55); }
+    100% { box-shadow: 0 0 6px rgba(255,211,0,0.25); }
 }
+
 
 /* ---------------------------------------------------------
-   NEON PULSE (für Buttons, Logos, Highlights)
+   HOVER FLOAT (für Cards, Module, Produktreihen)
    --------------------------------------------------------- */
-.neon-pulse {
-    animation: neonPulse 1.8s infinite ease-in-out;
+.hover-float:hover {
+    transform: translateY(-4px);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-@keyframes neonPulse {
-    0%   { filter: drop-shadow(0 0 4px var(--color-primary-glow)); }
-    50%  { filter: drop-shadow(0 0 14px var(--color-primary-glow)); }
-    100% { filter: drop-shadow(0 0 4px var(--color-primary-glow)); }
-}
 
 /* ---------------------------------------------------------
-   GLOW BREATHING (sanfter Glow)
+   BUTTON PRESS
    --------------------------------------------------------- */
-.glow-breath {
-    animation: glowBreath 2.5s infinite ease-in-out;
+button:active {
+    transform: scale(0.96);
 }
 
-@keyframes glowBreath {
-    0%   { text-shadow: 0 0 6px var(--color-primary-glow); }
-    50%  { text-shadow: 0 0 14px var(--color-primary-glow); }
-    100% { text-shadow: 0 0 6px var(--color-primary-glow); }
-}
 
 /* ---------------------------------------------------------
-   ATTENTION PING (für Warnungen)
+   SCANLINE EFFECT (für Hintergrund)
    --------------------------------------------------------- */
-.ping {
-    position: relative;
+@keyframes scanlineMove {
+    0%   { background-position: 0 0; }
+    100% { background-position: 0 4px; }
 }
 
-.ping::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    border: 2px solid var(--color-warning);
-    animation: pingAnim 1.4s infinite ease-out;
+.scanline-animation {
+    animation: scanlineMove 0.12s linear infinite;
 }
 
-@keyframes pingAnim {
-    0%   { transform: scale(0.6); opacity: 0.8; }
-    100% { transform: scale(1.8); opacity: 0; }
+
+/* ---------------------------------------------------------
+   NOISE FLICKER (für Cyberpunk Noise Layer)
+   --------------------------------------------------------- */
+@keyframes noiseFlicker {
+    0%   { opacity: 0.04; }
+    50%  { opacity: 0.10; }
+    100% { opacity: 0.04; }
 }
+
+.noise-animation {
+    animation: noiseFlicker 0.25s infinite;
+}
+
+
+/* ---------------------------------------------------------
+   SIDEBAR LINK HOVER
+   --------------------------------------------------------- */
+.nav-item {
+    transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.nav-item:hover {
+    transform: translateX(6px);
+}
+
+
+/* ---------------------------------------------------------
+   DROPDOWN FADE
+   --------------------------------------------------------- */
+.dropdown-open {
+    animation: dropdownFade 0.25s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes dropdownFade {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ---------------------------------------------------------
+   MODAL BACKDROP FADE
+   --------------------------------------------------------- */
+@keyframes backdropFade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.modal-backdrop {
+    animation: backdropFade 0.25s ease-out forwards;
+}
+
 
 /* ---------------------------------------------------------
    LOADING SPINNER
    --------------------------------------------------------- */
-.spinner {
-    width: 28px;
-    height: 28px;
-    border: 3px solid rgba(255,255,255,0.15);
-    border-top-color: var(--color-primary);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-}
-
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
 }
 
-/* ---------------------------------------------------------
-   HUD SCANLINE EFFECT (leichtes Flimmern)
-   --------------------------------------------------------- */
-.hud-scan {
-    animation: scanline 4s infinite linear;
-}
-
-@keyframes scanline {
-    0%   { opacity: 1; }
-    50%  { opacity: 0.92; }
-    100% { opacity: 1; }
-}
-
-/* ---------------------------------------------------------
-   BLINK (für kritische Warnungen)
-   --------------------------------------------------------- */
-.blink {
-    animation: blinkAnim 0.8s infinite;
-}
-
-@keyframes blinkAnim {
-    0%, 100% { opacity: 1; }
-    50%      { opacity: 0.2; }
+.spinner {
+    animation: spin 0.8s linear infinite;
 }
