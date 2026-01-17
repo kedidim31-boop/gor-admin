@@ -1,39 +1,38 @@
 /* =========================================================
-   RICH TEXT EDITOR (QUILL) – GOR NEON CYBER EDITION
+   RICH TEXT EDITOR (QUILL) – GOR NEON CYBER EDITION (FINAL)
    ========================================================= */
 
+/* Editor Container */
 .editor-box {
     background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 8px;
-    min-height: 220px;
-    padding: 0;
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 0 12px rgba(255,211,0,0.15);
+    min-height: 220px;
+    box-shadow: 0 0 14px rgba(255,211,0,0.18);
 }
 
 /* Toolbar */
 .ql-toolbar {
     background: rgba(0,0,0,0.45);
-    border: 1px solid rgba(255,255,255,0.12) !important;
-    border-bottom: none !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255,255,255,0.12) !important;
     backdrop-filter: blur(8px);
     padding: 10px !important;
-    border-radius: 8px 8px 0 0;
-    box-shadow: 0 0 10px rgba(255,211,0,0.15);
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 0 12px rgba(255,211,0,0.15);
 }
 
-/* Editor Container */
+/* Editor Background */
 .ql-container {
-    border: 1px solid rgba(255,255,255,0.12) !important;
-    border-top: none !important;
     background: rgba(255,255,255,0.02);
-    border-radius: 0 0 8px 8px;
+    border: none !important;
+    border-radius: 0 0 10px 10px;
 }
 
 /* Editor Text */
 .ql-editor {
-    color: #f0f0f0;
+    color: #ffffff; /* Text weiß */
     font-size: 15px;
     line-height: 1.6;
     padding: 16px !important;
@@ -41,11 +40,12 @@
     min-height: 200px;
 }
 
-/* Placeholder sichtbar & elegant */
+/* Placeholder – jetzt WEISS */
 .ql-editor.ql-blank::before {
-    color: rgba(255,255,255,0.35);
+    color: rgba(255,255,255,0.55) !important;
     font-style: italic;
     opacity: 1 !important;
+    font-size: 15px;
 }
 
 /* Links */
@@ -54,7 +54,7 @@
     text-shadow: 0 0 6px rgba(255,211,0,0.4);
 }
 
-/* Images inside editor */
+/* Images */
 .ql-editor img {
     max-width: 100%;
     border-radius: 6px;
@@ -77,12 +77,12 @@
     padding-left: 22px;
 }
 
-/* Code blocks */
+/* Code Blocks */
 .ql-editor pre {
-    background: rgba(0,0,0,0.4);
+    background: rgba(0,0,0,0.45);
     padding: 10px;
     border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
     color: #ffd300;
     font-family: monospace;
     box-shadow: 0 0 10px rgba(255,211,0,0.15);
