@@ -148,7 +148,7 @@ html, body {
 
 .login-card {
     width: 100%;
-    max-width: 360px;
+    max-width: 140px;
     padding: 30px;
     text-align: center;
     background: var(--color-bg-light);
@@ -209,3 +209,4 @@ html, body {
         transform: translateX(0);
     }
 }
+
