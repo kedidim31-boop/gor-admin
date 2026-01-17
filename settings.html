@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="assets/css/theme.css">
     <link rel="stylesheet" href="assets/css/layout.css">
     <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/forms.css">
     <link rel="stylesheet" href="assets/css/animations.css">
 </head>
 
-<body data-page="settings" onload="requireRole('admin'); initPage(); loadUserList();">
+<body data-page="settings" onload="requireRole('admin'); initPage(); loadSettings();">
 
     <!-- SIDEBAR -->
     <div class="sidebar">
@@ -21,137 +22,42 @@
         <a class="nav-item" onclick="logout()"><span class="sidebar-icon">🚪</span> Abmelden</a>
     </div>
 
-    <!-- MAIN CONTENT -->
+    <!-- MAIN -->
     <div class="dashboard-content fade-in">
 
-        <!-- HEADER -->
         <div class="page-header">
-            <h1 class="header-title">Systemeinstellungen</h1>
+            <h1>Deine Einstellungen</h1>
 
             <div class="header-user" onclick="toggleUserDropdown()">
                 <div class="header-avatar">A</div>
-
                 <div class="header-dropdown" id="user-dropdown">
-                    <a href="settings.html">Profil & Einstellungen</a>
+                    <a href="settings.html">Dein Profil</a>
                     <a href="audit-log.html">Audit Log</a>
                     <a onclick="logout()">Abmelden</a>
                 </div>
             </div>
         </div>
 
-        <!-- USER MANAGEMENT -->
         <div class="card">
-            <h2>Benutzerverwaltung</h2>
+            <h2>System konfigurieren</h2>
 
             <div class="form-grid">
 
                 <div>
-                    <label>Benutzername</label>
-                    <input type="text" id="new-username">
+                    <label>Shop‑Name</label>
+                    <input type="text" id="setting-shop-name">
                 </div>
 
                 <div>
-                    <label>Passwort</label>
-                    <input type="password" id="new-password">
+                    <label>Support‑E‑Mail</label>
+                    <input type="email" id="setting-support-email">
                 </div>
 
                 <div>
-                    <label>Rolle</label>
-                    <select id="new-role">
-                        <option value="admin">Administrator</option>
-                        <option value="staff">Mitarbeiter</option>
-                    </select>
+                    <label>Standardwährung</label>
+                    <input type="text" id="setting-currency" placeholder="z. B. CHF">
                 </div>
 
                 <div>
-                    <label>&nbsp;</label>
-                    <button class="primary full" onclick="createUser()">Benutzer anlegen</button>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- USER LIST -->
-        <div class="card mt-20">
-            <h2>Bestehende Benutzer</h2>
-
-            <div class="table-wrapper">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Benutzername</th>
-                            <th>Rolle</th>
-                            <th>Aktionen</th>
-                        </tr>
-                    </thead>
-                    <tbody id="user-table">
-                        <!-- Dynamisch -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-    </div>
-
-    <script src="assets/js/state.js"></script>
-    <script src="assets/js/auth.js"></script>
-
-    <script>
-        /* ============================================
-           BENUTZER LADEN
-        ============================================ */
-        function loadUserList() {
-            const users = getUsers();
-            const table = document.getElementById("user-table");
-            table.innerHTML = "";
-
-            users.forEach(user => {
-                const row = document.createElement("tr");
-
-                row.innerHTML = `
-                    <td>${user.username}</td>
-                    <td>${user.role}</td>
-                    <td>
-                        <button class="danger small" onclick="deleteUserAction('${user.username}')">
-                            Löschen
-                        </button>
-                    </td>
-                `;
-
-                table.appendChild(row);
-            });
-        }
-
-        /* ============================================
-           BENUTZER ANLEGEN
-        ============================================ */
-        function createUser() {
-            const username = document.getElementById("new-username").value.trim();
-            const password = document.getElementById("new-password").value.trim();
-            const role = document.getElementById("new-role").value;
-
-            if (!username || !password) {
-                alert("Bitte Benutzername und Passwort eingeben.");
-                return;
-            }
-
-            addUser({ username, password, role });
-            loadUserList();
-
-            document.getElementById("new-username").value = "";
-            document.getElementById("new-password").value = "";
-        }
-
-        /* ============================================
-           BENUTZER LÖSCHEN
-        ============================================ */
-        function deleteUserAction(username) {
-            if (!confirm(`Benutzer "${username}" wirklich löschen?`)) return;
-
-            deleteUser(username);
-            loadUserList();
-        }
-    </script>
-
-</body>
-</html>
+                    <label>Sprache</label>
+                    <input type="text"
