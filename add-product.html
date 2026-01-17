@@ -3,159 +3,169 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gaming of Republic – Neues Produkt</title>
+  <title>Neues Produkt – Gaming of Republic</title>
   <link rel="stylesheet" href="assets/css/layout.css">
   <style>
-    .form-group { margin-bottom: 1rem; }
+    body {
+      background-color: #0a0f1c;
+      color: #fff;
+      font-family: sans-serif;
+    }
+    h1 {
+      color: #ffd700;
+      margin-bottom: 2rem;
+    }
+    form {
+      max-width: 800px;
+      margin: auto;
+      padding: 2rem;
+      background-color: #111827;
+      border-radius: 8px;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: bold;
+      color: #ffd700;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.6rem;
+      margin-bottom: 1.2rem;
+      border: 2px solid #ffd700;
+      background-color: #0a0f1c;
+      color: #fff;
+      border-radius: 4px;
+    }
     .dropzone {
-      border: 2px dashed #888;
+      border: 2px dashed #ffd700;
       padding: 1rem;
       text-align: center;
-      background: #222;
-      color: #ccc;
+      color: #ffd700;
+      background-color: #0a0f1c;
+      margin-bottom: 1.5rem;
       cursor: pointer;
     }
-    .hidden { display: none; }
+    .btn-save {
+      background-color: #ffd700;
+      color: #000;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body>
-  <nav class="navbar">
-    <div class="logo">🕹️ Gaming of Republic</div>
-    <ul>
-      <li><a href="index.html">Dashboard</a></li>
-      <li><a href="products.html">Produkte</a></li>
-      <li id="userNav" style="display:none;"><a href="users.html">Benutzerverwaltung</a></li>
-      <li><button id="logoutBtn" class="btn delete">🚪 Abmelden</button></li>
-    </ul>
-  </nav>
-
   <main class="content">
     <h1>➕ Neues Produkt hinzufügen</h1>
 
     <form id="productForm">
-      <div class="form-group">
-        <label>Status</label>
-        <select id="status">
-          <option value="Aktiv">Aktiv</option>
-          <option value="Entwurf">Entwurf</option>
-        </select>
-      </div>
+      <label for="status">Status</label>
+      <select id="status">
+        <option value="Aktiv">Aktiv</option>
+        <option value="Entwurf">Entwurf</option>
+      </select>
 
-      <div class="form-group">
-        <label>Titel</label>
-        <input type="text" id="title" required>
-      </div>
+      <label for="title">Titel</label>
+      <input type="text" id="title" required>
 
-      <div class="form-group">
-        <label>Beschreibung</label>
-        <textarea id="description" rows="3" required></textarea>
-      </div>
+      <label for="description">Beschreibung</label>
+      <textarea id="description" rows="3" required></textarea>
 
-      <div class="form-group">
-        <label>Anbieter</label>
-        <input type="text" id="provider">
-      </div>
+      <label for="provider">Anbieter</label>
+      <input type="text" id="provider">
 
-      <div class="form-group">
-        <label>Produkttyp</label>
-        <input type="text" id="type">
-      </div>
+      <label for="type">Produkttyp</label>
+      <input type="text" id="type">
 
-      <div class="form-group">
-        <label>Kollektionen</label>
-        <input type="text" id="collections">
-      </div>
+      <label for="collections">Kollektionen</label>
+      <input type="text" id="collections">
 
-      <div class="form-group">
-        <label>Tags</label>
-        <input type="text" id="tags">
-      </div>
+      <label for="tags">Tags</label>
+      <input type="text" id="tags">
 
-      <div class="form-group">
-        <label>Preis (CHF)</label>
-        <input type="number" id="price" step="0.01" required>
-      </div>
+      <label for="price">Preis (CHF)</label>
+      <input type="number" id="price" step="0.01" required>
 
-      <div class="form-group">
-        <label>SKU</label>
-        <input type="text" id="sku">
-      </div>
+      <label for="sku">SKU</label>
+      <input type="text" id="sku">
 
-      <div class="form-group">
-        <label>EAN</label>
-        <input type="text" id="ean">
-      </div>
+      <label for="ean">EAN</label>
+      <input type="text" id="ean">
 
-      <div class="form-group">
-        <label>Lagerbestand</label>
-        <input type="number" id="stock" required>
-      </div>
+      <label for="stock">Lagerbestand</label>
+      <input type="number" id="stock" required>
 
-      <div class="form-group">
-        <label>Bilder</label>
-        <div class="dropzone" id="dropzone">📁 Bilder hier ablegen oder klicken</div>
-      </div>
+      <label>Bilder</label>
+      <div class="dropzone" id="dropzone">📁 Bilder hier ablegen oder klicken</div>
 
-      <button type="submit" class="btn">✅ Produkt speichern</button>
+      <button type="submit" class="btn-save">✅ Produkt speichern</button>
     </form>
   </main>
+<script>
+  // Zugriffsschutz
+  const user = localStorage.getItem("loggedInUser");
+  const role = localStorage.getItem("userRole");
 
-  <script>
-    const user = localStorage.getItem("loggedInUser");
-    const role = localStorage.getItem("userRole");
+  if (!user) window.location.href = "login.html";
 
-    if (!user) window.location.href = "login.html";
+  // Rollenlogik
+  if (role === "viewer") {
+    alert("Zugriff verweigert – Nur Editor/Admin dürfen Produkte hinzufügen.");
+    window.location.href = "index.html";
+  }
 
-    if (role === "viewer") {
-      alert("Zugriff verweigert – Nur Editor/Admin dürfen Produkte hinzufügen.");
-      window.location.href = "index.html";
-    }
+  if (role === "admin") {
+    document.getElementById("userNav").style.display = "inline-block";
+  }
 
-    if (role === "admin") {
-      document.getElementById("userNav").style.display = "inline-block";
-    }
+  if (role === "editor") {
+    document.getElementById("status").disabled = true;
+    document.getElementById("collections").disabled = true;
+  }
 
-    if (role === "editor") {
-      document.getElementById("status").disabled = true;
-      document.getElementById("collections").disabled = true;
-    }
+  // Produkt speichern
+  document.getElementById("productForm").addEventListener("submit", function(e) {
+    e.preventDefault();
 
-    // Produkt speichern
-    document.getElementById("productForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const product = {
-        status: document.getElementById("status").value,
-        title: document.getElementById("title").value,
-        description: document.getElementById("description").value,
-        provider: document.getElementById("provider").value,
-        type: document.getElementById("type").value,
-        collections: document.getElementById("collections").value,
-        tags: document.getElementById("tags").value,
-        price: document.getElementById("price").value,
-        sku: document.getElementById("sku").value,
-        ean: document.getElementById("ean").value,
-        stock: document.getElementById("stock").value
-      };
+    const product = {
+      status: document.getElementById("status").value,
+      title: document.getElementById("title").value,
+      description: document.getElementById("description").value,
+      provider: document.getElementById("provider").value,
+      type: document.getElementById("type").value,
+      collections: document.getElementById("collections").value,
+      tags: document.getElementById("tags").value,
+      price: document.getElementById("price").value,
+      sku: document.getElementById("sku").value,
+      ean: document.getElementById("ean").value,
+      stock: document.getElementById("stock").value,
+      image: "📁" // Platzhalter für späteren Upload
+    };
 
-      const productList = JSON.parse(localStorage.getItem("productList")) || [];
-      productList.push(product);
-      localStorage.setItem("productList", JSON.stringify(productList));
-      alert("✅ Produkt gespeichert!");
-      window.location.href = "products.html";
-    });
+    const productList = JSON.parse(localStorage.getItem("productList")) || [];
+    productList.push(product);
+    localStorage.setItem("productList", JSON.stringify(productList));
 
-    // Logout
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      localStorage.removeItem("loggedInUser");
-      localStorage.removeItem("userRole");
-      alert("Du wurdest abgemeldet.");
-      window.location.href = "login.html";
-    });
+    alert("✅ Produkt gespeichert!");
+    window.location.href = "products.html";
+  });
 
-    // Dropzone (Demo)
-    document.getElementById("dropzone").addEventListener("click", () => {
-      alert("Bild-Upload ist noch nicht aktiv – hier kannst du später Drag & Drop integrieren.");
-    });
-  </script>
+  // Logout
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("userRole");
+    alert("Du wurdest abgemeldet.");
+    window.location.href = "login.html";
+  });
+
+  // Dropzone (Platzhalter)
+  document.getElementById("dropzone").addEventListener("click", () => {
+    alert("Bild-Upload ist vorbereitet – du kannst später Drag & Drop aktivieren.");
+  });
+</script>
 </body>
 </html>
