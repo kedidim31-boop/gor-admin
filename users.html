@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gaming of Republic – Benutzerverwaltung</title>
+  <link rel="stylesheet" href="assets/css/layout.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">🕹️ Gaming of Republic</div>
+    <ul>
+      <li><a href="index.html">Dashboard</a></li>
+      <li><a href="add-product.html">Neues Produkt</a></li>
+      <li><a href="products.html">Produkte</a></li>
+      <li><a href="users.html" class="active">Benutzerverwaltung</a></li>
+      <li><button id="logoutBtn" class="btn delete">🚪 Abmelden</button></li>
+    </ul>
+  </nav>
+
+  <main class="content">
+    <h1>Benutzerverwaltung</h1>
+
+    <!-- Formular für neuen Benutzer -->
+    <form id="userForm">
+      <label>Benutzername</label>
+      <input type="text" name="username" required>
+
+      <label>E-Mail</label>
+      <input type="email" name="email" required>
+
+      <label>Rolle</label>
+      <select name="role" required>
+        <option value="admin">Administrator</option>
+        <option value="editor">Editor</option>
+        <option value="viewer">Viewer</option>
+      </select>
+
+      <label>Status</label>
+      <select name="status" required>
+        <option value="Aktiv">Aktiv</option>
+        <option value="Entwurf">Entwurf</option>
+      </select>
+
+      <button type="submit" class="btn">➕ Benutzer hinzufügen</button>
+    </form>
+
+    <!-- Tabelle mit Benutzern -->
+    <table class="product-table" id="userTable">
+      <thead>
+        <tr>
+          <th>Benutzername</th>
+          <th>E-Mail</th>
+          <th>Rolle</th>
+          <th>Status</th>
+          <th>Aktionen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>admin</td>
+          <td>admin@gor.com</td>
+          <td>admin</td>
+          <td>Aktiv</td>
+          <td>
+            <button class="btn edit">✏️ Edit</button>
+            <button class="btn delete">🗑️ Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+
+  <!-- Edit-Formular als Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <h2>Benutzer bearbeiten</h2>
+      <form id="editForm">
+        <label>Benutzername</label>
+        <input type="text" name="editUsername" required>
+
+        <label>E-Mail</label>
+        <input type="email" name="editEmail" required>
+
+        <label>Rolle</label>
+        <select name="editRole" required>
+          <option value="admin">Administrator</option>
+          <option value="editor">Editor</option>
+          <option value="viewer">Viewer</option>
+        </select>
+
+        <label>Status</label>
+        <select name="editStatus" required>
+          <option value="Aktiv">Aktiv</option>
+          <option value="Entwurf">Entwurf</option>
+        </select>
+
+        <button type="submit" class="btn">💾 Änderungen speichern</button>
+        <button type="button" class="btn delete" id="closeModal">❌ Abbrechen</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Zugriffsschutz: nur eingeloggte Benutzer dürfen Benutzerverwaltung sehen
+    const user = localStorage.getItem("loggedInUser");
+    if(!user) {
+      window.location.href = "login.html";
+    }
+
+    // Logout-Funktion
+    const logoutBtn = document.getElementById("logoutBtn");
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("loggedInUser");
+      alert("Du wurdest abgemeldet.");
+      window.location.href = "login.html";
+    });
+
+    // Benutzer hinzufügen
+    document.getElementById('userForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = this.username.value;
+      const email = this.email.value;
+      const role = this.role.value;
+      const status = this.status.value;
+
+      const tbody = document.querySelector("#userTable tbody");
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${username}</td>
+        <td>${email}</td>
+        <td>${role}</td>
+        <td>${status}</td>
+        <td>
+          <button class="btn edit">✏️ Edit</button>
+          <button class="btn delete">🗑️ Delete</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+      this.reset();
+
+      bindActions(tr);
+    });
+
+    // Modal & Edit Logik
+    const modal = document.getElementById('editModal');
+    const closeModalBtn = document.getElementById('closeModal');
+    let currentRow = null;
+
+    function bindActions(row) {
+      row.querySelector('.edit').addEventListener('click', () => {
+        currentRow = row;
+        const cells = row.querySelectorAll('td');
+        document.querySelector('[name="editUsername"]').value = cells[0].innerText;
+        document.querySelector('[name="editEmail"]').value = cells[1].innerText;
+        document.querySelector('[name="editRole"]').value = cells[2].innerText;
+        document.querySelector('[name="editStatus"]').value = cells[3].innerText;
+        modal.style.display = 'flex';
+      });
+
+      row.querySelector('.delete').addEventListener('click', () => {
+        if(confirm("Willst du diesen Benutzer wirklich löschen?")) {
+          row.remove();
+        }
+      });
+    }
+
+    // Bestehende Zeilen binden
+    document.querySelectorAll('#userTable tbody tr').forEach(bindActions);
+
+    // Änderungen speichern
+    document.getElementById('editForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if(currentRow) {
+        const cells = currentRow.querySelectorAll('td');
+        cells[0].innerText = this.editUsername.value;
+        cells[1].innerText = this.editEmail.value;
+        cells[2].innerText = this.editRole.value;
+        cells[3].innerText = this.editStatus.value;
+      }
+      modal.style.display = 'none';
+    });
+
+    // Modal schließen
+    closeModalBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+  </script>
+</body>
+</html>

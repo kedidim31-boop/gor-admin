@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gaming of Republic – Neues Produkt</title>
+  <link rel="stylesheet" href="assets/css/layout.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">🕹️ Gaming of Republic</div>
+    <ul>
+      <li><a href="index.html">Dashboard</a></li>
+      <li><a href="add-product.html" class="active">Neues Produkt</a></li>
+      <li><a href="products.html">Produkte</a></li>
+      <li><a href="#">CSV Export</a></li>
+    </ul>
+  </nav>
+
+  <main class="content">
+    <h1>Neues Produkt hinzufügen</h1>
+    <form id="productForm">
+      <label>Titel</label>
+      <input type="text" name="title" required>
+
+      <label>Beschreibung</label>
+      <textarea name="description" required></textarea>
+
+      <label>Preis (CHF)</label>
+      <input type="number" name="price" step="0.01" required>
+
+      <label>Lagerbestand</label>
+      <input type="number" name="stock" required>
+
+      <label>Bilder</label>
+      <input type="file" name="images" multiple>
+
+      <button type="submit" class="btn">✅ Produkt speichern</button>
+    </form>
+  </main>
+
+  <script>
+    document.getElementById('productForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert("Produkt erfolgreich hinzugefügt!");
+      this.reset();
+    });
+  </script>
+</body>
+</html>
