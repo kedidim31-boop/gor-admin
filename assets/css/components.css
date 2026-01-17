@@ -1,5 +1,5 @@
 /* =========================================================
-   GLOBAL UI – BUTTONS, CARDS, INPUTS, SIDEBAR
+   GLOBAL UI – BUTTONS & CARDS
    ========================================================= */
 
 /* BUTTONS */
@@ -17,22 +17,14 @@ button {
     background: rgba(255,255,255,0.05);
 }
 
-button.primary {
-    background: var(--color-primary);
-    color: #000;
-    font-weight: 600;
-}
+button.primary { background: var(--color-primary); color: #000; font-weight: 600; }
+button.danger  { background: var(--color-danger);  color: #fff; }
+button.success { background: var(--color-success); color: #000; }
+button.info    { background: var(--color-info);    color: #000; }
+button.warning { background: var(--color-warning); color: #000; }
+button.full    { width: 100%; }
 
-button.danger {
-    background: var(--color-danger);
-    color: #fff;
-}
-
-button.full {
-    width: 100%;
-}
-
-/* Laser Hover */
+/* Laser Hover Effekt */
 button::before {
     content: "";
     position: absolute;
@@ -40,28 +32,13 @@ button::before {
     left: -120%;
     width: 80%;
     height: 100%;
-    background: linear-gradient(
-        120deg,
-        transparent 0%,
-        rgba(255,211,0,0.4) 50%,
-        transparent 100%
-    );
+    background: linear-gradient(120deg, transparent 0%, rgba(255,211,0,0.4) 50%, transparent 100%);
     transform: skewX(-20deg);
     transition: 0.4s;
 }
-
-button:hover::before {
-    left: 120%;
-}
-
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 12px var(--color-primary);
-}
-
-button:active {
-    transform: scale(0.96);
-}
+button:hover::before { left: 120%; }
+button:hover { transform: translateY(-2px); box-shadow: 0 0 12px var(--color-primary); }
+button:active { transform: scale(0.96); }
 
 /* CARDS */
 .card {
@@ -69,9 +46,14 @@ button:active {
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 0 18px rgba(255,211,0,0.15);
+    box-shadow: var(--shadow-soft);
     margin-bottom: 20px;
+    transition: 0.25s;
 }
+.card:hover { box-shadow: var(--shadow-glow); transform: translateY(-2px); }
+/* =========================================================
+   INPUTS & BADGES
+   ========================================================= */
 
 /* INPUTS */
 input, select, textarea {
@@ -84,7 +66,6 @@ input, select, textarea {
     font-size: 15px;
     transition: 0.2s;
 }
-
 input:focus, select:focus, textarea:focus {
     border-color: var(--color-primary);
     box-shadow: 0 0 12px rgba(255,211,0,0.35);
@@ -98,14 +79,15 @@ input:focus, select:focus, textarea:focus {
     font-size: 12px;
     font-weight: 600;
 }
+.badge-primary { background: rgba(255,211,0,0.15); color: var(--color-primary); text-shadow: var(--glow-primary); }
+.badge-danger  { background: rgba(255,59,59,0.15);  color: var(--color-danger);  text-shadow: var(--glow-danger); }
+.badge-success { background: rgba(0,255,157,0.15);  color: var(--color-success); text-shadow: var(--glow-success); }
+.badge-info    { background: rgba(0,207,255,0.15);  color: var(--color-info);    text-shadow: var(--glow-info); }
+.badge-warning { background: rgba(255,174,0,0.15);  color: var(--color-warning); text-shadow: var(--glow-warning); }
+/* =========================================================
+   SIDEBAR & NAVIGATION
+   ========================================================= */
 
-.badge-primary {
-    background: rgba(255,211,0,0.15);
-    color: var(--color-primary);
-    text-shadow: var(--glow-primary);
-}
-
-/* SIDEBAR */
 .sidebar {
     background: rgba(0,0,0,0.35);
     border-right: 1px solid rgba(255,255,255,0.08);
@@ -117,6 +99,7 @@ input:focus, select:focus, textarea:focus {
     padding-top: 20px;
 }
 
+/* Navigation Items */
 .nav-item {
     padding: 14px 18px;
     margin: 6px 0;
@@ -127,6 +110,7 @@ input:focus, select:focus, textarea:focus {
     align-items: center;
     gap: 10px;
     color: #fff;
+    cursor: pointer;
 }
 
 .nav-item:hover {
@@ -141,7 +125,6 @@ input:focus, select:focus, textarea:focus {
     font-weight: 700;
     box-shadow: 0 0 18px rgba(255,211,0,0.4);
 }
-
 /* =========================================================
    PRODUCT EDITOR – SHOPIFY STYLE × GOR CYBERPUNK
    ========================================================= */
@@ -170,6 +153,9 @@ input:focus, select:focus, textarea:focus {
 /* SECTION CARDS */
 .section-card {
     padding: 24px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
 }
 
 .section-title {
@@ -243,45 +229,6 @@ input:focus, select:focus, textarea:focus {
     padding: 4px 6px;
     border-radius: 6px;
 }
-
-/* PRODUCT LIST */
-.product-row {
-    padding: 12px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 8px;
-    transition: 0.2s;
-    cursor: pointer;
-}
-
-.product-row:hover {
-    background: rgba(255,255,255,0.08);
-    transform: translateX(4px);
-}
-
-/* LIVE PREVIEW */
-.product-preview {
-    display: flex;
-    gap: 20px;
-    padding: 20px;
-    background: rgba(255,255,255,0.03);
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.08);
-}
-
-.preview-images {
-    width: 280px;
-    min-height: 280px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-#preview-image-slider img {
-    width: 100%;
-    height: 280px;
-    object-fit: cover;
-}
-
 /* =========================================================
    RICH TEXT EDITOR (QUILL)
    ========================================================= */
@@ -339,9 +286,19 @@ input:focus, select:focus, textarea:focus {
     width: 12px;
     height: 12px;
     border-radius: 50%;
+    background: var(--color-primary);
+    box-shadow: var(--glow-primary);
 }
 
 .audit-row {
     background: rgba(255,255,255,0.03);
     transition: 0.25s;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.audit-row:hover {
+    background: rgba(255,211,0,0.08);
+    box-shadow: 0 0 12px rgba(255,211,0,0.25);
 }
