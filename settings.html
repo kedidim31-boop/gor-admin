@@ -22,9 +22,10 @@
         <a class="nav-item" onclick="logout()"><span class="sidebar-icon">🚪</span> Abmelden</a>
     </div>
 
-    <!-- MAIN -->
+    <!-- MAIN CONTENT -->
     <div class="dashboard-content fade-in">
 
+        <!-- HEADER -->
         <div class="page-header">
             <h1>Deine Einstellungen</h1>
 
@@ -38,19 +39,21 @@
             </div>
         </div>
 
+        <!-- SETTINGS CARD -->
         <div class="card">
             <h2>System konfigurieren</h2>
+            <p class="mb-20">Passe die grundlegenden Einstellungen deines Admin‑Systems an.</p>
 
             <div class="form-grid">
 
                 <div>
                     <label>Shop‑Name</label>
-                    <input type="text" id="setting-shop-name">
+                    <input type="text" id="setting-shop-name" placeholder="Wie heißt dein Shop?">
                 </div>
 
                 <div>
                     <label>Support‑E‑Mail</label>
-                    <input type="email" id="setting-support-email">
+                    <input type="email" id="setting-support-email" placeholder="support@deinshop.ch">
                 </div>
 
                 <div>
@@ -60,4 +63,20 @@
 
                 <div>
                     <label>Sprache</label>
-                    <input type="text"
+                    <input type="text" id="setting-language" placeholder="z. B. de">
+                </div>
+
+            </div>
+
+            <div class="form-actions mt-20">
+                <button class="primary" onclick="saveSettings()">Einstellungen speichern</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="assets/js/state.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/settings.js"></script>
+</body>
+</html>
