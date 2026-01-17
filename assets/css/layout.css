@@ -53,31 +53,6 @@ main.content {
   color: #ffd700;
 }
 
-/* ===== Forms ===== */
-form {
-  background-color: #111827;
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin-bottom: 2rem;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.3rem;
-  font-weight: bold;
-  color: #ffd700;
-}
-
-input, select, textarea {
-  width: 100%;
-  padding: 0.6rem;
-  margin-bottom: 1rem;
-  border: 2px solid #ffd700;
-  background-color: #191833;
-  color: #fff;
-  border-radius: 4px;
-}
-
 /* ===== Buttons ===== */
 .btn {
   background-color: #ffd700;
@@ -93,23 +68,6 @@ input, select, textarea {
 .btn.delete {
   background-color: #e63946;
   color: #fff;
-}
-
-/* ===== Dropzone & Preview ===== */
-.dropzone {
-  border: 2px dashed #ffd700;
-  padding: 1rem;
-  text-align: center;
-  color: #ffd700;
-  background-color: #191833;
-  margin-bottom: 1rem;
-  cursor: pointer;
-}
-
-.preview img {
-  max-width: 150px;
-  border: 2px solid #ffd700;
-  border-radius: 4px;
 }
 
 /* ===== Tables ===== */
@@ -136,4 +94,35 @@ th {
   padding: 1.5rem;
   border-radius: 8px;
   margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* ===== Login Page ===== */
+.login-card h1 {
+  color: #ffd700;
+  margin-bottom: 1.5rem;
+}
+
+.login-card label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: bold;
+  color: #ffd700;
+  text-align: left;
+}
+
+.login-card input, .login-card select {
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+  border: 2px solid #ffd700;
+  background-color: #191833;
+  color: #fff;
+  border-radius: 4px;
+}
+
+.login-card .btn {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
 }
