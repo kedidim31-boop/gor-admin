@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="assets/css/layout.css">
   <style>
     body {
-      background-color: #191833; /* ✅ Hintergrund identisch mit products.html */
+      background-color: #191833;
       color: #fff;
       font-family: sans-serif;
     }
@@ -129,13 +129,11 @@
   </main>
 
 <script>
-  // Zugriffsschutz
   const user = localStorage.getItem("loggedInUser");
   const role = localStorage.getItem("userRole");
 
   if (!user) window.location.href = "login.html";
 
-  // Rollenlogik
   if (role === "viewer") {
     alert("Zugriff verweigert – Nur Editor/Admin dürfen Produkte hinzufügen.");
     window.location.href = "index.html";
@@ -152,7 +150,6 @@
 
   let base64Image = "";
 
-  // Dropzone Klick → Datei auswählen
   const dropzone = document.getElementById("dropzone");
   const imageInput = document.getElementById("imageInput");
   const preview = document.getElementById("preview");
@@ -171,7 +168,6 @@
     reader.readAsDataURL(file);
   });
 
-  // Produkt speichern
   document.getElementById("productForm").addEventListener("submit", function(e) {
     e.preventDefault();
 
@@ -198,7 +194,6 @@
     window.location.href = "products.html";
   });
 
-  // Logout
   document.getElementById("logoutBtn").addEventListener("click", () => {
     localStorage.removeItem("loggedInUser");
     localStorage.removeItem("userRole");
