@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Produkteditor</title>
+
+    <link rel="stylesheet" href="assets/css/theme.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="stylesheet" href="assets/css/forms.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+</head>
+
+<body data-page="product-edit" onload="requireLogin(); initPage(); renderProductList();">
+
+    <div class="page-container fade-in">
+
+        <div class="page-header">
+            <h1>Produkteditor</h1>
+
+            <div class="flex gap-10">
+                <button onclick="window.location.href='dashboard.html'">Dashboard</button>
+                <button class="danger" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- ============================
+             PRODUKT DATEN
+        ============================= -->
+        <div class="card">
+            <h2>Produktdaten</h2>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>Produktname</label>
+                    <input type="text" id="product-name" oninput="autoFillSKU()">
+                </div>
+
+                <div class="form-group">
+                    <label>Preis</label>
+                    <input type="number" id="product-price">
+                </div>
+
+                <div class="form-group">
+                    <label>EAN</label>
+                    <input type="text" id="product-ean">
+                </div>
+
+                <div class="form-group">
+                    <label>Kollektionen</label>
+                    <input type="text" id="product-collections">
+                </div>
+
+                <div class="form-group">
+                    <label>SKU</label>
+                    <input type="text" id="product-sku">
+                </div>
+
+                <div class="form-group">
+                    <label>Bestand</label>
+                    <input type="number" id="product-stock">
+                </div>
+
+                <div class="form-group">
+                    <label>Anbieter (Hersteller)</label>
+                    <input type="text" id="product-vendor">
+                </div>
+
+                <div class="form-group">
+                    <label>Typ</label>
+                    <input type="text" id="product-type">
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label>Beschreibung</label>
+                <textarea id="product-description"></textarea>
+            </div>
+
+            <div class="flex gap-10 mt-20">
+                <button class="primary" onclick="addProduct()">Produkt hinzufügen</button>
+            </div>
+        </div>
+
+        <!-- ============================
+             BILDER (DRAG & DROP)
+        ============================= -->
+        <div class="card mt-20">
+            <h2>Bilder</h2>
+
+            <div id="dropzone"
+                 class="upload-box"
+                 ondragover="event.preventDefault()"
+                 ondrop="handleDrop(event)">
+                <p>Ziehe Bilder hierher oder klicke zum Hochladen</p>
+                <input type="file" id="image-upload" multiple onchange="handleImageUpload(event)" hidden>
+            </div>
+
+            <div id="image-preview" class="mt-20"></div>
+        </div>
+
+        <!-- ============================
+             PRODUKTLISTE + CSV EXPORT
+        ============================= -->
+        <div class="card mt-20">
+            <h2>Produktliste</h2>
+
+            <div id="product-list"></div>
+
+            <button class="primary mt-20" onclick="downloadCSV()">CSV herunterladen</button>
+        </div>
+
+        <!-- ============================
+             SKU / VARIANTEN (Stub)
+        ============================= -->
+        <div class="card mt-20">
+            <h2>Varianten (SKU)</h2>
+
+            <div id="sku-list"></div>
+
+            <button class="primary mt-20" onclick="addSku()">Neue Variante hinzufügen</button>
+        </div>
+
+    </div>
+
+    <script src="assets/js/state.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/product.js"></script>
+    <script src="assets/js/image.js"></script>
+    <script src="assets/js/sku.js"></script>
+    <script src="assets/js/sku-generator.js"></script>
+    <script src="assets/js/toast.js"></script>
+
+    <script>
+        // Drag & Drop Handler
+        const dropzone = document.getElementById("dropzone");
+
+        dropzone.addEventListener("click", () => {
+            document.getElementById("image-upload").click();
+        });
+
+        function handleDrop(event) {
+            event.preventDefault();
+            const files = event.dataTransfer.files;
+            handleImageUpload({ target: { files } });
+        }
+    </script>
+
+</body>
+</html>

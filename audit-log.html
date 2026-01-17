@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Audit Log</title>
+
+    <link rel="stylesheet" href="assets/css/theme.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="stylesheet" href="assets/css/forms.css">
+    <link rel="stylesheet" href="assets/css/table.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+</head>
+
+<body data-page="audit-log" onload="requireRole('admin'); initPage(); renderAuditTable();">
+
+    <div class="page-container fade-in">
+
+        <div class="page-header">
+            <h1>Audit Log</h1>
+
+            <div class="flex gap-10">
+                <button onclick="window.location.href='dashboard.html'">Dashboard</button>
+                <button class="danger" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- ============================
+             FILTER UI
+        ============================= -->
+        <div class="card">
+            <h2>Filter</h2>
+
+            <div class="audit-filter-bar">
+
+                <div class="form-group">
+                    <label>Kategorie</label>
+                    <select id="audit-filter-type" onchange="updateAuditFilter()">
+                        <option value="all">Alle</option>
+                        <option value="login">Login</option>
+                        <option value="logout">Logout</option>
+                        <option value="product">Produkt</option>
+                        <option value="csv">CSV</option>
+                        <option value="settings">Einstellungen</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Suche</label>
+                    <input type="text" id="audit-filter-search" oninput="updateAuditFilter()" placeholder="Benutzer, Aktion, Details...">
+                </div>
+
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <button class="primary w-100" onclick="exportAuditToCSV()">CSV Export</button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ============================
+             AUDIT TABLE
+        ============================= -->
+        <div class="card mt-20">
+            <h2>Systemaktivitäten</h2>
+
+            <table class="data-table mt-20">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Datum</th>
+                        <th>Benutzer</th>
+                        <th>Rolle</th>
+                        <th>Aktion</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody id="audit-table-body"></tbody>
+            </table>
+
+            <div id="audit-pagination" class="audit-pagination mt-20"></div>
+        </div>
+
+    </div>
+
+    <script src="assets/js/state.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/audit.js"></script>
+
+    <script>
+        function updateAuditFilter() {
+            const type = document.getElementById("audit-filter-type").value;
+            const search = document.getElementById("audit-filter-search").value;
+            renderAuditTable(type, search);
+        }
+    </script>
+
+</body>
+</html>
