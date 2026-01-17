@@ -5,82 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Produkte – Gaming of Republic</title>
   <link rel="stylesheet" href="assets/css/layout.css">
-  <style>
-    body {
-      background-color: #191833;
-      color: #fff;
-      font-family: sans-serif;
-    }
-    h1 {
-      color: #ffd700;
-      margin-bottom: 1rem;
-    }
-    form {
-      max-width: 1000px;
-      margin: auto;
-      padding: 1.5rem;
-      background-color: #111827;
-      border-radius: 8px;
-      margin-bottom: 2rem;
-    }
-    label {
-      display: block;
-      margin-bottom: 0.3rem;
-      font-weight: bold;
-      color: #ffd700;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 0.6rem;
-      margin-bottom: 1rem;
-      border: 2px solid #ffd700;
-      background-color: #191833;
-      color: #fff;
-      border-radius: 4px;
-    }
-    .dropzone {
-      border: 2px dashed #ffd700;
-      padding: 1rem;
-      text-align: center;
-      color: #ffd700;
-      background-color: #191833;
-      margin-bottom: 1rem;
-      cursor: pointer;
-    }
-    .preview img {
-      max-width: 150px;
-      border: 2px solid #ffd700;
-      border-radius: 4px;
-    }
-    .btn {
-      background-color: #ffd700;
-      color: #000;
-      padding: 0.5rem 1rem;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 4px;
-      margin-right: 0.5rem;
-    }
-    .btn.delete {
-      background-color: #e63946;
-      color: #fff;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-    }
-    th, td {
-      border: 1px solid #444;
-      padding: 0.5rem;
-      text-align: center;
-    }
-    th {
-      background-color: #111827;
-      color: #ffd700;
-    }
-  </style>
 </head>
 <body>
   <!-- Navigation -->
@@ -98,52 +22,6 @@
 
   <main class="content">
     <h1>Produktverwaltung</h1>
-
-    <!-- Formular Neues Produkt -->
-    <form id="productForm">
-      <label>Status</label>
-      <select id="status">
-        <option value="Aktiv">Aktiv</option>
-        <option value="Entwurf">Entwurf</option>
-      </select>
-
-      <label>Titel</label>
-      <input type="text" id="title" required>
-
-      <label>Beschreibung</label>
-      <textarea id="description" rows="3" required></textarea>
-
-      <label>Anbieter</label>
-      <input type="text" id="provider">
-
-      <label>Produkttyp</label>
-      <input type="text" id="type">
-
-      <label>Kollektionen</label>
-      <input type="text" id="collections">
-
-      <label>Tags</label>
-      <input type="text" id="tags">
-
-      <label>Preis (CHF)</label>
-      <input type="number" id="price" step="0.01" required>
-
-      <label>SKU</label>
-      <input type="text" id="sku">
-
-      <label>EAN</label>
-      <input type="text" id="ean">
-
-      <label>Lagerbestand</label>
-      <input type="number" id="stock" required>
-
-      <label>Bilder</label>
-      <div class="dropzone" id="dropzone">📁 Bilder hier ablegen oder klicken</div>
-      <input type="file" id="imageInput" accept="image/*" class="hidden">
-      <div class="preview" id="preview"></div>
-
-      <button type="submit" class="btn">✅ Produkt speichern</button>
-    </form>
 
     <!-- Tabelle -->
     <table id="productTable">
@@ -167,51 +45,23 @@
       <tbody></tbody>
     </table>
   </main>
+
 <script>
-  // Zugriffsschutz
   const user = localStorage.getItem("loggedInUser");
   const role = localStorage.getItem("userRole");
 
   if (!user) window.location.href = "login.html";
-
   if (role === "viewer") {
     alert("Zugriff verweigert – Nur Editor/Admin dürfen Produkte verwalten.");
     window.location.href = "index.html";
   }
-
   if (role === "admin") {
     document.getElementById("userNav").style.display = "inline-block";
   }
 
-  if (role === "editor") {
-    document.getElementById("status").disabled = true;
-    document.getElementById("collections").disabled = true;
-  }
-
-  // Bild Upload
-  let base64Image = "";
-  const dropzone = document.getElementById("dropzone");
-  const imageInput = document.getElementById("imageInput");
-  const preview = document.getElementById("preview");
-
-  dropzone.addEventListener("click", () => imageInput.click());
-
-  imageInput.addEventListener("change", () => {
-    const file = imageInput.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      base64Image = e.target.result;
-      preview.innerHTML = `<img src="${base64Image}" alt="Produktbild">`;
-    };
-    reader.readAsDataURL(file);
-  });
-
-  // Produktliste laden
   const tbody = document.querySelector("#productTable tbody");
   let productList = JSON.parse(localStorage.getItem("productList")) || [];
 
-  // Tabelle rendern
   function renderTable() {
     tbody.innerHTML = "";
     productList.forEach((p, i) => {
@@ -237,29 +87,12 @@
       tbody.appendChild(tr);
     });
 
-    // Editieren
     document.querySelectorAll(".edit").forEach(btn => {
       btn.addEventListener("click", () => {
-        const index = btn.getAttribute("data-index");
-        const product = productList[index];
-        document.getElementById("status").value = product.status;
-        document.getElementById("title").value = product.title;
-        document.getElementById("description").value = product.description;
-        document.getElementById("provider").value = product.provider;
-        document.getElementById("type").value = product.type;
-        document.getElementById("collections").value = product.collections;
-        document.getElementById("tags").value = product.tags;
-        document.getElementById("price").value = product.price;
-        document.getElementById("sku").value = product.sku;
-        document.getElementById("ean").value = product.ean;
-        document.getElementById("stock").value = product.stock;
-        preview.innerHTML = product.image ? `<img src="${product.image}" alt="Produktbild">` : "";
-        base64Image = product.image || "";
-        productList.splice(index, 1); // beim Speichern wird es neu hinzugefügt
+        alert("✏️ Bearbeiten ist deaktiviert – Produktformular wurde entfernt.");
       });
     });
 
-    // Löschen
     document.querySelectorAll(".delete").forEach(btn => {
       btn.addEventListener("click", () => {
         const index = btn.getAttribute("data-index");
@@ -273,37 +106,6 @@
   }
   renderTable();
 
-  // Neues Produkt speichern
-  document.getElementById("productForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const product = {
-      status: document.getElementById("status").value,
-      title: document.getElementById("title").value,
-      description: document.getElementById("description").value,
-      provider: document.getElementById("provider").value,
-      type: document.getElementById("type").value,
-      collections: document.getElementById("collections").value,
-      tags: document.getElementById("tags").value,
-      price: document.getElementById("price").value,
-      sku: document.getElementById("sku").value,
-      ean: document.getElementById("ean").value,
-      stock: document.getElementById("stock").value,
-      image: base64Image
-    };
-
-    productList.push(product);
-    localStorage.setItem("productList", JSON.stringify(productList));
-    alert("✅ Produkt gespeichert!");
-    renderTable();
-
-    // Formular zurücksetzen
-    document.getElementById("productForm").reset();
-    preview.innerHTML = "";
-    base64Image = "";
-  });
-
-  // CSV Export
   document.getElementById("exportBtn").addEventListener("click", () => {
     let csv = ["Status,Titel,Beschreibung,Anbieter,Typ,Kollektionen,Tags,Preis,SKU,EAN,Bestand,Bild"];
     productList.forEach(p => {
@@ -318,7 +120,6 @@
     document.body.removeChild(link);
   });
 
-  // Bulk Import
   document.getElementById("importFile").addEventListener("change", function(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -348,7 +149,6 @@
     reader.readAsText(file);
   });
 
-  // Logout
   document.getElementById("logoutBtn").addEventListener("click", () => {
     localStorage.removeItem("loggedInUser");
     localStorage.removeItem("userRole");
