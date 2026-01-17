@@ -1,134 +1,143 @@
 /* =========================================================
-   GOR PRODUCT ADMIN – FORMS
-   Inputs, Selects, Textareas, Labels, Fokus-Effekte
+   GOR – FORMS
+   Einheitliches Styling für Eingaben, Labels, Textareas, Selects
    ========================================================= */
 
-/* ---------------------------------------------------------
-   FORM GROUP
-   --------------------------------------------------------- */
-.form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 16px;
-}
-
-.form-group label {
+/* LABELS */
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
     margin-bottom: 6px;
-    font-size: 14px;
-    color: var(--color-text-dim);
+    color: #fff;
+    opacity: 0.85;
 }
 
-/* ---------------------------------------------------------
-   INPUTS / SELECTS / TEXTAREAS
-   --------------------------------------------------------- */
+/* INPUTS & SELECTS */
 input,
 select,
 textarea {
     width: 100%;
-    padding: 10px 12px;
-    border-radius: var(--radius);
-    border: 1px solid var(--color-border);
-    background: rgba(255, 255, 255, 0.06);
-    color: var(--color-text);
-    font-size: 14px;
-    transition: 0.2s ease;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    font-size: 15px;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    outline: none;
 }
 
-/* Hover */
-input:hover,
-select:hover,
-textarea:hover {
-    background: rgba(255, 255, 255, 0.09);
+input::placeholder,
+textarea::placeholder {
+    color: rgba(255,255,255,0.45);
+    font-style: italic;
 }
 
-/* Fokus */
 input:focus,
 select:focus,
 textarea:focus {
-    outline: none;
     border-color: var(--color-primary);
-    box-shadow: var(--glow-primary);
+    box-shadow: 0 0 12px rgba(255,211,0,0.35);
+    background: rgba(255,255,255,0.08);
 }
 
-/* ---------------------------------------------------------
-   TEXTAREA
-   --------------------------------------------------------- */
+/* TEXTAREA */
 textarea {
+    min-height: 120px;
     resize: vertical;
-    min-height: 80px;
+    line-height: 1.5;
 }
 
-/* ---------------------------------------------------------
-   SELECT DROPDOWN
-   --------------------------------------------------------- */
+/* FORM GROUP */
+.form-group {
+    margin-bottom: 18px;
+}
+
+/* FORM GRID */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.form-grid .full {
+    grid-column: 1 / -1;
+}
+
+/* FORM ACTIONS */
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+/* CHECKBOXES & RADIOS */
+input[type="checkbox"],
+input[type="radio"] {
+    width: auto;
+    margin-right: 8px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+}
+
+.checkbox-label,
+.radio-label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* DROPDOWN SELECT */
 select {
     appearance: none;
     background-image: linear-gradient(45deg, transparent 50%, var(--color-primary) 50%),
                       linear-gradient(135deg, var(--color-primary) 50%, transparent 50%);
-    background-position: calc(100% - 18px) calc(50% - 3px),
-                         calc(100% - 12px) calc(50% - 3px);
+    background-position: calc(100% - 18px) calc(50% - 2px),
+                         calc(100% - 12px) calc(50% - 2px);
     background-size: 6px 6px, 6px 6px;
     background-repeat: no-repeat;
-    cursor: pointer;
+    padding-right: 28px;
 }
 
-/* ---------------------------------------------------------
-   ERROR STATE
-   --------------------------------------------------------- */
-.input-error {
-    border-color: var(--color-danger) !important;
-    box-shadow: var(--glow-danger) !important;
-}
-
-.error-text {
-    color: var(--color-danger);
-    font-size: 12px;
-    margin-top: -10px;
-    margin-bottom: 10px;
-}
-
-/* ---------------------------------------------------------
-   DISABLED STATE
-   --------------------------------------------------------- */
-input:disabled,
-select:disabled,
-textarea:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-/* ---------------------------------------------------------
-   INLINE INPUTS (z.B. Preis + Währung)
-   --------------------------------------------------------- */
-.input-inline {
-    display: flex;
-    gap: 10px;
-}
-
-.input-inline > * {
-    flex: 1;
-}
-
-/* ---------------------------------------------------------
-   FILE INPUT
-   --------------------------------------------------------- */
+/* FILE INPUT */
 input[type="file"] {
     padding: 8px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px dashed var(--color-border);
+    background: rgba(255,255,255,0.05);
+    border: 1px dashed rgba(255,255,255,0.25);
     cursor: pointer;
 }
 
 input[type="file"]:hover {
-    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 10px rgba(255,211,0,0.35);
 }
 
-/* ---------------------------------------------------------
-   CHECKBOXES / RADIO
-   --------------------------------------------------------- */
-input[type="checkbox"],
-input[type="radio"] {
-    width: auto;
-    margin-right: 6px;
-    accent-color: var(--color-primary);
+/* ERROR STATE */
+.input-error {
+    border-color: var(--color-danger) !important;
+    box-shadow: 0 0 10px rgba(255,59,59,0.45) !important;
+}
+
+label.error {
+    color: var(--color-danger);
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* SUCCESS STATE */
+.input-success {
+    border-color: var(--color-success) !important;
+    box-shadow: 0 0 10px rgba(0,255,157,0.45) !important;
+}
+
+/* DISABLED STATE */
+input:disabled,
+select:disabled,
+textarea:disabled {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.45);
+    cursor: not-allowed;
 }
