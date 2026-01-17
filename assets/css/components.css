@@ -404,3 +404,157 @@ button:hover {
     border: 1px solid rgba(255,255,255,0.06);
     min-height: 80px;
 }
+/* =========================================================
+   ULTRA CYBER – AUDIT FORENSICS TERMINAL
+   ========================================================= */
+
+/* HOLOGRAPHIC BACKGROUND */
+#audit-grid {
+    position: fixed;
+    inset: 0;
+    background:
+        repeating-linear-gradient(
+            to right,
+            rgba(255,211,0,0.05) 0px,
+            rgba(255,211,0,0.05) 1px,
+            transparent 1px,
+            transparent 40px
+        ),
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255,211,0,0.05) 0px,
+            rgba(255,211,0,0.05) 1px,
+            transparent 1px,
+            transparent 40px
+        );
+    transform: perspective(900px) rotateX(55deg);
+    opacity: 0.15;
+    z-index: 0;
+}
+
+#audit-scanlines {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.03) 0px,
+        rgba(255,255,255,0.03) 2px,
+        transparent 2px,
+        transparent 4px
+    );
+    pointer-events: none;
+    opacity: 0.25;
+    z-index: 1;
+}
+
+#audit-noise {
+    position: fixed;
+    inset: 0;
+    background: url('https://i.imgur.com/8QfQZ4C.png');
+    opacity: 0.06;
+    animation: auditNoise 0.25s infinite;
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes auditNoise {
+    0% { opacity: 0.04; }
+    50% { opacity: 0.10; }
+    100% { opacity: 0.04; }
+}
+
+/* SEARCH BAR */
+.audit-search-bar input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--color-text);
+    box-shadow: 0 0 12px rgba(255,211,0,0.15);
+    margin-bottom: 20px;
+}
+
+/* TIMELINE */
+.audit-timeline {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    overflow-x: auto;
+}
+
+.timeline-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--color-primary);
+    background: var(--color-primary);
+    transition: 0.2s;
+}
+
+.timeline-dot:hover {
+    transform: scale(1.4);
+}
+
+/* EVENT COLORS */
+.timeline-dot.save,
+.audit-row.save { box-shadow: 0 0 12px #00ff88; background: #00ff88; }
+
+.timeline-dot.delete,
+.audit-row.delete { box-shadow: 0 0 12px #ff3b3b; background: #ff3b3b; }
+
+.timeline-dot.login,
+.audit-row.login { box-shadow: 0 0 12px #00b4ff; background: #00b4ff; }
+
+.timeline-dot.system,
+.audit-row.system { box-shadow: 0 0 12px #ffd300; background: #ffd300; }
+
+/* TABLE */
+.audit-table-container {
+    position: relative;
+    z-index: 10;
+}
+
+.audit-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.audit-table th {
+    padding: 12px;
+    background: rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    color: var(--color-primary);
+    text-shadow: var(--glow-primary);
+}
+
+.audit-row {
+    cursor: pointer;
+    transition: 0.25s;
+    background: rgba(255,255,255,0.03);
+}
+
+.audit-row:hover {
+    background: rgba(255,255,255,0.08);
+    box-shadow: 0 0 12px rgba(255,211,0,0.25);
+    transform: translateX(6px);
+}
+
+/* DETAILS */
+.audit-details-row {
+    display: none;
+}
+
+.audit-details-row.open {
+    display: table-row;
+}
+
+.audit-details-box {
+    padding: 15px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 12px rgba(255,211,0,0.15);
+}
+
