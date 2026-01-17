@@ -9,11 +9,11 @@ label {
     font-size: 13px;
     font-weight: 500;
     margin-bottom: 6px;
-    color: #fff;
+    color: var(--color-text);
     opacity: 0.85;
 }
 
-/* INPUTS & SELECTS */
+/* INPUTS, SELECTS, TEXTAREAS */
 input,
 select,
 textarea {
@@ -22,7 +22,7 @@ textarea {
     border-radius: 8px;
     border: 1px solid rgba(255,255,255,0.12);
     background: rgba(255,255,255,0.05);
-    color: #fff;
+    color: var(--color-text);
     font-size: 15px;
     transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
     outline: none;
@@ -32,6 +32,12 @@ input::placeholder,
 textarea::placeholder {
     color: rgba(255,255,255,0.45);
     font-style: italic;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+    background: rgba(255,255,255,0.07);
 }
 
 input:focus,
@@ -108,6 +114,7 @@ input[type="file"] {
     background: rgba(255,255,255,0.05);
     border: 1px dashed rgba(255,255,255,0.25);
     cursor: pointer;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 input[type="file"]:hover {
