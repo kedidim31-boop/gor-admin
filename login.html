@@ -49,8 +49,24 @@
       // Benutzerliste laden (von users.html gespeichert)
       let users = JSON.parse(localStorage.getItem("userList")) || [];
 
-      // Benutzer suchen
-      const foundUser = users.find(u => u.username === username && u.password === password);
+      // Falls Liste leer ist, Standard-Admin setzen
+      if(users.length === 0) {
+        users.push({
+          username: "admin",
+          email: "admin@gor.com",
+          password: "1234",
+          role: "admin",
+          status: "Aktiv"
+        });
+        localStorage.setItem("userList", JSON.stringify(users));
+      }
+
+      // Benutzer suchen (nur aktive Accounts)
+      const foundUser = users.find(u =>
+        u.username === username &&
+        u.password === password &&
+        u.status === "Aktiv"
+      );
 
       if(foundUser) {
         localStorage.setItem("loggedInUser", foundUser.username);
@@ -58,7 +74,7 @@
         alert("Login erfolgreich als " + foundUser.role + "!");
         window.location.href = "index.html"; // Weiterleitung zum Dashboard
       } else {
-        alert("Ungültige Zugangsdaten!");
+        alert("Ungültige Zugangsdaten oder Benutzer nicht aktiv!");
       }
     });
 
