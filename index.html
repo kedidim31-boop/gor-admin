@@ -13,6 +13,7 @@
       <li><a href="index.html" class="active">Dashboard</a></li>
       <li><a href="add-product.html">Neues Produkt</a></li>
       <li><a href="products.html">Produkte</a></li>
+      <!-- Benutzerverwaltung wird nur für Admin dynamisch eingefügt -->
       <li><button id="logoutBtn" class="btn delete">🚪 Abmelden</button></li>
     </ul>
   </nav>
@@ -47,14 +48,16 @@
   <script>
     // Zugriffsschutz
     const user = localStorage.getItem("loggedInUser");
+    const role = localStorage.getItem("userRole");
+
     if(!user) {
       window.location.href = "login.html";
     } else {
-      document.getElementById("welcomeText").innerText = "Willkommen, " + user;
+      document.getElementById("welcomeText").innerText = "Willkommen, " + user + " (" + role + ")";
     }
 
-    // Admin-Karte nur für admin sichtbar
-    if(user === "admin") {
+    // Admin-Karte nur für Admin-Rolle sichtbar
+    if(role === "admin") {
       document.getElementById("userCard").style.display = "block";
     }
 
@@ -62,6 +65,7 @@
     const logoutBtn = document.getElementById("logoutBtn");
     logoutBtn.addEventListener("click", () => {
       localStorage.removeItem("loggedInUser");
+      localStorage.removeItem("userRole");
       alert("Du wurdest abgemeldet.");
       window.location.href = "login.html";
     });
