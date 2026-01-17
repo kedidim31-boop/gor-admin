@@ -68,6 +68,17 @@
   </style>
 </head>
 <body>
+  <!-- ✅ Navigation wieder eingebaut -->
+  <nav class="navbar">
+    <div class="logo">🕹️ Gaming of Republic</div>
+    <ul>
+      <li><a href="index.html">Dashboard</a></li>
+      <li><a href="products.html">Produkte</a></li>
+      <li id="userNav" style="display:none;"><a href="users.html">Benutzerverwaltung</a></li>
+      <li><button id="logoutBtn" class="btn delete">🚪 Abmelden</button></li>
+    </ul>
+  </nav>
+
   <main class="content">
     <h1>➕ Neues Produkt hinzufügen</h1>
 
@@ -131,8 +142,7 @@
   }
 
   if (role === "admin") {
-    const userNav = document.getElementById("userNav");
-    if(userNav) userNav.style.display = "inline-block";
+    document.getElementById("userNav").style.display = "inline-block";
   }
 
   if (role === "editor") {
@@ -189,15 +199,12 @@
   });
 
   // Logout
-  const logoutBtn = document.getElementById("logoutBtn");
-  if(logoutBtn){
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("loggedInUser");
-      localStorage.removeItem("userRole");
-      alert("Du wurdest abgemeldet.");
-      window.location.href = "login.html";
-    });
-  }
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("userRole");
+    alert("Du wurdest abgemeldet.");
+    window.location.href = "login.html";
+  });
 </script>
 </body>
 </html>
