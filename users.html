@@ -63,39 +63,6 @@
     </table>
   </main>
 
-  <!-- Edit-Formular als Modal -->
-  <div id="editModal" class="modal">
-    <div class="modal-content">
-      <h2>Benutzer bearbeiten</h2>
-      <form id="editForm">
-        <label>Benutzername</label>
-        <input type="text" name="editUsername" required>
-
-        <label>E-Mail</label>
-        <input type="email" name="editEmail" required>
-
-        <label>Passwort</label>
-        <input type="password" name="editPassword" required>
-
-        <label>Rolle</label>
-        <select name="editRole" required>
-          <option value="admin">Administrator</option>
-          <option value="editor">Editor</option>
-          <option value="viewer">Viewer</option>
-        </select>
-
-        <label>Status</label>
-        <select name="editStatus" required>
-          <option value="Aktiv">Aktiv</option>
-          <option value="Entwurf">Entwurf</option>
-        </select>
-
-        <button type="submit" class="btn">💾 Änderungen speichern</button>
-        <button type="button" class="btn delete" id="closeModal">❌ Abbrechen</button>
-      </form>
-    </div>
-  </div>
-
   <script>
     // Zugriffsschutz: nur Admin darf Benutzerverwaltung öffnen
     const loggedUser = localStorage.getItem("loggedInUser");
@@ -117,10 +84,18 @@
       window.location.href = "login.html";
     });
 
-    // Benutzerliste aus localStorage laden
-    let users = JSON.parse(localStorage.getItem("userList")) || [
-      { username: "admin", email: "admin@gor.com", password: "1234", role: "admin", status: "Aktiv" }
-    ];
+    // Benutzerliste aus localStorage laden oder Standard-Admin setzen
+    let users = JSON.parse(localStorage.getItem("userList")) || [];
+    if(users.length === 0) {
+      users.push({
+        username: "admin",
+        email: "admin@gor.com",
+        password: "1234",
+        role: "admin",
+        status: "Aktiv"
+      });
+      localStorage.setItem("userList", JSON.stringify(users));
+    }
 
     const tbody = document.querySelector("#userTable tbody");
 
@@ -159,20 +134,15 @@
       this.reset();
     });
 
-    // Modal & Edit Logik
-    const modal = document.getElementById('editModal');
-    const closeModalBtn = document.getElementById('closeModal');
-    let currentUser = null;
-
+    // Aktionen binden
     function bindActions(row, userObj) {
       row.querySelector('.edit').addEventListener('click', () => {
-        currentUser = userObj;
-        document.querySelector('[name="editUsername"]').value = userObj.username;
-        document.querySelector('[name="editEmail"]').value = userObj.email;
-        document.querySelector('[name="editPassword"]').value = userObj.password;
-        document.querySelector('[name="editRole"]').value = userObj.role;
-        document.querySelector('[name="editStatus"]').value = userObj.status;
-        modal.style.display = 'flex';
+        const newPass = prompt("Neues Passwort für " + userObj.username, userObj.password);
+        if(newPass !== null) {
+          userObj.password = newPass;
+          localStorage.setItem("userList", JSON.stringify(users));
+          renderUsers();
+        }
       });
 
       row.querySelector('.delete').addEventListener('click', () => {
@@ -183,26 +153,6 @@
         }
       });
     }
-
-    // Änderungen speichern
-    document.getElementById('editForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      if(currentUser) {
-        currentUser.username = this.editUsername.value;
-        currentUser.email = this.editEmail.value;
-        currentUser.password = this.editPassword.value;
-        currentUser.role = this.editRole.value;
-        currentUser.status = this.editStatus.value;
-        localStorage.setItem("userList", JSON.stringify(users));
-        renderUsers();
-      }
-      modal.style.display = 'none';
-    });
-
-    // Modal schließen
-    closeModalBtn.addEventListener('click', () => {
-      modal.style.display = 'none';
-    });
 
     // Initial render
     renderUsers();
