@@ -87,3 +87,10 @@
     font-family: monospace;
     box-shadow: 0 0 10px rgba(255,211,0,0.15);
 }
+/* FORCE WHITE PLACEHOLDER FOR QUILL */
+.ql-container .ql-editor.ql-blank::before {
+    color: rgba(255,255,255,0.75) !important;
+    opacity: 1 !important;
+    font-style: italic;
+}
+
