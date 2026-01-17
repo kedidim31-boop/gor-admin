@@ -11,6 +11,8 @@
     --color-danger: #ff3b3b; /* Rot */
     --color-success: #00ff9d; /* Neon-Grün */
     --color-info: #00cfff; /* Cyan */
+    --color-warning: #ffae00; /* Warnung */
+    --color-neutral: #888888; /* Neutral */
 
     /* Hintergrundfarben */
     --color-bg-dark: #0a0a12;
@@ -26,10 +28,12 @@
     --glow-danger: 0 0 12px rgba(255,59,59,0.6);
     --glow-success: 0 0 12px rgba(0,255,157,0.6);
     --glow-info: 0 0 12px rgba(0,207,255,0.6);
+    --glow-warning: 0 0 12px rgba(255,174,0,0.6);
 
     /* Schatten */
     --shadow-soft: 0 0 18px rgba(255,211,0,0.15);
     --shadow-strong: 0 0 22px rgba(0,0,0,0.65);
+    --shadow-glow: 0 0 16px rgba(255,211,0,0.45);
 }
 
 /* GLOBAL RESET */
@@ -95,6 +99,11 @@ a:hover {
     text-align: right;
 }
 
+.text-warning {
+    color: var(--color-warning);
+    text-shadow: var(--glow-warning);
+}
+
 /* BACKGROUND UTILITIES */
 .bg-dark {
     background: var(--color-bg-dark);
@@ -102,6 +111,31 @@ a:hover {
 
 .bg-light {
     background: var(--color-bg-light);
+}
+
+.bg-primary {
+    background: var(--color-primary);
+    color: #000;
+}
+
+.bg-danger {
+    background: var(--color-danger);
+    color: #fff;
+}
+
+.bg-success {
+    background: var(--color-success);
+    color: #000;
+}
+
+.bg-info {
+    background: var(--color-info);
+    color: #000;
+}
+
+.bg-warning {
+    background: var(--color-warning);
+    color: #000;
 }
 
 /* BORDER UTILITIES */
@@ -117,6 +151,14 @@ a:hover {
     border: 1px solid var(--color-danger);
 }
 
+.border-success {
+    border: 1px solid var(--color-success);
+}
+
+.border-info {
+    border: 1px solid var(--color-info);
+}
+
 /* SHADOW UTILITIES */
 .shadow-soft {
     box-shadow: var(--shadow-soft);
@@ -126,11 +168,27 @@ a:hover {
     box-shadow: var(--shadow-strong);
 }
 
+.shadow-glow {
+    box-shadow: var(--shadow-glow);
+}
+
 /* BUTTON COLOR UTILITIES */
+.btn {
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+    border: none;
+}
+
 .btn-primary {
     background: var(--color-primary);
     color: #000;
-    font-weight: 600;
+}
+
+.btn-primary:hover {
+    box-shadow: var(--glow-primary);
 }
 
 .btn-danger {
@@ -138,9 +196,17 @@ a:hover {
     color: #fff;
 }
 
+.btn-danger:hover {
+    box-shadow: var(--glow-danger);
+}
+
 .btn-success {
     background: var(--color-success);
     color: #000;
+}
+
+.btn-success:hover {
+    box-shadow: var(--glow-success);
 }
 
 .btn-info {
@@ -148,7 +214,28 @@ a:hover {
     color: #000;
 }
 
+.btn-info:hover {
+    box-shadow: var(--glow-info);
+}
+
+.btn-warning {
+    background: var(--color-warning);
+    color: #000;
+}
+
+.btn-warning:hover {
+    box-shadow: var(--glow-warning);
+}
+
 /* BADGE UTILITIES */
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
 .badge-primary {
     background: rgba(255,211,0,0.15);
     color: var(--color-primary);
@@ -171,4 +258,10 @@ a:hover {
     background: rgba(0,207,255,0.15);
     color: var(--color-info);
     text-shadow: var(--glow-info);
+}
+
+.badge-warning {
+    background: rgba(255,174,0,0.15);
+    color: var(--color-warning);
+    text-shadow: var(--glow-warning);
 }
