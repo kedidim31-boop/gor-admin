@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
 </head>
 
-<body data-page="product-edit" onload="initEditor(); loadProductList(); updatePreview();">
+<body data-page="product-edit" onload="initEditor();">
 
     <!-- SIDEBAR -->
     <div class="sidebar">
@@ -41,10 +41,10 @@
             </div>
         </div>
 
-        <!-- SHOPIFY-STYLE PRODUCT PAGE -->
+        <!-- PRODUCT PAGE GRID -->
         <div class="product-page">
 
-            <!-- LEFT: MAIN PRODUCT CONTENT -->
+            <!-- LEFT COLUMN (MAIN CONTENT) -->
             <div class="product-main">
 
                 <!-- PRODUCT INFO -->
@@ -151,7 +151,7 @@
 
             </div>
 
-            <!-- RIGHT: SIDEBAR (ACTIONS + PRODUCT LIST) -->
+            <!-- RIGHT COLUMN (SIDEBAR) -->
             <div class="product-sidebar">
 
                 <div class="card sidebar-card">
@@ -162,9 +162,7 @@
 
                 <div class="card sidebar-card">
                     <h3>Produkte</h3>
-                    <button class="primary full mt-10" onclick="clearProductForm()">
-                        Neues Produkt erstellen
-                    </button>
+                    <button class="primary full mt-10" onclick="clearProductForm()">Neues Produkt</button>
                     <div id="product-list" class="mt-20"></div>
                 </div>
 
