@@ -144,17 +144,61 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
+    background: var(--color-bg-dark);
 }
 
 .login-card {
     width: 100%;
-    max-width: 140px;
+    max-width: 360px; /* statt 140px */
     padding: 30px;
     text-align: center;
     background: var(--color-bg-light);
     border-radius: 12px;
     box-shadow: var(--shadow-soft);
 }
+
+/* LOGIN LOGO */
+.login-logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: 0.3s ease;
+}
+
+@media (max-width: 600px) {
+    .login-logo {
+        width: 90px;
+    }
+}
+
+/* LOGIN BUTTON */
+.login-card button {
+    width: 100%;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    background: var(--color-primary);
+    color: #000;
+    cursor: pointer;
+    transition: 0.3s ease;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-card button:hover {
+    box-shadow: 0 0 14px var(--color-primary);
+    transform: translateY(-2px);
+}
+
+.login-card button:active {
+    transform: scale(0.96);
+}
+
 
 /* PRODUCT PREVIEW */
 .product-preview {
@@ -209,4 +253,5 @@ html, body {
         transform: translateX(0);
     }
 }
+
 
