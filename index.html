@@ -11,8 +11,8 @@
     <div class="logo">🕹️ Gaming of Republic</div>
     <ul>
       <li><a href="index.html" class="active">Dashboard</a></li>
-      <li><a href="add-product.html">Neues Produkt</a></li>
-      <li><a href="products.html">Produkte</a></li>
+      <li id="navAddProduct" style="display:none;"><a href="add-product.html">Neues Produkt</a></li>
+      <li id="navProducts"><a href="products.html">Produkte</a></li>
       <!-- Menüpunkt für Benutzerverwaltung (nur Admin sichtbar) -->
       <li id="userNav" style="display:none;"><a href="users.html">Benutzerverwaltung</a></li>
       <li><button id="logoutBtn" class="btn delete">🚪 Abmelden</button></li>
@@ -21,23 +21,25 @@
 
   <main class="content">
     <h1 id="welcomeText">Willkommen!</h1>
-    <p>Dies ist dein Gaming of Republic Dashboard. Hier hast du Zugriff auf alle Funktionen.</p>
+    <p>Dies ist dein Gaming of Republic Dashboard. Inhalte variieren je nach Rolle.</p>
 
     <!-- Schnellzugriff-Karten -->
     <div class="card-container">
-      <div class="card">
+      <!-- Produkte -->
+      <div class="card" id="cardProducts">
         <h2>📦 Produkte verwalten</h2>
         <p>Alle Produkte ansehen und bearbeiten.</p>
         <a href="products.html" class="btn">Öffnen</a>
       </div>
 
-      <div class="card">
+      <!-- Neues Produkt -->
+      <div class="card" id="cardAddProduct" style="display:none;">
         <h2>➕ Neues Produkt</h2>
         <p>Füge ein neues Produkt hinzu.</p>
         <a href="add-product.html" class="btn">Öffnen</a>
       </div>
 
-      <!-- Karte für Benutzerverwaltung (nur Admin sichtbar) -->
+      <!-- Benutzerverwaltung -->
       <div class="card" id="userCard" style="display:none;">
         <h2>👥 Benutzerverwaltung</h2>
         <p>Verwalte Benutzer und Rollen.</p>
@@ -57,10 +59,22 @@
       document.getElementById("welcomeText").innerText = "Willkommen, " + user + " (" + role + ")";
     }
 
-    // Benutzerverwaltung nur für Admin sichtbar machen
+    // Rollenbasierte Sichtbarkeit
     if(role === "admin") {
-      document.getElementById("userCard").style.display = "block";   // Karte sichtbar
-      document.getElementById("userNav").style.display = "inline-block"; // Menüpunkt sichtbar
+      // Admin sieht alles
+      document.getElementById("cardAddProduct").style.display = "block";
+      document.getElementById("userCard").style.display = "block";
+      document.getElementById("navAddProduct").style.display = "inline-block";
+      document.getElementById("userNav").style.display = "inline-block";
+    } else if(role === "editor") {
+      // Editor darf Produkte bearbeiten und neue hinzufügen
+      document.getElementById("cardAddProduct").style.display = "block";
+      document.getElementById("navAddProduct").style.display = "inline-block";
+      // Benutzerverwaltung bleibt verborgen
+    } else if(role === "viewer") {
+      // Viewer darf nur Produkte ansehen
+      document.getElementById("cardProducts").querySelector("p").innerText = "Alle Produkte ansehen.";
+      // Kein Neues Produkt, keine Benutzerverwaltung
     }
 
     // Logout-Funktion
