@@ -12,11 +12,6 @@
 
 <body data-page="audit-log" onload="requireRole('admin'); initPage(); loadAuditLog();">
 
-    <!-- ULTRA CYBER HOLOGRAPHIC BACKGROUND -->
-    <div id="audit-grid"></div>
-    <div id="audit-scanlines"></div>
-    <div id="audit-noise"></div>
-
     <!-- SIDEBAR -->
     <div class="sidebar">
         <a class="nav-item" href="dashboard.html"><span class="sidebar-icon">📊</span> Dashboard</a>
@@ -26,25 +21,23 @@
         <a class="nav-item" onclick="logout()"><span class="sidebar-icon">🚪</span> Abmelden</a>
     </div>
 
-    <!-- MAIN CONTENT -->
+    <!-- MAIN -->
     <div class="dashboard-content fade-in">
 
-        <!-- HEADER -->
         <div class="page-header">
-            <h1 class="header-title">Audit‑Forensics Terminal</h1>
+            <h1>Audit‑Protokolle</h1>
 
             <div class="header-user" onclick="toggleUserDropdown()">
                 <div class="header-avatar">A</div>
-
                 <div class="header-dropdown" id="user-dropdown">
-                    <a href="settings.html">Profil & Einstellungen</a>
+                    <a href="settings.html">Dein Profil</a>
                     <a href="audit-log.html">Audit Log</a>
                     <a onclick="logout()">Abmelden</a>
                 </div>
             </div>
         </div>
 
-        <!-- FILTER BAR -->
+        <!-- FILTER -->
         <div class="card mb-20">
             <h2>Filter</h2>
 
@@ -52,39 +45,40 @@
 
                 <div>
                     <label>Benutzer</label>
-                    <input type="text" id="filter-user" placeholder="z. B. admin" oninput="applyAuditFilter()">
+                    <input type="text" id="filter-user" placeholder="z. B. admin" oninput="loadAuditLog()">
                 </div>
 
                 <div>
                     <label>Aktion</label>
-                    <input type="text" id="filter-action" placeholder="z. B. product_save" oninput="applyAuditFilter()">
+                    <select id="filter-type" onchange="loadAuditLog()">
+                        <option value="">Alle Aktionen</option>
+                        <option value="product_save">Produkt gespeichert</option>
+                        <option value="product_delete">Produkt gelöscht</option>
+                        <option value="login_success">Login erfolgreich</option>
+                        <option value="login_fail">Login fehlgeschlagen</option>
+                        <option value="system">System</option>
+                    </select>
                 </div>
 
                 <div>
                     <label>Datum</label>
-                    <input type="date" id="filter-date" onchange="applyAuditFilter()">
+                    <input type="date" id="filter-date" onchange="loadAuditLog()">
                 </div>
 
                 <div>
                     <label>&nbsp;</label>
-                    <button class="primary full" onclick="applyAuditFilter()">Filter anwenden</button>
+                    <button class="primary full" onclick="exportAuditCSV()">CSV exportieren</button>
                 </div>
 
             </div>
         </div>
 
-        <!-- TIMELINE (ULTRA CYBER) -->
-        <div class="card mb-20">
-            <h2>Timeline</h2>
-            <div class="audit-timeline"></div>
-        </div>
-
-        <!-- AUDIT TABLE -->
+        <!-- TABLE -->
         <div class="card">
-            <h2>Protokolle</h2>
+            <h2>Protokollierte Aktionen</h2>
 
             <div class="table-wrapper">
-                <table class="data-table audit-table">
+                <table class="data-table">
                     <thead>
                         <tr>
                             <th>Zeitpunkt</th>
@@ -93,8 +87,6 @@
                             <th>Details</th>
                         </tr>
                     </thead>
-
-                    <!-- JS rendert hier die Ultra‑Cyber Rows -->
                     <tbody id="audit-table"></tbody>
                 </table>
             </div>
@@ -105,6 +97,5 @@
     <script src="assets/js/state.js"></script>
     <script src="assets/js/auth.js"></script>
     <script src="assets/js/audit.js"></script>
-
 </body>
 </html>
