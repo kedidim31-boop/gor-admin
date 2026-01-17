@@ -1,36 +1,18 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Produkte – Gaming of Republic</title>
-  <link rel="stylesheet" href="assets/css/layout.css">
-  <style>
-    .dropzone {
-      border: 2px dashed #ffd700;
-      padding: 0.5rem;
-      text-align: center;
-      color: #ffd700;
-      background-color: #191833;
-      cursor: pointer;
-    }
-    .dropzone img {
-      max-width: 80px;
-      border: 2px solid #ffd700;
-      border-radius: 4px;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Produktverwaltung – Gaming of Republic</title>
+  <link rel="stylesheet" href="assets/css/layout.css" />
 </head>
 <body>
-  <!-- Navigation -->
   <nav class="navbar">
-    <div class="logo">🕹️ Gaming of Republic</div>
+    <div class="logo">🕹️ Gaming of Republic | Produktverwaltung</div>
     <ul>
-      <li><a href="index.html">Dashboard</a></li>
-      <li><a href="products.html" class="active">Produkte</a></li>
-      <li id="userNav" style="display:none;"><a href="users.html">Benutzerverwaltung</a></li>
-      <li><button id="addRowBtn" class="btn">➕ Neue Zeile</button></li>
-      <li><button id="exportBtn" class="btn">📤 CSV Export</button></li>
+      <li><button id="addRowBtn" class="btn">+ NEUES PRODUKT</button></li>
+      <li><button id="bulkImportBtn" class="btn">Bulk Import</button></li>
+      <li><button id="exportBtn" class="btn">CSV Export</button></li>
       <li><button id="logoutBtn" class="btn delete">🚪 Abmelden</button></li>
     </ul>
   </nav>
@@ -38,23 +20,22 @@
   <main class="content">
     <h1>Produktverwaltung</h1>
 
-    <!-- Tabelle -->
     <table id="productTable">
       <thead>
         <tr>
-          <th>Status</th>
-          <th>Titel</th>
-          <th>Beschreibung</th>
-          <th>Anbieter</th>
-          <th>Typ</th>
-          <th>Kollektionen</th>
-          <th>Tags</th>
-          <th>Preis</th>
-          <th>SKU</th>
+          <th>STATUS</th>
+          <th>TITEL</th>
+          <th>BESCHREIBUNG</th>
+          <th>ANBIETER</th>
+          <th>TYP</th>
+          <th>KOLLEKTIONEN</th>
+          <th>TAGS</th>
+          <th>PREIS</th>
+          <th>SKU + GENERATOR</th>
           <th>EAN</th>
-          <th>Bestand</th>
-          <th>Bild</th>
-          <th>Aktionen</th>
+          <th>BESTAND</th>
+          <th>BILDER</th>
+          <th>AKTIONEN</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -62,20 +43,8 @@
   </main>
 
 <script>
-  const user = localStorage.getItem("loggedInUser");
-  const role = localStorage.getItem("userRole");
-
-  if (!user) window.location.href = "login.html";
-  if (role === "viewer") {
-    alert("Zugriff verweigert – Nur Editor/Admin dürfen Produkte verwalten.");
-    window.location.href = "index.html";
-  }
-  if (role === "admin") {
-    document.getElementById("userNav").style.display = "inline-block";
-  }
-
   const tbody = document.querySelector("#productTable tbody");
-  let productList = []; // nur im Speicher, nicht im localStorage
+  let productList = [];
 
   function renderTable() {
     tbody.innerHTML = "";
@@ -90,19 +59,18 @@
         <td contenteditable="true">${p.collections}</td>
         <td contenteditable="true">${p.tags}</td>
         <td contenteditable="true">${p.price}</td>
-        <td contenteditable="true">${p.sku}</td>
+        <td contenteditable="true">${p.sku} <button class="btn generate" data-index="${i}">SKU GENERIEREN</button></td>
         <td contenteditable="true">${p.ean}</td>
         <td contenteditable="true">${p.stock}</td>
         <td>
           <div class="dropzone" data-index="${i}">
-            ${p.image ? `<img src="${p.image}">` : "📁 Bild hier ablegen"}
+            ${p.image ? `<img src="${p.image}">` : "📁 Bilder hier ablegen oder klicken"}
           </div>
         </td>
         <td><button class="btn delete" data-index="${i}">🗑️ Löschen</button></td>
       `;
       tbody.appendChild(tr);
 
-      // Drag & Drop für Bilder
       const zone = tr.querySelector(".dropzone");
       zone.addEventListener("dragover", e => e.preventDefault());
       zone.addEventListener("drop", e => {
@@ -112,20 +80,23 @@
         const reader = new FileReader();
         reader.onload = function(ev) {
           productList[i].image = ev.target.result;
-          zone.innerHTML = `<img src="${productList[i].image}">`;
+          renderTable();
         };
         reader.readAsDataURL(file);
       });
 
-      // Löschen
       tr.querySelector(".delete").addEventListener("click", () => {
         productList.splice(i, 1);
+        renderTable();
+      });
+
+      tr.querySelector(".generate").addEventListener("click", () => {
+        productList[i].sku = "SKU-" + Math.random().toString(36).substring(2, 8).toUpperCase();
         renderTable();
       });
     });
   }
 
-  // Neue Zeile hinzufügen
   document.getElementById("addRowBtn").addEventListener("click", () => {
     productList.push({
       status: "Entwurf",
@@ -144,29 +115,14 @@
     renderTable();
   });
 
-  // CSV Export
   document.getElementById("exportBtn").addEventListener("click", () => {
-    let csv = ["Status,Titel,Beschreibung,Anbieter,Typ,Kollektionen,Tags,Preis,SKU,EAN,Bestand,Bild"];
-    const rows = tbody.querySelectorAll("tr");
-    rows.forEach((row, i) => {
-      const cells = row.querySelectorAll("td");
-      const imageCell = row.querySelector("img");
+    let csv = ["STATUS,TITEL,BESCHREIBUNG,ANBIETER,TYP,KOLLEKTIONEN,TAGS,PREIS,SKU,EAN,BESTAND,BILD"];
+    productList.forEach(p => {
       csv.push([
-        cells[0].innerText,
-        cells[1].innerText,
-        cells[2].innerText,
-        cells[3].innerText,
-        cells[4].innerText,
-        cells[5].innerText,
-        cells[6].innerText,
-        cells[7].innerText,
-        cells[8].innerText,
-        cells[9].innerText,
-        cells[10].innerText,
-        imageCell ? "Bild vorhanden" : ""
+        p.status, p.title, p.description, p.provider, p.type, p.collections,
+        p.tags, p.price, p.sku, p.ean, p.stock, p.image ? "Bild vorhanden" : ""
       ].join(","));
     });
-
     const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
     const link = document.createElement("a");
     link.setAttribute("href", csvContent);
@@ -176,10 +132,11 @@
     document.body.removeChild(link);
   });
 
-  // Logout
+  document.getElementById("bulkImportBtn").addEventListener("click", () => {
+    alert("Bulk Import ist noch nicht aktiviert.");
+  });
+
   document.getElementById("logoutBtn").addEventListener("click", () => {
-    localStorage.removeItem("loggedInUser");
-    localStorage.removeItem("userRole");
     alert("Du wurdest abgemeldet.");
     window.location.href = "login.html";
   });
