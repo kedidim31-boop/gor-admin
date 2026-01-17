@@ -11,6 +11,7 @@
     border: 1px solid rgba(255,255,255,0.08);
     background: rgba(255,255,255,0.02);
     box-shadow: 0 0 18px rgba(255,211,0,0.15);
+    margin-bottom: 20px;
 }
 
 /* BASE TABLE */
@@ -18,7 +19,7 @@
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
-    color: #fff;
+    color: var(--color-text);
 }
 
 /* HEADER */
@@ -34,6 +35,7 @@
     color: var(--color-primary);
     text-shadow: var(--glow-primary);
     border-bottom: 1px solid rgba(255,255,255,0.12);
+    letter-spacing: 0.5px;
 }
 
 /* BODY */
@@ -41,18 +43,19 @@
     padding: 12px 14px;
     border-bottom: 1px solid rgba(255,255,255,0.06);
     font-size: 14px;
-    color: #fff;
-    transition: background 0.25s ease;
+    color: var(--color-text);
+    transition: background 0.25s ease, color 0.25s ease;
 }
 
 /* ROW HOVER */
 .data-table tr:hover td {
     background: rgba(255,255,255,0.04);
+    color: var(--color-primary);
 }
 
 /* STRIPED ROWS */
 .data-table tr:nth-child(even) td {
-    background: rgba(255,255,255,0.02);
+    background: rgba(255,255,255,0.015);
 }
 
 /* ACTIVE ROW */
@@ -80,6 +83,7 @@
 
 .audit-table tr:hover td {
     background: rgba(255,211,0,0.08);
+    color: var(--color-warning);
 }
 
 /* PRODUCT LIST TABLE */
@@ -90,4 +94,18 @@
 
 .product-table tr:hover td {
     background: rgba(0,207,255,0.08);
+    color: var(--color-info);
+}
+
+/* SUCCESS / ERROR STATES */
+.data-table tr.success td {
+    background: rgba(0,255,157,0.12);
+    color: var(--color-success);
+    font-weight: 600;
+}
+
+.data-table tr.error td {
+    background: rgba(255,59,59,0.12);
+    color: var(--color-danger);
+    font-weight: 600;
 }
