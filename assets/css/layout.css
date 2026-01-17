@@ -88,6 +88,30 @@ th {
   color: #ffd700;
 }
 
+/* ===== Dropzones für Bilder ===== */
+.dropzone {
+  border: 2px dashed #ffd700;
+  padding: 0.5rem;
+  text-align: center;
+  color: #ffd700;
+  background-color: #191833;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropzone:hover {
+  background-color: #222244;
+  color: #fff;
+}
+
+.dropzone img {
+  max-width: 80px;
+  border: 2px solid #ffd700;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+}
+
 /* ===== Cards (Dashboard, Login) ===== */
 .card, .login-card {
   background-color: #111827;
