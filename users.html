@@ -29,6 +29,9 @@
       <label>E-Mail</label>
       <input type="email" name="email" required>
 
+      <label>Passwort</label>
+      <input type="password" name="password" required>
+
       <label>Rolle</label>
       <select name="role" required>
         <option value="admin">Administrator</option>
@@ -56,18 +59,7 @@
           <th>Aktionen</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>admin</td>
-          <td>admin@gor.com</td>
-          <td>admin</td>
-          <td>Aktiv</td>
-          <td>
-            <button class="btn edit">✏️ Edit</button>
-            <button class="btn delete">🗑️ Delete</button>
-          </td>
-        </tr>
-      </tbody>
+      <tbody></tbody>
     </table>
   </main>
 
@@ -81,6 +73,9 @@
 
         <label>E-Mail</label>
         <input type="email" name="editEmail" required>
+
+        <label>Passwort</label>
+        <input type="password" name="editPassword" required>
 
         <label>Rolle</label>
         <select name="editRole" required>
@@ -124,7 +119,7 @@
 
     // Benutzerliste aus localStorage laden
     let users = JSON.parse(localStorage.getItem("userList")) || [
-      { username: "admin", email: "admin@gor.com", role: "admin", status: "Aktiv" }
+      { username: "admin", email: "admin@gor.com", password: "1234", role: "admin", status: "Aktiv" }
     ];
 
     const tbody = document.querySelector("#userTable tbody");
@@ -154,6 +149,7 @@
       const newUser = {
         username: this.username.value,
         email: this.email.value,
+        password: this.password.value,
         role: this.role.value,
         status: this.status.value
       };
@@ -173,6 +169,7 @@
         currentUser = userObj;
         document.querySelector('[name="editUsername"]').value = userObj.username;
         document.querySelector('[name="editEmail"]').value = userObj.email;
+        document.querySelector('[name="editPassword"]').value = userObj.password;
         document.querySelector('[name="editRole"]').value = userObj.role;
         document.querySelector('[name="editStatus"]').value = userObj.status;
         modal.style.display = 'flex';
@@ -193,6 +190,7 @@
       if(currentUser) {
         currentUser.username = this.editUsername.value;
         currentUser.email = this.editEmail.value;
+        currentUser.password = this.editPassword.value;
         currentUser.role = this.editRole.value;
         currentUser.status = this.editStatus.value;
         localStorage.setItem("userList", JSON.stringify(users));
