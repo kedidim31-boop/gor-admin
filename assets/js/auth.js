@@ -11,7 +11,7 @@ function getUsers() {
     const stored = localStorage.getItem("gor_users");
 
     if (!stored) {
-        // Default Benutzer (falls keine gespeichert sind)
+        // Standard-Benutzer (falls keine gespeichert sind)
         return [
             { username: "admin", password: "admin", role: "admin" },
             { username: "mitarbeiter", password: "1234", role: "staff" }
@@ -50,6 +50,8 @@ function login(username, password) {
     const user = users.find(u => u.username === username && u.password === password);
 
     if (!user) {
+        alert("Login fehlgeschlagen – bitte überprüfe deine Eingaben.");
+        logAudit("login_fail", `Login fehlgeschlagen für Benutzer: ${username}`);
         return { success: false };
     }
 
@@ -59,9 +61,7 @@ function login(username, password) {
         loginTime: Date.now()
     });
 
-    if (typeof addAuditEntry === "function") {
-        addAuditEntry("login", `Benutzer ${user.username} hat sich eingeloggt`);
-    }
+    logAudit("login_success", `Benutzer ${user.username} hat sich eingeloggt`);
 
     return { success: true, role: user.role };
 }
@@ -73,8 +73,8 @@ function login(username, password) {
 function logout() {
     const session = getSession();
 
-    if (session && typeof addAuditEntry === "function") {
-        addAuditEntry("logout", `Benutzer ${session.user} hat sich ausgeloggt`);
+    if (session) {
+        logAudit("logout", `Benutzer ${session.user} hat sich ausgeloggt`);
     }
 
     clearSession();
@@ -88,6 +88,7 @@ function logout() {
 function requireLogin() {
     const session = getSession();
     if (!session || !session.user) {
+        alert("Bitte melde dich zuerst an.");
         window.location.href = "index.html";
     }
 }
@@ -99,6 +100,7 @@ function requireLogin() {
 function requireRole(role) {
     const session = getSession();
     if (!session || session.role !== role) {
+        alert("Du hast keine Berechtigung für diesen Bereich.");
         window.location.href = "index.html";
     }
 }
@@ -108,9 +110,7 @@ function requireRole(role) {
    HEADER AVATAR + DROPDOWN
    ========================================================= */
 
-/* ---------------------------------------------------------
-   Avatar Initialen aus Login generieren
-   --------------------------------------------------------- */
+/* Avatar Initialen aus Login generieren */
 function loadUserAvatar() {
     const session = getSession();
     if (!session || !session.user) return;
@@ -121,10 +121,7 @@ function loadUserAvatar() {
     avatar.textContent = session.user.charAt(0).toUpperCase();
 }
 
-
-/* ---------------------------------------------------------
-   Dropdown öffnen/schließen
-   --------------------------------------------------------- */
+/* Dropdown öffnen/schließen */
 function toggleUserDropdown() {
     const menu = document.getElementById("user-dropdown");
     if (!menu) return;
@@ -132,17 +129,13 @@ function toggleUserDropdown() {
     menu.classList.toggle("show");
 }
 
-
-/* ---------------------------------------------------------
-   Dropdown schließen, wenn man außerhalb klickt
-   --------------------------------------------------------- */
+/* Dropdown schließen, wenn man außerhalb klickt */
 document.addEventListener("click", function (event) {
     const dropdown = document.getElementById("user-dropdown");
     const avatar = document.querySelector(".header-user");
 
     if (!dropdown || !avatar) return;
 
-    // Wenn Klick NICHT auf Avatar oder Dropdown → schließen
     if (!avatar.contains(event.target)) {
         dropdown.classList.remove("show");
     }
