@@ -8,7 +8,6 @@
    --------------------------------------------------------- */
 function animateKPI(elementId, targetValue, duration = 900) {
     const element = document.getElementById(elementId);
-
     if (!element) return;
 
     let start = 0;
@@ -21,7 +20,7 @@ function animateKPI(elementId, targetValue, duration = 900) {
         if (start >= targetValue) {
             clearInterval(counter);
 
-            // Optional: kleiner Neon-Pulse am Ende
+            // Neon-Pulse Effekt am Ende
             element.style.textShadow = "0 0 14px rgba(255, 211, 0, 0.55)";
             setTimeout(() => {
                 element.style.textShadow = "";
@@ -34,29 +33,25 @@ function animateKPI(elementId, targetValue, duration = 900) {
    KPI LADEN
    --------------------------------------------------------- */
 function loadKPI() {
-
     /* ------------------------------
        PRODUKTE
        ------------------------------ */
     let products = JSON.parse(localStorage.getItem("gor_products") || "[]");
     animateKPI("kpi-products", products.length);
 
-
     /* ------------------------------
        BENUTZER
        ------------------------------ */
     let users = JSON.parse(localStorage.getItem("gor_users") || "[]");
 
-    // Falls keine Benutzer gespeichert sind → Default Users aus auth.js
+    // Fallback: Default Users aus auth.js
     if (users.length === 0) {
         users = [
             { username: "admin", password: "admin", role: "admin" },
             { username: "mitarbeiter", password: "1234", role: "staff" }
         ];
     }
-
     animateKPI("kpi-users", users.length);
-
 
     /* ------------------------------
        AUDIT LOG
@@ -64,3 +59,10 @@ function loadKPI() {
     let audit = JSON.parse(localStorage.getItem("gor_audit") || "[]");
     animateKPI("kpi-audit", audit.length);
 }
+
+/* ---------------------------------------------------------
+   INIT
+   --------------------------------------------------------- */
+document.addEventListener("DOMContentLoaded", () => {
+    loadKPI();
+});
