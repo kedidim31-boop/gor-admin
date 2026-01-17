@@ -7,8 +7,8 @@
 html, body {
     margin: 0;
     padding: 0;
-    background: #0a0a12;
-    color: #fff;
+    background: var(--color-bg-dark);
+    color: var(--color-text);
     font-family: 'Segoe UI', 'Roboto', sans-serif;
     height: 100%;
     overflow-x: hidden;
@@ -21,6 +21,7 @@ html, body {
     width: calc(100% - 240px);
     min-height: 100vh;
     box-sizing: border-box;
+    transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
 /* PAGE HEADER */
@@ -35,6 +36,7 @@ html, body {
     margin: 0;
     font-size: 26px;
     font-weight: 700;
+    text-shadow: var(--glow-primary);
 }
 
 /* HEADER USER */
@@ -50,7 +52,7 @@ html, body {
     width: 36px;
     height: 36px;
     border-radius: 999px;
-    background: linear-gradient(135deg, #ffd300, #ff7b00);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,9 +76,10 @@ html, body {
 .header-dropdown a {
     display: block;
     padding: 10px 14px;
-    color: #fff;
+    color: var(--color-text);
     font-size: 14px;
     text-decoration: none;
+    transition: background 0.25s ease;
 }
 
 .header-dropdown a:hover {
@@ -148,6 +151,9 @@ html, body {
     max-width: 360px;
     padding: 30px;
     text-align: center;
+    background: var(--color-bg-light);
+    border-radius: 12px;
+    box-shadow: var(--shadow-soft);
 }
 
 /* PRODUCT PREVIEW */
@@ -191,8 +197,12 @@ html, body {
 
     .sidebar {
         position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
         transform: translateX(-100%);
-        transition: 0.3s ease;
+        transition: transform 0.3s ease;
+        z-index: 100;
     }
 
     body.sidebar-open .sidebar {
