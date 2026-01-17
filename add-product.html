@@ -46,6 +46,15 @@
       margin-bottom: 1.5rem;
       cursor: pointer;
     }
+    .preview {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .preview img {
+      max-width: 200px;
+      border: 2px solid #ffd700;
+      border-radius: 4px;
+    }
     .btn-save {
       background-color: #ffd700;
       color: #000;
@@ -101,10 +110,13 @@
 
       <label>Bilder</label>
       <div class="dropzone" id="dropzone">📁 Bilder hier ablegen oder klicken</div>
+      <input type="file" id="imageInput" accept="image/*" class="hidden">
+      <div class="preview" id="preview"></div>
 
       <button type="submit" class="btn-save">✅ Produkt speichern</button>
     </form>
   </main>
+
 <script>
   // Zugriffsschutz
   const user = localStorage.getItem("loggedInUser");
@@ -119,13 +131,35 @@
   }
 
   if (role === "admin") {
-    document.getElementById("userNav").style.display = "inline-block";
+    const userNav = document.getElementById("userNav");
+    if(userNav) userNav.style.display = "inline-block";
   }
 
   if (role === "editor") {
     document.getElementById("status").disabled = true;
     document.getElementById("collections").disabled = true;
   }
+
+  let base64Image = "";
+
+  // Dropzone Klick → Datei auswählen
+  const dropzone = document.getElementById("dropzone");
+  const imageInput = document.getElementById("imageInput");
+  const preview = document.getElementById("preview");
+
+  dropzone.addEventListener("click", () => imageInput.click());
+
+  imageInput.addEventListener("change", () => {
+    const file = imageInput.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      base64Image = e.target.result;
+      preview.innerHTML = `<img src="${base64Image}" alt="Produktbild">`;
+    };
+    reader.readAsDataURL(file);
+  });
 
   // Produkt speichern
   document.getElementById("productForm").addEventListener("submit", function(e) {
@@ -143,7 +177,7 @@
       sku: document.getElementById("sku").value,
       ean: document.getElementById("ean").value,
       stock: document.getElementById("stock").value,
-      image: "📁" // Platzhalter für späteren Upload
+      image: base64Image
     };
 
     const productList = JSON.parse(localStorage.getItem("productList")) || [];
@@ -155,17 +189,15 @@
   });
 
   // Logout
-  document.getElementById("logoutBtn").addEventListener("click", () => {
-    localStorage.removeItem("loggedInUser");
-    localStorage.removeItem("userRole");
-    alert("Du wurdest abgemeldet.");
-    window.location.href = "login.html";
-  });
-
-  // Dropzone (Platzhalter)
-  document.getElementById("dropzone").addEventListener("click", () => {
-    alert("Bild-Upload ist vorbereitet – du kannst später Drag & Drop aktivieren.");
-  });
+  const logoutBtn = document.getElementById("logoutBtn");
+  if(logoutBtn){
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("loggedInUser");
+      localStorage.removeItem("userRole");
+      alert("Du wurdest abgemeldet.");
+      window.location.href = "login.html";
+    });
+  }
 </script>
 </body>
 </html>
