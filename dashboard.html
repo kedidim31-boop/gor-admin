@@ -12,11 +12,6 @@
 
 <body data-page="dashboard" onload="requireRole('admin'); initPage(); loadKPI();">
 
-    <!-- HOLOGRAFISCHER BACKGROUND (wie Produktverwaltung) -->
-    <div id="dash-grid"></div>
-    <div id="dash-scanlines"></div>
-    <div id="dash-noise"></div>
-
     <!-- SIDEBAR -->
     <div class="sidebar">
         <a class="nav-item active" href="dashboard.html"><span class="sidebar-icon">📊</span> Dashboard</a>
@@ -29,13 +24,12 @@
     <!-- MAIN CONTENT -->
     <div class="dashboard-content fade-in">
 
-        <!-- HEADER (wie Produktverwaltung) -->
+        <!-- HEADER -->
         <div class="page-header">
-            <h1>Dashboard</h1>
+            <h1 class="header-title">Administrationsübersicht</h1>
 
             <div class="header-user" onclick="toggleUserDropdown()">
                 <div class="header-avatar">A</div>
-
                 <div class="header-dropdown" id="user-dropdown">
                     <a href="settings.html">Profil & Einstellungen</a>
                     <a href="audit-log.html">Audit Log</a>
@@ -44,27 +38,30 @@
             </div>
         </div>
 
-        <!-- KPI GRID (GOR Produkteditor Style) -->
+        <!-- KPI GRID -->
         <div class="kpi-grid">
 
             <div class="kpi-card">
-                <h3>Gesamtprodukte</h3>
+                <span class="kpi-icon">🛒</span>
+                <div class="kpi-title">Gesamtprodukte</div>
                 <div class="kpi-value" id="kpi-products">–</div>
             </div>
 
             <div class="kpi-card">
-                <h3>Benutzer</h3>
+                <span class="kpi-icon">👤</span>
+                <div class="kpi-title">Benutzer</div>
                 <div class="kpi-value" id="kpi-users">–</div>
             </div>
 
             <div class="kpi-card">
-                <h3>Audit‑Einträge</h3>
+                <span class="kpi-icon">📜</span>
+                <div class="kpi-title">Audit‑Einträge</div>
                 <div class="kpi-value" id="kpi-audit">–</div>
             </div>
 
         </div>
 
-        <!-- MODULE GRID (angepasst an Produktverwaltung Cards) -->
+        <!-- MODULE GRID -->
         <div class="module-grid mt-20">
 
             <div class="card module-card">
@@ -98,19 +95,5 @@
     <script src="assets/js/state.js"></script>
     <script src="assets/js/auth.js"></script>
     <script src="assets/js/kpi.js"></script>
-
-    <script>
-        // Parallax für Header (beibehalten)
-        document.addEventListener("mousemove", e => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 10;
-            const y = (e.clientY / window.innerHeight - 0.5) * 10;
-
-            const header = document.querySelector(".page-header");
-            header.style.setProperty("--px", x + "px");
-            header.style.setProperty("--py", y + "px");
-            header.classList.add("parallax");
-        });
-    </script>
-
 </body>
 </html>
