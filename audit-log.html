@@ -12,6 +12,11 @@
 
 <body data-page="audit-log" onload="requireRole('admin'); initPage(); loadAuditLog();">
 
+    <!-- ULTRA CYBER HOLOGRAPHIC BACKGROUND -->
+    <div id="audit-grid"></div>
+    <div id="audit-scanlines"></div>
+    <div id="audit-noise"></div>
+
     <!-- SIDEBAR -->
     <div class="sidebar">
         <a class="nav-item" href="dashboard.html"><span class="sidebar-icon">📊</span> Dashboard</a>
@@ -26,7 +31,7 @@
 
         <!-- HEADER -->
         <div class="page-header">
-            <h1 class="header-title">Audit‑Protokolle</h1>
+            <h1 class="header-title">Audit‑Forensics Terminal</h1>
 
             <div class="header-user" onclick="toggleUserDropdown()">
                 <div class="header-avatar">A</div>
@@ -47,17 +52,17 @@
 
                 <div>
                     <label>Benutzer</label>
-                    <input type="text" id="filter-user" placeholder="z. B. admin">
+                    <input type="text" id="filter-user" placeholder="z. B. admin" oninput="applyAuditFilter()">
                 </div>
 
                 <div>
                     <label>Aktion</label>
-                    <input type="text" id="filter-action" placeholder="z. B. product_save">
+                    <input type="text" id="filter-action" placeholder="z. B. product_save" oninput="applyAuditFilter()">
                 </div>
 
                 <div>
                     <label>Datum</label>
-                    <input type="date" id="filter-date">
+                    <input type="date" id="filter-date" onchange="applyAuditFilter()">
                 </div>
 
                 <div>
@@ -68,12 +73,18 @@
             </div>
         </div>
 
+        <!-- TIMELINE (ULTRA CYBER) -->
+        <div class="card mb-20">
+            <h2>Timeline</h2>
+            <div class="audit-timeline"></div>
+        </div>
+
         <!-- AUDIT TABLE -->
         <div class="card">
             <h2>Protokolle</h2>
 
             <div class="table-wrapper">
-                <table class="data-table">
+                <table class="data-table audit-table">
                     <thead>
                         <tr>
                             <th>Zeitpunkt</th>
@@ -83,7 +94,7 @@
                         </tr>
                     </thead>
 
-                    <!-- WICHTIG: Der Body bleibt leer, JS rendert Icons + Badges -->
+                    <!-- JS rendert hier die Ultra‑Cyber Rows -->
                     <tbody id="audit-table"></tbody>
                 </table>
             </div>
