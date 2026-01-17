@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gaming of Republic – Login</title>
+  <link rel="stylesheet" href="assets/css/layout.css">
+</head>
+<body>
+  <main class="content login-container">
+    <div class="login-card">
+      <h1 class="logo">🕹️ Gaming of Republic</h1>
+      <h2>Login</h2>
+
+      <!-- Login Formular -->
+      <form id="loginForm">
+        <label>Benutzername</label>
+        <input type="text" name="username" placeholder="Dein Benutzername" required>
+
+        <label>Passwort</label>
+        <input type="password" name="password" placeholder="********" required>
+
+        <button type="submit" class="btn">🔑 Anmelden</button>
+      </form>
+
+      <!-- Abmelden Button (wird nur angezeigt, wenn eingeloggt) -->
+      <button id="logoutBtn" class="btn delete" style="display:none;">🚪 Abmelden</button>
+
+      <p class="register-link">Noch kein Konto? <a href="register.html">Registrieren</a></p>
+    </div>
+  </main>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // Prüfen ob bereits eingeloggt
+    if(localStorage.getItem("loggedInUser")) {
+      loginForm.style.display = "none"; // Login-Formular ausblenden
+      logoutBtn.style.display = "inline-block"; // Logout anzeigen
+    }
+
+    // Login Logik mit userList aus localStorage
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = this.username.value.trim();
+      const password = this.password.value.trim();
+
+      // Benutzerliste laden (von users.html gespeichert)
+      let users = JSON.parse(localStorage.getItem("userList")) || [];
+
+      // Benutzer suchen
+      const foundUser = users.find(u => u.username === username && u.password === password);
+
+      if(foundUser) {
+        localStorage.setItem("loggedInUser", foundUser.username);
+        localStorage.setItem("userRole", foundUser.role);
+        alert("Login erfolgreich als " + foundUser.role + "!");
+        window.location.href = "index.html"; // Weiterleitung zum Dashboard
+      } else {
+        alert("Ungültige Zugangsdaten!");
+      }
+    });
+
+    // Logout Logik
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem("loggedInUser");
+      localStorage.removeItem("userRole");
+      alert("Du wurdest abgemeldet.");
+      window.location.href = "login.html"; // zurück zur Login-Seite
+    });
+  </script>
+</body>
+</html>

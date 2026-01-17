@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gaming of Republic – Benutzerverwaltung</title>
+  <link rel="stylesheet" href="assets/css/layout.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">🕹️ Gaming of Republic</div>
+    <ul>
+      <li><a href="index.html">Dashboard</a></li>
+      <li><a href="add-product.html">Neues Produkt</a></li>
+      <li><a href="products.html">Produkte</a></li>
+      <li><a href="users.html" class="active">Benutzerverwaltung</a></li>
+      <li><button id="logoutBtn" class="btn delete">🚪 Abmelden</button></li>
+    </ul>
+  </nav>
+
+  <main class="content">
+    <h1>Benutzerverwaltung</h1>
+
+    <!-- Formular für neuen Benutzer -->
+    <form id="userForm">
+      <label>Benutzername</label>
+      <input type="text" name="username" required>
+
+      <label>E-Mail</label>
+      <input type="email" name="email" required>
+
+      <label>Rolle</label>
+      <select name="role" required>
+        <option value="admin">Administrator</option>
+        <option value="editor">Editor</option>
+        <option value="viewer">Viewer</option>
+      </select>
+
+      <label>Status</label>
+      <select name="status" required>
+        <option value="Aktiv">Aktiv</option>
+        <option value="Entwurf">Entwurf</option>
+      </select>
+
+      <button type="submit" class="btn">➕ Benutzer hinzufügen</button>
+    </form>
+
+    <!-- Tabelle mit Benutzern -->
+    <table class="product-table" id="userTable">
+      <thead>
+        <tr>
+          <th>Benutzername</th>
+          <th>E-Mail</th>
+          <th>Rolle</th>
+          <th>Status</th>
+          <th>Aktionen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>admin</td>
+          <td>admin@gor.com</td>
+          <td>admin</td>
+          <td>Aktiv</td>
+          <td>
+            <button class="btn edit">✏️ Edit</button>
+            <button class="btn delete">🗑️ Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+
+  <!-- Edit-Formular als Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <h2>Benutzer bearbeiten</h2>
+      <form id="editForm">
+        <label>Benutzername</label>
+        <input type="text" name="editUsername" required>
+
+        <label>E-Mail</label>
+        <input type="email" name="editEmail" required>
+
+        <label>Rolle</label>
+        <select name="editRole" required>
+          <option value="admin">Administrator</option>
+          <option value="editor">Editor</option>
+          <option value="viewer">Viewer</option>
+        </select>
+
+        <label>Status</label>
+        <select name="editStatus" required>
+          <option value="Aktiv">Aktiv</option>
+          <option value="Entwurf">Entwurf</option>
+        </select>
+
+        <button type="submit" class="btn">💾 Änderungen speichern</button>
+        <button type="button" class="btn delete" id="closeModal">❌ Abbrechen</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Zugriffsschutz: nur Admin darf Benutzerverwaltung öffnen
+    const loggedUser = localStorage.getItem("loggedInUser");
+    const loggedRole = localStorage.getItem("userRole");
+
+    if(!loggedUser) {
+      window.location.href = "login.html";
+    } else if(loggedRole !== "admin") {
+      alert("Nur Administratoren dürfen die Benutzerverwaltung öffnen!");
+      window.location.href = "index.html";
+    }
+
+    // Logout-Funktion
+    const logoutBtn = document.getElementById("logoutBtn");
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("loggedInUser");
+      localStorage.removeItem("userRole");
+      alert("Du wurdest abgemeldet.");
+      window.location.href = "login.html";
+    });
+
+    // Benutzerliste aus localStorage laden
+    let users = JSON.parse(localStorage.getItem("userList")) || [
+      { username: "admin", email: "admin@gor.com", role: "admin", status: "Aktiv" }
+    ];
+
+    const tbody = document.querySelector("#userTable tbody");
+
+    function renderUsers() {
+      tbody.innerHTML = "";
+      users.forEach(u => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${u.username}</td>
+          <td>${u.email}</td>
+          <td>${u.role}</td>
+          <td>${u.status}</td>
+          <td>
+            <button class="btn edit">✏️ Edit</button>
+            <button class="btn delete">🗑️ Delete</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+        bindActions(tr, u);
+      });
+    }
+
+    // Benutzer hinzufügen
+    document.getElementById('userForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const newUser = {
+        username: this.username.value,
+        email: this.email.value,
+        role: this.role.value,
+        status: this.status.value
+      };
+      users.push(newUser);
+      localStorage.setItem("userList", JSON.stringify(users));
+      renderUsers();
+      this.reset();
+    });
+
+    // Modal & Edit Logik
+    const modal = document.getElementById('editModal');
+    const closeModalBtn = document.getElementById('closeModal');
+    let currentUser = null;
+
+    function bindActions(row, userObj) {
+      row.querySelector('.edit').addEventListener('click', () => {
+        currentUser = userObj;
+        document.querySelector('[name="editUsername"]').value = userObj.username;
+        document.querySelector('[name="editEmail"]').value = userObj.email;
+        document.querySelector('[name="editRole"]').value = userObj.role;
+        document.querySelector('[name="editStatus"]').value = userObj.status;
+        modal.style.display = 'flex';
+      });
+
+      row.querySelector('.delete').addEventListener('click', () => {
+        if(confirm("Willst du diesen Benutzer wirklich löschen?")) {
+          users = users.filter(u => u !== userObj);
+          localStorage.setItem("userList", JSON.stringify(users));
+          renderUsers();
+        }
+      });
+    }
+
+    // Änderungen speichern
+    document.getElementById('editForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if(currentUser) {
+        currentUser.username = this.editUsername.value;
+        currentUser.email = this.editEmail.value;
+        currentUser.role = this.editRole.value;
+        currentUser.status = this.editStatus.value;
+        localStorage.setItem("userList", JSON.stringify(users));
+        renderUsers();
+      }
+      modal.style.display = 'none';
+    });
+
+    // Modal schließen
+    closeModalBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    // Initial render
+    renderUsers();
+  </script>
+</body>
+</html>
