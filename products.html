@@ -15,7 +15,6 @@
       <li><a href="products.html" class="active">Produkte</a></li>
       <li id="userNav" style="display:none;"><a href="users.html">Benutzerverwaltung</a></li>
       <li><button id="exportBtn" class="btn">CSV Export</button></li>
-      <li><input type="file" id="importFile" accept=".csv" class="btn"></li>
       <li><button id="logoutBtn" class="btn delete">🚪 Abmelden</button></li>
     </ul>
   </nav>
@@ -118,35 +117,6 @@
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  });
-
-  document.getElementById("importFile").addEventListener("change", function(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      const rows = event.target.result.split("\n").map(r => r.split(","));
-      rows.slice(1).forEach(row => {
-        if(row.length < 11) return;
-        productList.push({
-          status: row[0],
-          title: row[1],
-          description: row[2],
-          provider: row[3],
-          type: row[4],
-          collections: row[5],
-          tags: row[6],
-          price: row[7],
-          sku: row[8],
-          ean: row[9],
-          stock: row[10],
-          image: "" // CSV Import ohne Bild
-        });
-      });
-      localStorage.setItem("productList", JSON.stringify(productList));
-      renderTable();
-    };
-    reader.readAsText(file);
   });
 
   document.getElementById("logoutBtn").addEventListener("click", () => {
