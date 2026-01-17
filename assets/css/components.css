@@ -13,11 +13,14 @@ button {
     transition: 0.25s;
     position: relative;
     overflow: hidden;
+    color: #fff;
+    background: rgba(255,255,255,0.05);
 }
 
 button.primary {
     background: var(--color-primary);
     color: #000;
+    font-weight: 600;
 }
 
 button.danger {
@@ -56,6 +59,10 @@ button:hover {
     box-shadow: 0 0 12px var(--color-primary);
 }
 
+button:active {
+    transform: scale(0.96);
+}
+
 /* CARDS */
 .card {
     background: rgba(255,255,255,0.03);
@@ -67,7 +74,7 @@ button:hover {
 }
 
 /* INPUTS */
-input, select {
+input, select, textarea {
     width: 100%;
     padding: 12px 14px;
     border-radius: 8px;
@@ -78,7 +85,7 @@ input, select {
     transition: 0.2s;
 }
 
-input:focus {
+input:focus, select:focus, textarea:focus {
     border-color: var(--color-primary);
     box-shadow: 0 0 12px rgba(255,211,0,0.35);
 }
@@ -107,6 +114,7 @@ input:focus {
     position: fixed;
     inset: 0 auto 0 0;
     z-index: 20;
+    padding-top: 20px;
 }
 
 .nav-item {
@@ -118,6 +126,7 @@ input:focus {
     display: flex;
     align-items: center;
     gap: 10px;
+    color: #fff;
 }
 
 .nav-item:hover {
@@ -132,6 +141,7 @@ input:focus {
     font-weight: 700;
     box-shadow: 0 0 18px rgba(255,211,0,0.4);
 }
+
 /* =========================================================
    PRODUCT EDITOR – SHOPIFY STYLE × GOR CYBERPUNK
    ========================================================= */
@@ -271,8 +281,9 @@ input:focus {
     height: 280px;
     object-fit: cover;
 }
+
 /* =========================================================
-   RICH TEXT EDITOR (QUILL) – FINAL VERSION
+   RICH TEXT EDITOR (QUILL)
    ========================================================= */
 
 .editor-box {
@@ -307,6 +318,7 @@ input:focus {
     opacity: 1 !important;
     font-style: italic;
 }
+
 /* =========================================================
    AUDIT FORENSICS TERMINAL
    ========================================================= */
