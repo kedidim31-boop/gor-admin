@@ -27,7 +27,7 @@
 
 
 /* ---------------------------------------------------------
-   BUTTONS (mit Laser-Hover)
+   BUTTONS (Laser Hover)
    --------------------------------------------------------- */
 button {
     font-family: inherit;
@@ -36,7 +36,7 @@ button {
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: background 0.2s ease, transform 0.2s ease;
     position: relative;
     overflow: hidden;
 }
@@ -94,18 +94,14 @@ button:hover {
     border-radius: 8px;
     padding: 16px;
     margin-bottom: 20px;
+    box-shadow: 0 0 12px rgba(255,211,0,0.1);
 }
 
 
 /* =========================================================
-   GOR PRODUCT ADMIN – COMPONENTS EXTENDED
-   Modals, Tooltips, Badges, Panels, Toasts, Tabs
+   MODALS, TOOLTIPS, BADGES, PANELS, TABS, TOASTS
    ========================================================= */
 
-
-/* ---------------------------------------------------------
-   MODAL (Popup)
-   --------------------------------------------------------- */
 .modal-backdrop {
     position: fixed;
     inset: 0;
@@ -128,29 +124,6 @@ button:hover {
     animation: fadeIn 0.3s ease-out;
 }
 
-.modal h2 {
-    margin-top: 0;
-    color: var(--color-primary);
-    text-shadow: var(--glow-primary);
-    margin-bottom: 16px;
-}
-
-.modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 20px;
-}
-
-
-/* ---------------------------------------------------------
-   TOOLTIP
-   --------------------------------------------------------- */
-.tooltip {
-    position: relative;
-    cursor: help;
-}
-
 .tooltip:hover::after {
     content: attr(data-tip);
     position: absolute;
@@ -168,10 +141,6 @@ button:hover {
     z-index: 500;
 }
 
-
-/* ---------------------------------------------------------
-   BADGES
-   --------------------------------------------------------- */
 .badge {
     display: inline-block;
     padding: 4px 10px;
@@ -199,116 +168,8 @@ button:hover {
 }
 
 
-/* ---------------------------------------------------------
-   HUD PANEL
-   --------------------------------------------------------- */
-.hud-panel {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: 20px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.4);
-}
-
-.hud-panel h3 {
-    margin-top: 0;
-    color: var(--color-primary);
-    text-shadow: var(--glow-primary);
-}
-
-
-/* ---------------------------------------------------------
-   TABS
-   --------------------------------------------------------- */
-.tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.tab {
-    padding: 10px 16px;
-    border-radius: var(--radius);
-    background: rgba(255,255,255,0.06);
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.tab:hover {
-    background: rgba(255,255,255,0.1);
-}
-
-.tab.active {
-    background: var(--color-primary);
-    color: #000;
-    font-weight: 600;
-    box-shadow: var(--glow-primary);
-}
-
-
-/* ---------------------------------------------------------
-   TOAST NOTIFICATION
-   --------------------------------------------------------- */
-.toast-container {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.toast {
-    background: var(--color-bg-card);
-    border: 1px solid var(--color-border);
-    padding: 12px 16px;
-    border-radius: var(--radius);
-    box-shadow: var(--glow-primary);
-    animation: slideLeft 0.4s ease-out;
-}
-
-.toast.success {
-    border-color: var(--color-success);
-    text-shadow: var(--glow-success);
-}
-
-.toast.error {
-    border-color: var(--color-danger);
-    text-shadow: var(--glow-danger);
-}
-
-
-/* ---------------------------------------------------------
-   DIVIDER LINE
-   --------------------------------------------------------- */
-.divider {
-    height: 1px;
-    background: var(--color-border);
-    margin: 20px 0;
-}
-
-
-/* ---------------------------------------------------------
-   ICON BUTTON
-   --------------------------------------------------------- */
-.icon-btn {
-    background: rgba(255,255,255,0.05);
-    border-radius: 6px;
-    padding: 6px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.icon-btn:hover {
-    background: rgba(255,255,255,0.12);
-    color: var(--color-primary);
-    text-shadow: var(--glow-primary);
-}
-
-
 /* =========================================================
-   HOLOGRAFISCHE SIDEBAR – GOR CYBER EDITION
+   HOLOGRAFISCHE SIDEBAR
    ========================================================= */
 .sidebar {
     background: rgba(0,0,0,0.35);
@@ -347,112 +208,7 @@ button:hover {
 
 
 /* =========================================================
-   DASHBOARD FUTURISTISCHER BACKGROUND
-   ========================================================= */
-#dash-grid {
-    position: fixed;
-    inset: 0;
-    background:
-        repeating-linear-gradient(
-            to right,
-            rgba(255,211,0,0.06) 0px,
-            rgba(255,211,0,0.06) 1px,
-            transparent 1px,
-            transparent 40px
-        ),
-        repeating-linear-gradient(
-            to bottom,
-            rgba(255,211,0,0.06) 0px,
-            rgba(255,211,0,0.06) 1px,
-            transparent 1px,
-            transparent 40px
-        );
-    transform: perspective(900px) rotateX(55deg);
-    transform-origin: top;
-    animation: dashGridPulse 5s infinite ease-in-out;
-    opacity: 0.18;
-    z-index: 0;
-}
-
-@keyframes dashGridPulse {
-    0% { opacity: 0.12; }
-    50% { opacity: 0.22; }
-    100% { opacity: 0.12; }
-}
-
-#dash-scanlines {
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.03) 0px,
-        rgba(255,255,255,0.03) 2px,
-        transparent 2px,
-        transparent 4px
-    );
-    pointer-events: none;
-    opacity: 0.25;
-    z-index: 1;
-}
-
-#dash-noise {
-    position: fixed;
-    inset: 0;
-    background: url('https://i.imgur.com/8QfQZ4C.png');
-    opacity: 0.06;
-    animation: dashNoise 0.25s infinite;
-    pointer-events: none;
-    z-index: 2;
-}
-
-@keyframes dashNoise {
-    0% { opacity: 0.04; }
-    50% { opacity: 0.10; }
-    100% { opacity: 0.04; }
-}
-
-
-/* =========================================================
-   KPI CARDS – CYBER HUD
-   ========================================================= */
-.kpi-card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 0 18px rgba(255,211,0,0.15);
-    transition: 0.25s;
-    position: relative;
-    overflow: hidden;
-}
-
-.kpi-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 0 25px rgba(255,211,0,0.35);
-}
-
-.kpi-card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        120deg,
-        transparent 0%,
-        rgba(255,211,0,0.12) 50%,
-        transparent 100%
-    );
-    opacity: 0;
-    transition: 0.4s;
-}
-
-.kpi-card:hover::after {
-    opacity: 1;
-}
-
-
-/* =========================================================
-   GOR PRODUCT EDITOR – PREMIUM UI UPGRADE
+   PRODUCT EDITOR – GRID
    ========================================================= */
 .editor-grid {
     display: grid;
@@ -466,6 +222,10 @@ button:hover {
     }
 }
 
+
+/* =========================================================
+   PRODUCT LIST ROWS
+   ========================================================= */
 .product-row {
     padding: 12px;
     background: rgba(255,255,255,0.04);
@@ -480,165 +240,10 @@ button:hover {
     box-shadow: 0 0 10px rgba(255,255,255,0.08);
 }
 
-.dropzone {
-    padding: 30px;
-    border: 2px dashed var(--color-primary);
-    border-radius: 10px;
-    text-align: center;
-    cursor: pointer;
-    transition: 0.2s;
-    background: rgba(255,255,255,0.03);
-}
-
-.dropzone:hover {
-    background: rgba(255,255,255,0.06);
-}
-
-.dropzone.dragover {
-    background: rgba(0, 255, 255, 0.12);
-    border-color: var(--color-primary);
-    box-shadow: 0 0 12px var(--color-primary);
-}
-
-.image-preview {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 15px;
-}
-
-.image-thumb {
-    position: relative;
-    width: 110px;
-    height: 110px;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid var(--color-border);
-    transition: 0.2s;
-    background: rgba(0,0,0,0.3);
-}
-
-.image-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.image-thumb:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 12px var(--color-primary);
-}
-
-.image-thumb button {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-}
-
-.image-thumb.dragging {
-    opacity: 0.4;
-    transform: scale(0.9);
-}
-
-.mini-thumb {
-    width: 42px;
-    height: 42px;
-    object-fit: cover;
-    border-radius: 6px;
-    border: 1px solid var(--color-border);
-    background: rgba(0,0,0,0.3);
-}
-
-.preview-box {
-    padding: 15px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 8px;
-    min-height: 80px;
-    white-space: pre-wrap;
-    border: 1px solid rgba(255,255,255,0.06);
-}
-
 
 /* =========================================================
-   GOR AUDIT LOG – PREMIUM TABLE UPGRADE
+   RICH TEXT EDITOR (QUILL)
    ========================================================= */
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-.data-table th {
-    text-align: left;
-    padding: 12px;
-    background: rgba(255,255,255,0.06);
-    border-bottom: 1px solid var(--color-border);
-    color: var(--color-primary);
-    text-shadow: var(--glow-primary);
-    font-size: 14px;
-}
-
-.data-table td {
-    padding: 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    font-size: 14px;
-}
-
-.data-table tr:hover {
-    background: rgba(255,255,255,0.05);
-    box-shadow: 0 0 12px rgba(255,255,255,0.08);
-    transform: translateX(4px);
-    transition: 0.2s;
-}
-
-.audit-icon {
-    font-size: 18px;
-    margin-right: 6px;
-    text-shadow: var(--glow-primary);
-}
-
-.audit-badge {
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 600;
-    display: inline-block;
-}
-
-.audit-save {
-    background: rgba(0,255,136,0.15);
-    color: var(--color-success);
-    text-shadow: var(--glow-success);
-}
-
-.audit-delete {
-    background: rgba(255,59,59,0.15);
-    color: var(--color-danger);
-    text-shadow: var(--glow-danger);
-}
-
-.audit-login {
-    background: rgba(0,180,255,0.15);
-    color: #00b4ff;
-    text-shadow: 0 0 6px #00b4ff;
-}
-
-.audit-system {
-    background: rgba(255,211,0,0.15);
-    color: var(--color-primary);
-    text-shadow: var(--glow-primary);
-}
-
-.audit-details {
-    opacity: 0.9;
-    font-size: 13px;
-}
-
-
-/* =========================================================
-   GOR RICH TEXT EDITOR – NEON DARK MODE
-   ========================================================= */
-
 .editor-box {
     background: rgba(255,255,255,0.03);
     border: 1px solid rgba(255,255,255,0.08);
@@ -649,7 +254,6 @@ button:hover {
     box-shadow: 0 0 12px rgba(255,211,0,0.15);
 }
 
-/* Quill Toolbar */
 .ql-toolbar {
     background: rgba(0,0,0,0.35);
     border: 1px solid rgba(255,255,255,0.08) !important;
@@ -659,11 +263,6 @@ button:hover {
     border-radius: 8px 8px 0 0;
 }
 
-.ql-toolbar button:hover {
-    filter: drop-shadow(0 0 6px var(--color-primary));
-}
-
-/* Quill Editor Area */
 .ql-container {
     border: 1px solid rgba(255,255,255,0.08) !important;
     border-top: none !important;
@@ -677,15 +276,10 @@ button:hover {
     padding: 16px !important;
 }
 
-.ql-editor.ql-blank::before {
-    color: rgba(255,255,255,0.25);
-}
-
 
 /* =========================================================
-   GOR IMAGE UPLOAD – DRAG & DROP + NEON GLOW
+   IMAGE UPLOAD – DRAG & DROP
    ========================================================= */
-
 .dropzone {
     padding: 30px;
     border: 2px dashed var(--color-primary);
@@ -708,7 +302,6 @@ button:hover {
     box-shadow: 0 0 18px var(--color-primary);
 }
 
-/* Image Preview Grid */
 .image-preview {
     display: flex;
     flex-wrap: wrap;
@@ -716,7 +309,6 @@ button:hover {
     margin-top: 15px;
 }
 
-/* Image Thumbnail */
 .image-thumb {
     position: relative;
     width: 110px;
@@ -739,7 +331,6 @@ button:hover {
     box-shadow: 0 0 14px var(--color-primary);
 }
 
-/* Delete Button */
 .image-thumb button {
     position: absolute;
     top: 4px;
@@ -749,7 +340,6 @@ button:hover {
     padding: 4px 6px;
     border-radius: 6px;
     cursor: pointer;
-    transition: 0.2s;
 }
 
 .image-thumb button:hover {
@@ -757,37 +347,60 @@ button:hover {
     box-shadow: 0 0 8px rgba(255,59,59,0.6);
 }
 
-/* Dragging State */
-.image-thumb.dragging {
-    opacity: 0.4;
-    transform: scale(0.9);
+
+/* =========================================================
+   LIVE PRODUKT VORSCHAU – SHOPIFY STYLE
+   ========================================================= */
+.product-preview {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255,211,0,0.15);
 }
 
-
-/* MINI THUMBNAILS */
-.mini-thumb {
-    width: 42px;
-    height: 42px;
-    object-fit: cover;
-    border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.12);
+.preview-images {
+    width: 280px;
+    min-height: 280px;
     background: rgba(0,0,0,0.3);
-    transition: 0.2s;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
 }
 
-.mini-thumb:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 10px var(--color-primary);
+#preview-image-slider img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
+.preview-info h3 {
+    margin: 0;
+    font-size: 24px;
+    color: var(--color-primary);
+    text-shadow: var(--glow-primary);
+}
 
-/* LIVE PREVIEW BOX */
-.preview-box {
-    padding: 15px;
+.preview-price {
+    font-size: 22px;
+    margin: 6px 0 10px;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255,211,0,0.4);
+}
+
+.preview-meta {
+    opacity: 0.8;
+    margin-bottom: 10px;
+}
+
+.preview-description {
+    margin-top: 15px;
+    padding: 12px;
     background: rgba(255,255,255,0.04);
     border-radius: 8px;
-    min-height: 80px;
-    white-space: pre-wrap;
     border: 1px solid rgba(255,255,255,0.06);
-    box-shadow: 0 0 10px rgba(255,211,0,0.15);
+    min-height: 80px;
 }
