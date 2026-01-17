@@ -1,206 +1,50 @@
 /* =========================================================
-   GOR PRODUCT ADMIN – PRODUKTVERWALTUNG (Neues System)
-   Mehrere Produkte, Liste, CSV Export, Auto-SKU, Bilder
+   GOR PRODUCT ADMIN – PRODUCT EDITOR LOGIC
    ========================================================= */
 
+let quill;
+let currentImages = [];
+let editingIndex = null;
+
 /* ---------------------------------------------------------
-   PRODUKTE LADEN & SPEICHERN
+   INIT EDITOR + DROPZONE
    --------------------------------------------------------- */
-function getProducts() {
-    try {
-        return JSON.parse(localStorage.getItem("gor_products")) || [];
-    } catch {
-        return [];
-    }
-}
+function initEditor() {
+    quill = new Quill('#editor-container', {
+        theme: 'snow',
+        placeholder: 'Produktbeschreibung eingeben...',
+        modules: {
+            toolbar: [
+                [{ header: [1, 2, false] }],
+                ['bold', 'italic', 'underline'],
+                [{ color: [] }, { background: [] }],
+                [{ align: [] }],
+                ['link', 'image'],
+                ['clean']
+            ]
+        }
+    });
 
-function saveProducts(list) {
-    localStorage.setItem("gor_products", JSON.stringify(list));
+    setupDropzone();
+
+    document.getElementById("product-name").addEventListener("input", generateSKU);
 }
 
 /* ---------------------------------------------------------
-   AUTO-SKU GENERATOR
+   SKU AUTO GENERATOR
    --------------------------------------------------------- */
 function generateSKU() {
-    const seed = parseInt(localStorage.getItem("gor_sku_seed") || "1000");
-    const newSKU = "GOR-" + seed;
-    return newSKU;
-}
-
-function incrementSKUSeed() {
-    const seed = parseInt(localStorage.getItem("gor_sku_seed") || "1000");
-    localStorage.setItem("gor_sku_seed", seed + 1);
+    const name = document.getElementById("product-name").value.trim();
+    const clean = name.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
+    document.getElementById("product-sku").value = "GOR-" + clean.substring(0, 8);
 }
 
 /* ---------------------------------------------------------
-   PRODUKT HINZUFÜGEN
+   DROPZONE
    --------------------------------------------------------- */
-function addProduct() {
-    const product = {
-        name: document.getElementById("product-name").value.trim(),
-        price: document.getElementById("product-price").value.trim(),
-        ean: document.getElementById("product-ean").value.trim(),
-        collections: document.getElementById("product-collections").value.trim(),
-        sku: document.getElementById("product-sku").value.trim(),
-        stock: document.getElementById("product-stock").value.trim(),
-        vendor: document.getElementById("product-vendor").value.trim(),
-        type: document.getElementById("product-type").value.trim(),
-        description: document.getElementById("product-description").value.trim(),
-        images: window.currentImages || []
-    };
+function setupDropzone() {
+    const dropzone = document.getElementById("image-dropzone");
 
-    if (!product.name) {
-        showToast("Produktname fehlt", "error");
-        return;
-    }
-
-    const list = getProducts();
-    list.push(product);
-    saveProducts(list);
-
-    incrementSKUSeed();
-
-    if (typeof addAuditEntry === "function") {
-        addAuditEntry("product_save", `Produkt "${product.name}" wurde hinzugefügt`);
-    }
-
-    showToast("Produkt hinzugefügt", "success");
-
-    clearProductForm();
-    renderProductList();
-}
-
-/* ---------------------------------------------------------
-   FORMULAR LEEREN
-   --------------------------------------------------------- */
-function clearProductForm() {
-    document.getElementById("product-name").value = "";
-    document.getElementById("product-price").value = "";
-    document.getElementById("product-ean").value = "";
-    document.getElementById("product-collections").value = "";
-    document.getElementById("product-sku").value = generateSKU();
-    document.getElementById("product-stock").value = "";
-    document.getElementById("product-vendor").value = "";
-    document.getElementById("product-type").value = "";
-    document.getElementById("product-description").value = "";
-
-    window.currentImages = [];
-    const preview = document.getElementById("image-preview");
-    if (preview) preview.innerHTML = "";
-}
-
-/* ---------------------------------------------------------
-   PRODUKTLISTE RENDERN
-   --------------------------------------------------------- */
-function renderProductList() {
-    const list = getProducts();
-    const container = document.getElementById("product-list");
-
-    if (!container) return;
-
-    if (list.length === 0) {
-        container.innerHTML = "<p>Keine Produkte vorhanden.</p>";
-        return;
-    }
-
-    container.innerHTML = "";
-
-    list.forEach((p, index) => {
-        container.innerHTML += `
-            <div class="flex-between mb-10 product-row">
-                <div>
-                    <strong>${p.name}</strong><br>
-                    <small>
-                        SKU: ${p.sku || "-"} |
-                        Bestand: ${p.stock || 0} |
-                        Typ: ${p.type || "-"} |
-                        Anbieter: ${p.vendor || "-"}
-                    </small>
-                </div>
-
-                <button class="danger" onclick="deleteProduct(${index})">Löschen</button>
-            </div>
-        `;
-    });
-}
-
-/* ---------------------------------------------------------
-   PRODUKT LÖSCHEN
-   --------------------------------------------------------- */
-function deleteProduct(index) {
-    const list = getProducts();
-    const removed = list[index];
-
-    list.splice(index, 1);
-    saveProducts(list);
-
-    if (typeof addAuditEntry === "function") {
-        addAuditEntry("product_delete", `Produkt "${removed?.name}" wurde gelöscht`);
-    }
-
-    renderProductList();
-    showToast("Produkt gelöscht", "success");
-}
-
-/* ---------------------------------------------------------
-   CSV EXPORT
-   --------------------------------------------------------- */
-function downloadCSV() {
-    const list = getProducts();
-
-    if (list.length === 0) {
-        showToast("Keine Produkte vorhanden", "error");
-        return;
-    }
-
-    const header = [
-        "Name",
-        "Preis",
-        "EAN",
-        "Kollektionen",
-        "SKU",
-        "Bestand",
-        "Anbieter",
-        "Typ",
-        "Beschreibung"
-    ];
-
-    const rows = list.map(p => [
-        p.name,
-        p.price,
-        p.ean,
-        p.collections,
-        p.sku,
-        p.stock,
-        p.vendor,
-        p.type,
-        (p.description || "").replace(/\n/g, " ")
-    ]);
-
-    let csv = header.join(",") + "\n";
-    rows.forEach(r => csv += r.join(",") + "\n");
-
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "produkte.csv";
-    a.click();
-
-    URL.revokeObjectURL(url);
-
-    showToast("CSV exportiert", "success");
-}
-
-/* ---------------------------------------------------------
-   BILDER – DRAG & DROP
-   --------------------------------------------------------- */
-window.currentImages = [];
-
-const dropzone = document.getElementById("image-dropzone");
-
-if (dropzone) {
     dropzone.addEventListener("dragover", e => {
         e.preventDefault();
         dropzone.classList.add("dragover");
@@ -214,8 +58,8 @@ if (dropzone) {
         e.preventDefault();
         dropzone.classList.remove("dragover");
 
-        const files = Array.from(e.dataTransfer.files);
-        handleImageUpload(files);
+        const files = [...e.dataTransfer.files];
+        handleImageFiles(files);
     });
 
     dropzone.addEventListener("click", () => {
@@ -224,23 +68,16 @@ if (dropzone) {
         input.accept = "image/*";
         input.multiple = true;
 
-        input.onchange = () => {
-            const files = Array.from(input.files);
-            handleImageUpload(files);
-        };
-
+        input.onchange = () => handleImageFiles([...input.files]);
         input.click();
     });
 }
 
-/* ---------------------------------------------------------
-   BILDER VERARBEITEN
-   --------------------------------------------------------- */
-function handleImageUpload(files) {
+function handleImageFiles(files) {
     files.forEach(file => {
         const reader = new FileReader();
-        reader.onload = e => {
-            window.currentImages.push(e.target.result);
+        reader.onload = () => {
+            currentImages.push(reader.result);
             renderImagePreview();
         };
         reader.readAsDataURL(file);
@@ -248,33 +85,115 @@ function handleImageUpload(files) {
 }
 
 /* ---------------------------------------------------------
-   BILDER ANZEIGEN
+   IMAGE PREVIEW
    --------------------------------------------------------- */
 function renderImagePreview() {
     const preview = document.getElementById("image-preview");
-    if (!preview) return;
-
     preview.innerHTML = "";
 
-    if (window.currentImages.length === 0) {
-        preview.innerHTML = `<p>Keine Bilder hochgeladen.</p>`;
-        return;
-    }
+    currentImages.forEach((src, index) => {
+        const div = document.createElement("div");
+        div.className = "image-thumb";
 
-    window.currentImages.forEach((img, index) => {
-        preview.innerHTML += `
-            <div class="image-thumb">
-                <img src="${img}">
-                <button class="danger small" onclick="removeImage(${index})">✕</button>
-            </div>
+        div.innerHTML = `
+            <img src="${src}">
+            <button onclick="removeImage(${index})">✖</button>
         `;
+
+        preview.appendChild(div);
+    });
+}
+
+function removeImage(index) {
+    currentImages.splice(index, 1);
+    renderImagePreview();
+}
+
+/* ---------------------------------------------------------
+   LOAD PRODUCT LIST
+   --------------------------------------------------------- */
+function loadProductList() {
+    const list = getProducts();
+    const container = document.getElementById("product-list");
+    container.innerHTML = "";
+
+    list.forEach((p, i) => {
+        const row = document.createElement("div");
+        row.className = "product-row";
+        row.onclick = () => loadProduct(i);
+
+        row.innerHTML = `
+            <strong>${p.name}</strong><br>
+            <span style="opacity:0.7">${p.sku}</span>
+        `;
+
+        container.appendChild(row);
     });
 }
 
 /* ---------------------------------------------------------
-   BILD LÖSCHEN
+   LOAD PRODUCT INTO FORM
    --------------------------------------------------------- */
-function removeImage(index) {
-    window.currentImages.splice(index, 1);
+function loadProduct(index) {
+    const p = getProducts()[index];
+    editingIndex = index;
+
+    document.getElementById("product-name").value = p.name;
+    document.getElementById("product-price").value = p.price;
+    document.getElementById("product-ean").value = p.ean;
+    document.getElementById("product-sku").value = p.sku;
+    document.getElementById("product-stock").value = p.stock;
+    document.getElementById("product-vendor").value = p.vendor;
+    document.getElementById("product-type").value = p.type;
+
+    quill.root.innerHTML = p.description;
+
+    currentImages = [...p.images];
+    renderImagePreview();
+}
+
+/* ---------------------------------------------------------
+   SAVE PRODUCT
+   --------------------------------------------------------- */
+function saveProduct() {
+    const product = {
+        name: document.getElementById("product-name").value.trim(),
+        price: parseFloat(document.getElementById("product-price").value),
+        ean: document.getElementById("product-ean").value.trim(),
+        sku: document.getElementById("product-sku").value.trim(),
+        stock: parseInt(document.getElementById("product-stock").value),
+        vendor: document.getElementById("product-vendor").value.trim(),
+        type: document.getElementById("product-type").value.trim(),
+        description: quill.root.innerHTML,
+        images: [...currentImages]
+    };
+
+    if (editingIndex === null) {
+        addProduct(product);
+    } else {
+        updateProduct(editingIndex, product);
+    }
+
+    clearProductForm();
+    loadProductList();
+}
+
+/* ---------------------------------------------------------
+   CLEAR FORM
+   --------------------------------------------------------- */
+function clearProductForm() {
+    editingIndex = null;
+
+    document.getElementById("product-name").value = "";
+    document.getElementById("product-price").value = "";
+    document.getElementById("product-ean").value = "";
+    document.getElementById("product-sku").value = "";
+    document.getElementById("product-stock").value = "";
+    document.getElementById("product-vendor").value = "";
+    document.getElementById("product-type").value = "";
+
+    quill.root.innerHTML = "";
+
+    currentImages = [];
     renderImagePreview();
 }
