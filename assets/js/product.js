@@ -7,7 +7,7 @@ let currentImages = [];
 let editingIndex = null;
 
 /* ---------------------------------------------------------
-   INIT EDITOR + DROPZONE
+   INIT EDITOR + DROPZONE + LIVE PREVIEW
    --------------------------------------------------------- */
 function initEditor() {
     quill = new Quill('#editor-container', {
@@ -25,8 +25,16 @@ function initEditor() {
         }
     });
 
+    quill.on('text-change', updatePreview);
+
     setupDropzone();
 
+    // Live update for all inputs
+    document.querySelectorAll(
+        "#product-name, #product-price, #product-ean, #product-sku, #product-stock, #product-vendor, #product-type"
+    ).forEach(el => el.addEventListener("input", updatePreview));
+
+    // SKU auto generator
     document.getElementById("product-name").addEventListener("input", generateSKU);
 }
 
@@ -37,6 +45,7 @@ function generateSKU() {
     const name = document.getElementById("product-name").value.trim();
     const clean = name.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
     document.getElementById("product-sku").value = "GOR-" + clean.substring(0, 8);
+    updatePreview();
 }
 
 /* ---------------------------------------------------------
@@ -57,9 +66,7 @@ function setupDropzone() {
     dropzone.addEventListener("drop", e => {
         e.preventDefault();
         dropzone.classList.remove("dragover");
-
-        const files = [...e.dataTransfer.files];
-        handleImageFiles(files);
+        handleImageFiles([...e.dataTransfer.files]);
     });
 
     dropzone.addEventListener("click", () => {
@@ -79,6 +86,7 @@ function handleImageFiles(files) {
         reader.onload = () => {
             currentImages.push(reader.result);
             renderImagePreview();
+            updatePreview();
         };
         reader.readAsDataURL(file);
     });
@@ -107,6 +115,7 @@ function renderImagePreview() {
 function removeImage(index) {
     currentImages.splice(index, 1);
     renderImagePreview();
+    updatePreview();
 }
 
 /* ---------------------------------------------------------
@@ -150,6 +159,8 @@ function loadProduct(index) {
 
     currentImages = [...p.images];
     renderImagePreview();
+
+    updatePreview();
 }
 
 /* ---------------------------------------------------------
@@ -176,6 +187,7 @@ function saveProduct() {
 
     clearProductForm();
     loadProductList();
+    updatePreview();
 }
 
 /* ---------------------------------------------------------
@@ -196,4 +208,50 @@ function clearProductForm() {
 
     currentImages = [];
     renderImagePreview();
+    updatePreview();
+}
+
+/* ---------------------------------------------------------
+   LIVE PRODUCT PREVIEW
+   --------------------------------------------------------- */
+function updatePreview() {
+    document.getElementById("preview-title").innerText =
+        document.getElementById("product-name").value || "Produktname";
+
+    const price = document.getElementById("product-price").value;
+    document.getElementById("preview-price").innerText =
+        price ? `CHF ${parseFloat(price).toFixed(2)}` : "CHF 0.00";
+
+    document.getElementById("preview-vendor").innerText =
+        document.getElementById("product-vendor").value || "Vendor";
+
+    document.getElementById("preview-type").innerText =
+        document.getElementById("product-type").value || "Typ";
+
+    document.getElementById("preview-sku").innerText =
+        document.getElementById("product-sku").value || "–";
+
+    document.getElementById("preview-stock").innerText =
+        document.getElementById("product-stock").value || "0";
+
+    document.getElementById("preview-description").innerHTML =
+        quill.root.innerHTML || "Beschreibung erscheint hier…";
+
+    renderPreviewImages();
+}
+
+function renderPreviewImages() {
+    const slider = document.getElementById("preview-image-slider");
+    slider.innerHTML = "";
+
+    if (currentImages.length === 0) {
+        slider.innerHTML = `<img src="assets/img/no-image.png">`;
+        return;
+    }
+
+    currentImages.forEach(src => {
+        const img = document.createElement("img");
+        img.src = src;
+        slider.appendChild(img);
+    });
 }
