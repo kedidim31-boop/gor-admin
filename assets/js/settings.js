@@ -9,6 +9,7 @@
 function loadUserList() {
     const users = getUsers();
     const container = document.getElementById("user-list");
+    if (!container) return;
 
     container.innerHTML = "";
 
@@ -35,11 +36,11 @@ function loadUserList() {
    NEUEN BENUTZER ERSTELLEN
    --------------------------------------------------------- */
 function createNewUser() {
-    const name = document.getElementById("new-user-name").value.trim();
-    const pass = document.getElementById("new-user-pass").value.trim();
-    const role = document.getElementById("new-user-role").value;
+    const name = document.getElementById("new-user-name")?.value.trim();
+    const pass = document.getElementById("new-user-pass")?.value.trim();
+    const role = document.getElementById("new-user-role")?.value;
 
-    if (name.length < 3 || pass.length < 3) {
+    if (!name || !pass || name.length < 3 || pass.length < 3) {
         showToast("Benutzername und Passwort müssen mindestens 3 Zeichen haben", "error");
         return;
     }
@@ -51,8 +52,7 @@ function createNewUser() {
         return;
     }
 
-    addAuditEntry("Einstellung", `Benutzer erstellt: ${name}`);
-
+    logAudit("settings_user_create", `Benutzer erstellt: ${name}`);
     showToast("Benutzer erfolgreich erstellt", "success");
 
     document.getElementById("new-user-name").value = "";
@@ -69,7 +69,7 @@ function deleteUserConfirm(username) {
         `Benutzer "${username}" wirklich löschen?`,
         () => {
             deleteUser(username);
-            addAuditEntry("Einstellung", `Benutzer gelöscht: ${username}`);
+            logAudit("settings_user_delete", `Benutzer gelöscht: ${username}`);
             loadUserList();
             showToast("Benutzer gelöscht", "success");
         }
@@ -99,19 +99,25 @@ function openPasswordModal(username) {
    PASSWORT ÄNDERN – SPEICHERN
    --------------------------------------------------------- */
 function changePassword(username) {
-    const newPass = document.getElementById("pw-change-input").value.trim();
+    const newPass = document.getElementById("pw-change-input")?.value.trim();
 
-    if (newPass.length < 3) {
+    if (!newPass || newPass.length < 3) {
         showToast("Passwort zu kurz", "error");
         return;
     }
 
     updatePassword(username, newPass);
-
-    addAuditEntry("Einstellung", `Passwort geändert für: ${username}`);
+    logAudit("settings_user_pwchange", `Passwort geändert für: ${username}`);
 
     closeModal();
     showToast("Passwort erfolgreich geändert", "success");
 
     loadUserList();
 }
+
+/* ---------------------------------------------------------
+   INIT
+   --------------------------------------------------------- */
+document.addEventListener("DOMContentLoaded", () => {
+    loadUserList();
+});
