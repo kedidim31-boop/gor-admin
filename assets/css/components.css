@@ -1,622 +1,89 @@
 /* =========================================================
-   GOR PRODUCT ADMIN – COMPONENTS
-   Buttons, Cards, Logos, UI-Elemente
+   RICH TEXT EDITOR (QUILL) – GOR NEON CYBER EDITION
    ========================================================= */
 
-
-/* ---------------------------------------------------------
-   LOGIN LOGO
-   --------------------------------------------------------- */
-.login-logo {
-    height: 60px;
-    width: auto;
-    display: block;
-    margin: 0 auto 20px;
-    filter: drop-shadow(0 0 8px rgba(255, 211, 0, 0.5));
-}
-
-
-/* ---------------------------------------------------------
-   HEADER LOGO
-   --------------------------------------------------------- */
-.header-logo {
-    height: 36px;
-    width: auto;
-    margin-right: 12px;
-}
-
-
-/* ---------------------------------------------------------
-   BUTTONS (Laser Hover)
-   --------------------------------------------------------- */
-button {
-    font-family: inherit;
-    font-size: 14px;
-    padding: 8px 14px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-button.primary {
-    background: var(--color-primary);
-    color: #000;
-}
-
-button.danger {
-    background: var(--color-danger);
-    color: #fff;
-}
-
-button.icon-btn {
-    background: transparent;
-    padding: 4px;
-    border-radius: 4px;
-}
-
-/* Laser Hover Effekt */
-button::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -120%;
-    width: 80%;
-    height: 100%;
-    background: linear-gradient(
-        120deg,
-        transparent 0%,
-        rgba(255,211,0,0.4) 50%,
-        transparent 100%
-    );
-    transform: skewX(-20deg);
-    transition: 0.4s;
-}
-
-button:hover::before {
-    left: 120%;
-}
-
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 12px var(--color-primary);
-}
-
-
-/* ---------------------------------------------------------
-   CARDS
-   --------------------------------------------------------- */
-.card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 12px rgba(255,211,0,0.1);
-}
-
-
-/* =========================================================
-   MODALS, TOOLTIPS, BADGES, PANELS, TABS, TOASTS
-   ========================================================= */
-
-.modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.65);
-    backdrop-filter: blur(6px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 900;
-}
-
-.modal {
-    background: var(--color-bg-card);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: 24px;
-    width: 420px;
-    max-width: 90%;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5), var(--glow-primary);
-    animation: fadeIn 0.3s ease-out;
-}
-
-.tooltip:hover::after {
-    content: attr(data-tip);
-    position: absolute;
-    bottom: 120%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--color-bg-card);
-    color: var(--color-text);
-    padding: 6px 10px;
-    border-radius: var(--radius);
-    border: 1px solid var(--color-border);
-    white-space: nowrap;
-    font-size: 12px;
-    box-shadow: var(--glow-primary);
-    z-index: 500;
-}
-
-.badge {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.badge-primary {
-    background: rgba(255, 211, 0, 0.15);
-    color: var(--color-primary);
-    text-shadow: var(--glow-primary);
-}
-
-.badge-danger {
-    background: rgba(255, 59, 59, 0.15);
-    color: var(--color-danger);
-    text-shadow: var(--glow-danger);
-}
-
-.badge-success {
-    background: rgba(0, 255, 136, 0.15);
-    color: var(--color-success);
-    text-shadow: var(--glow-success);
-}
-
-
-/* =========================================================
-   HOLOGRAFISCHE SIDEBAR
-   ========================================================= */
-.sidebar {
-    background: rgba(0,0,0,0.35);
-    border-right: 1px solid rgba(255,255,255,0.08);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 25px rgba(255,211,0,0.15);
-    position: fixed;
-    inset: 0 auto 0 0;
-    width: 240px;
-    z-index: 20;
-}
-
-.nav-item {
-    padding: 14px 18px;
-    margin: 6px 0;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.03);
-    transition: 0.25s;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.nav-item:hover {
-    background: rgba(255,211,0,0.12);
-    box-shadow: 0 0 12px rgba(255,211,0,0.25);
-    transform: translateX(6px);
-}
-
-.nav-item.active {
-    background: rgba(255,211,0,0.25);
-    color: #000;
-    font-weight: 700;
-    box-shadow: 0 0 18px rgba(255,211,0,0.4);
-}
-
-
-/* =========================================================
-   PRODUCT EDITOR – GRID
-   ========================================================= */
-.editor-grid {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 20px;
-}
-
-@media (max-width: 900px) {
-    .editor-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-
-/* =========================================================
-   PRODUCT LIST ROWS
-   ========================================================= */
-.product-row {
-    padding: 12px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 8px;
-    transition: 0.2s;
-    cursor: pointer;
-}
-
-.product-row:hover {
-    background: rgba(255,255,255,0.08);
-    transform: translateX(4px);
-    box-shadow: 0 0 10px rgba(255,255,255,0.08);
-}
-
-
-/* =========================================================
-   RICH TEXT EDITOR (QUILL)
-   ========================================================= */
 .editor-box {
     background: rgba(255,255,255,0.03);
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: 8px;
-    min-height: 200px;
+    min-height: 220px;
     padding: 0;
     overflow: hidden;
     box-shadow: 0 0 12px rgba(255,211,0,0.15);
 }
 
+/* Toolbar */
 .ql-toolbar {
-    background: rgba(0,0,0,0.35);
-    border: 1px solid rgba(255,255,255,0.08) !important;
+    background: rgba(0,0,0,0.45);
+    border: 1px solid rgba(255,255,255,0.12) !important;
     border-bottom: none !important;
-    backdrop-filter: blur(6px);
-    padding: 8px !important;
+    backdrop-filter: blur(8px);
+    padding: 10px !important;
     border-radius: 8px 8px 0 0;
+    box-shadow: 0 0 10px rgba(255,211,0,0.15);
 }
 
+/* Editor Container */
 .ql-container {
-    border: 1px solid rgba(255,255,255,0.08) !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
     border-top: none !important;
     background: rgba(255,255,255,0.02);
     border-radius: 0 0 8px 8px;
 }
 
+/* Editor Text */
 .ql-editor {
-    color: var(--color-text);
-    min-height: 180px;
+    color: #f0f0f0;
+    font-size: 15px;
+    line-height: 1.6;
     padding: 16px !important;
+    font-family: 'Segoe UI', 'Roboto', sans-serif;
+    min-height: 200px;
 }
 
+/* Placeholder sichtbar & elegant */
+.ql-editor.ql-blank::before {
+    color: rgba(255,255,255,0.35);
+    font-style: italic;
+    opacity: 1 !important;
+}
 
-/* =========================================================
-   IMAGE UPLOAD – DRAG & DROP
-   ========================================================= */
-.dropzone {
-    padding: 30px;
-    border: 2px dashed var(--color-primary);
-    border-radius: 10px;
-    text-align: center;
-    cursor: pointer;
-    transition: 0.25s;
-    background: rgba(255,255,255,0.03);
+/* Links */
+.ql-editor a {
+    color: var(--color-primary);
+    text-shadow: 0 0 6px rgba(255,211,0,0.4);
+}
+
+/* Images inside editor */
+.ql-editor img {
+    max-width: 100%;
+    border-radius: 6px;
+    margin: 10px 0;
+    box-shadow: 0 0 10px rgba(255,211,0,0.25);
+}
+
+/* Headings */
+.ql-editor h1,
+.ql-editor h2 {
+    color: var(--color-primary);
+    text-shadow: var(--glow-primary);
+    margin-top: 12px;
+    margin-bottom: 8px;
+}
+
+/* Lists */
+.ql-editor ul,
+.ql-editor ol {
+    padding-left: 22px;
+}
+
+/* Code blocks */
+.ql-editor pre {
+    background: rgba(0,0,0,0.4);
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #ffd300;
+    font-family: monospace;
     box-shadow: 0 0 10px rgba(255,211,0,0.15);
 }
-
-.dropzone:hover {
-    background: rgba(255,255,255,0.06);
-    box-shadow: 0 0 14px rgba(255,211,0,0.25);
-}
-
-.dropzone.dragover {
-    background: rgba(0,255,255,0.12);
-    border-color: var(--color-primary);
-    box-shadow: 0 0 18px var(--color-primary);
-}
-
-.image-preview {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 15px;
-}
-
-.image-thumb {
-    position: relative;
-    width: 110px;
-    height: 110px;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(0,0,0,0.4);
-    transition: 0.25s;
-}
-
-.image-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.image-thumb:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 14px var(--color-primary);
-}
-
-.image-thumb button {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    background: rgba(0,0,0,0.6);
-    border: 1px solid rgba(255,255,255,0.2);
-    padding: 4px 6px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.image-thumb button:hover {
-    background: rgba(255,59,59,0.8);
-    box-shadow: 0 0 8px rgba(255,59,59,0.6);
-}
-
-
-/* =========================================================
-   LIVE PRODUKT VORSCHAU – SHOPIFY STYLE
-   ========================================================= */
-.product-preview {
-    display: flex;
-    gap: 20px;
-    padding: 20px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(255,211,0,0.15);
-}
-
-.preview-images {
-    width: 280px;
-    min-height: 280px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.08);
-}
-
-#preview-image-slider img {
-    width: 100%;
-    height: 280px;
-    object-fit: cover;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-
-.preview-info h3 {
-    margin: 0;
-    font-size: 24px;
-    color: var(--color-primary);
-    text-shadow: var(--glow-primary);
-}
-
-.preview-price {
-    font-size: 22px;
-    margin: 6px 0 10px;
-    color: #fff;
-    text-shadow: 0 0 10px rgba(255,211,0,0.4);
-}
-
-.preview-meta {
-    opacity: 0.8;
-    margin-bottom: 10px;
-}
-
-.preview-description {
-    margin-top: 15px;
-    padding: 12px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.06);
-    min-height: 80px;
-}
-/* =========================================================
-   ULTRA CYBER – AUDIT FORENSICS TERMINAL
-   ========================================================= */
-
-/* HOLOGRAPHIC BACKGROUND */
-#audit-grid {
-    position: fixed;
-    inset: 0;
-    background:
-        repeating-linear-gradient(
-            to right,
-            rgba(255,211,0,0.05) 0px,
-            rgba(255,211,0,0.05) 1px,
-            transparent 1px,
-            transparent 40px
-        ),
-        repeating-linear-gradient(
-            to bottom,
-            rgba(255,211,0,0.05) 0px,
-            rgba(255,211,0,0.05) 1px,
-            transparent 1px,
-            transparent 40px
-        );
-    transform: perspective(900px) rotateX(55deg);
-    opacity: 0.15;
-    z-index: 0;
-}
-
-#audit-scanlines {
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.03) 0px,
-        rgba(255,255,255,0.03) 2px,
-        transparent 2px,
-        transparent 4px
-    );
-    pointer-events: none;
-    opacity: 0.25;
-    z-index: 1;
-}
-
-#audit-noise {
-    position: fixed;
-    inset: 0;
-    background: url('https://i.imgur.com/8QfQZ4C.png');
-    opacity: 0.06;
-    animation: auditNoise 0.25s infinite;
-    pointer-events: none;
-    z-index: 2;
-}
-
-@keyframes auditNoise {
-    0% { opacity: 0.04; }
-    50% { opacity: 0.10; }
-    100% { opacity: 0.04; }
-}
-
-/* SEARCH BAR */
-.audit-search-bar input {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--color-text);
-    box-shadow: 0 0 12px rgba(255,211,0,0.15);
-    margin-bottom: 20px;
-}
-
-/* TIMELINE */
-.audit-timeline {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 20px;
-    padding: 10px 0;
-    overflow-x: auto;
-}
-
-.timeline-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--color-primary);
-    background: var(--color-primary);
-    transition: 0.2s;
-}
-
-.timeline-dot:hover {
-    transform: scale(1.4);
-}
-
-/* EVENT COLORS */
-.timeline-dot.save,
-.audit-row.save { box-shadow: 0 0 12px #00ff88; background: #00ff88; }
-
-.timeline-dot.delete,
-.audit-row.delete { box-shadow: 0 0 12px #ff3b3b; background: #ff3b3b; }
-
-.timeline-dot.login,
-.audit-row.login { box-shadow: 0 0 12px #00b4ff; background: #00b4ff; }
-
-.timeline-dot.system,
-.audit-row.system { box-shadow: 0 0 12px #ffd300; background: #ffd300; }
-
-/* TABLE */
-.audit-table-container {
-    position: relative;
-    z-index: 10;
-}
-
-.audit-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.audit-table th {
-    padding: 12px;
-    background: rgba(255,255,255,0.08);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    color: var(--color-primary);
-    text-shadow: var(--glow-primary);
-}
-
-.audit-row {
-    cursor: pointer;
-    transition: 0.25s;
-    background: rgba(255,255,255,0.03);
-}
-
-.audit-row:hover {
-    background: rgba(255,255,255,0.08);
-    box-shadow: 0 0 12px rgba(255,211,0,0.25);
-    transform: translateX(6px);
-}
-
-/* DETAILS */
-.audit-details-row {
-    display: none;
-}
-
-.audit-details-row.open {
-    display: table-row;
-}
-
-.audit-details-box {
-    padding: 15px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 0 12px rgba(255,211,0,0.15);
-}
-/* =========================================================
-   GOR DASHBOARD – MATCHING PRODUCT EDITOR STYLE
-   ========================================================= */
-
-.kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-}
-
-.kpi-card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 0 18px rgba(255,211,0,0.15);
-    transition: 0.25s;
-    position: relative;
-    overflow: hidden;
-}
-
-.kpi-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 0 25px rgba(255,211,0,0.35);
-}
-
-.kpi-card h3 {
-    margin: 0;
-    color: var(--color-primary);
-    text-shadow: var(--glow-primary);
-    font-size: 18px;
-}
-
-.kpi-value {
-    font-size: 36px;
-    margin-top: 10px;
-    font-weight: 700;
-    color: #fff;
-    text-shadow: 0 0 12px rgba(255,211,0,0.4);
-}
-
-.recent-activity {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.recent-activity-item {
-    padding: 12px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.08);
-    transition: 0.2s;
-}
-
-.recent-activity-item:hover {
-    background: rgba(255,255,255,0.08);
-    transform: translateX(4px);
-    box-shadow: 0 0 12px rgba(255,211,0,0.25);
-}
-
-
