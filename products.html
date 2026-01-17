@@ -5,6 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Produkte – Gaming of Republic</title>
   <link rel="stylesheet" href="assets/css/layout.css">
+  <style>
+    .dropzone {
+      border: 2px dashed #ffd700;
+      padding: 0.5rem;
+      text-align: center;
+      color: #ffd700;
+      background-color: #191833;
+      cursor: pointer;
+    }
+    .dropzone img {
+      max-width: 80px;
+      border: 2px solid #ffd700;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
   <!-- Navigation -->
@@ -14,7 +29,8 @@
       <li><a href="index.html">Dashboard</a></li>
       <li><a href="products.html" class="active">Produkte</a></li>
       <li id="userNav" style="display:none;"><a href="users.html">Benutzerverwaltung</a></li>
-      <li><button id="exportBtn" class="btn">CSV Export</button></li>
+      <li><button id="addRowBtn" class="btn">➕ Neue Zeile</button></li>
+      <li><button id="exportBtn" class="btn">📤 CSV Export</button></li>
       <li><button id="logoutBtn" class="btn delete">🚪 Abmelden</button></li>
     </ul>
   </nav>
@@ -59,66 +75,108 @@
   }
 
   const tbody = document.querySelector("#productTable tbody");
-  let productList = JSON.parse(localStorage.getItem("productList")) || [];
+  let productList = []; // nur im Speicher, nicht im localStorage
 
   function renderTable() {
     tbody.innerHTML = "";
     productList.forEach((p, i) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>${p.status}</td>
-        <td>${p.title}</td>
-        <td>${p.description}</td>
-        <td>${p.provider || ""}</td>
-        <td>${p.type || ""}</td>
-        <td>${p.collections || ""}</td>
-        <td>${p.tags || ""}</td>
-        <td>${p.price}</td>
-        <td>${p.sku || ""}</td>
-        <td>${p.ean || ""}</td>
-        <td>${p.stock}</td>
-        <td>${p.image ? `<img src="${p.image}" style="max-width:80px;">` : ""}</td>
+        <td contenteditable="true">${p.status}</td>
+        <td contenteditable="true">${p.title}</td>
+        <td contenteditable="true">${p.description}</td>
+        <td contenteditable="true">${p.provider}</td>
+        <td contenteditable="true">${p.type}</td>
+        <td contenteditable="true">${p.collections}</td>
+        <td contenteditable="true">${p.tags}</td>
+        <td contenteditable="true">${p.price}</td>
+        <td contenteditable="true">${p.sku}</td>
+        <td contenteditable="true">${p.ean}</td>
+        <td contenteditable="true">${p.stock}</td>
         <td>
-          ${role !== "viewer" ? `<button class="btn edit" data-index="${i}">✏️ Edit</button>` : ""}
-          ${role === "admin" ? `<button class="btn delete" data-index="${i}">🗑️ Delete</button>` : ""}
+          <div class="dropzone" data-index="${i}">
+            ${p.image ? `<img src="${p.image}">` : "📁 Bild hier ablegen"}
+          </div>
         </td>
+        <td><button class="btn delete" data-index="${i}">🗑️ Löschen</button></td>
       `;
       tbody.appendChild(tr);
-    });
 
-    document.querySelectorAll(".edit").forEach(btn => {
-      btn.addEventListener("click", () => {
-        alert("✏️ Bearbeiten ist deaktiviert – Produktformular wurde entfernt.");
+      // Drag & Drop für Bilder
+      const zone = tr.querySelector(".dropzone");
+      zone.addEventListener("dragover", e => e.preventDefault());
+      zone.addEventListener("drop", e => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          productList[i].image = ev.target.result;
+          zone.innerHTML = `<img src="${productList[i].image}">`;
+        };
+        reader.readAsDataURL(file);
       });
-    });
 
-    document.querySelectorAll(".delete").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const index = btn.getAttribute("data-index");
-        if(confirm("Willst du dieses Produkt wirklich löschen?")) {
-          productList.splice(index, 1);
-          localStorage.setItem("productList", JSON.stringify(productList));
-          renderTable();
-        }
+      // Löschen
+      tr.querySelector(".delete").addEventListener("click", () => {
+        productList.splice(i, 1);
+        renderTable();
       });
     });
   }
-  renderTable();
 
+  // Neue Zeile hinzufügen
+  document.getElementById("addRowBtn").addEventListener("click", () => {
+    productList.push({
+      status: "Entwurf",
+      title: "",
+      description: "",
+      provider: "",
+      type: "",
+      collections: "",
+      tags: "",
+      price: "",
+      sku: "",
+      ean: "",
+      stock: "",
+      image: ""
+    });
+    renderTable();
+  });
+
+  // CSV Export
   document.getElementById("exportBtn").addEventListener("click", () => {
     let csv = ["Status,Titel,Beschreibung,Anbieter,Typ,Kollektionen,Tags,Preis,SKU,EAN,Bestand,Bild"];
-    productList.forEach(p => {
-      csv.push(`${p.status},${p.title},${p.description},${p.provider || ""},${p.type || ""},${p.collections || ""},${p.tags || ""},${p.price},${p.sku || ""},${p.ean || ""},${p.stock},${p.image ? "Bild vorhanden" : ""}`);
+    const rows = tbody.querySelectorAll("tr");
+    rows.forEach((row, i) => {
+      const cells = row.querySelectorAll("td");
+      const imageCell = row.querySelector("img");
+      csv.push([
+        cells[0].innerText,
+        cells[1].innerText,
+        cells[2].innerText,
+        cells[3].innerText,
+        cells[4].innerText,
+        cells[5].innerText,
+        cells[6].innerText,
+        cells[7].innerText,
+        cells[8].innerText,
+        cells[9].innerText,
+        cells[10].innerText,
+        imageCell ? "Bild vorhanden" : ""
+      ].join(","));
     });
+
     const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
     const link = document.createElement("a");
     link.setAttribute("href", csvContent);
-    link.setAttribute("download", "produkte_export.csv");
+    link.setAttribute("download", "produkte.csv");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   });
 
+  // Logout
   document.getElementById("logoutBtn").addEventListener("click", () => {
     localStorage.removeItem("loggedInUser");
     localStorage.removeItem("userRole");
