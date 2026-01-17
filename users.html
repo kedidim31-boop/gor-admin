@@ -3,15 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gaming of Republic – Benutzerverwaltung</title>
+  <title>Benutzerverwaltung – Gaming of Republic</title>
   <link rel="stylesheet" href="assets/css/layout.css">
+  <style>
+    body {
+      background-color: #191833;
+      color: #fff;
+      font-family: sans-serif;
+    }
+    h1 {
+      color: #ffd700;
+      margin-bottom: 1rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      border: 1px solid #444;
+      padding: 0.5rem;
+      text-align: center;
+    }
+    th {
+      background-color: #111827;
+      color: #ffd700;
+    }
+    .btn {
+      background-color: #ffd700;
+      color: #000;
+      padding: 0.5rem 1rem;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-right: 0.5rem;
+    }
+    .btn.delete {
+      background-color: #e63946;
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
+  <!-- Navigation -->
   <nav class="navbar">
     <div class="logo">🕹️ Gaming of Republic</div>
     <ul>
       <li><a href="index.html">Dashboard</a></li>
-      <li><a href="add-product.html">Neues Produkt</a></li>
       <li><a href="products.html">Produkte</a></li>
       <li><a href="users.html" class="active">Benutzerverwaltung</a></li>
       <li><button id="logoutBtn" class="btn delete">🚪 Abmelden</button></li>
@@ -21,141 +60,97 @@
   <main class="content">
     <h1>Benutzerverwaltung</h1>
 
-    <!-- Formular für neuen Benutzer -->
-    <form id="userForm">
-      <label>Benutzername</label>
-      <input type="text" name="username" required>
-
-      <label>E-Mail</label>
-      <input type="email" name="email" required>
-
-      <label>Passwort</label>
-      <input type="password" name="password" required>
-
-      <label>Rolle</label>
-      <select name="role" required>
-        <option value="admin">Administrator</option>
-        <option value="editor">Editor</option>
-        <option value="viewer">Viewer</option>
-      </select>
-
-      <label>Status</label>
-      <select name="status" required>
-        <option value="Aktiv">Aktiv</option>
-        <option value="Entwurf">Entwurf</option>
-      </select>
-
-      <button type="submit" class="btn">➕ Benutzer hinzufügen</button>
-    </form>
-
-    <!-- Tabelle mit Benutzern -->
-    <table class="product-table" id="userTable">
+    <table id="userTable">
       <thead>
         <tr>
           <th>Benutzername</th>
-          <th>E-Mail</th>
           <th>Rolle</th>
-          <th>Status</th>
           <th>Aktionen</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
+
+    <h2>➕ Neuen Benutzer hinzufügen</h2>
+    <form id="userForm">
+      <label>Benutzername</label>
+      <input type="text" id="username" required>
+
+      <label>Rolle</label>
+      <select id="role">
+        <option value="viewer">Viewer</option>
+        <option value="editor">Editor</option>
+        <option value="admin">Admin</option>
+      </select>
+
+      <button type="submit" class="btn">✅ Benutzer speichern</button>
+    </form>
   </main>
 
-  <script>
-    // Zugriffsschutz: nur Admin darf Benutzerverwaltung öffnen
-    const loggedUser = localStorage.getItem("loggedInUser");
-    const loggedRole = localStorage.getItem("userRole");
+<script>
+  // Zugriffsschutz
+  const user = localStorage.getItem("loggedInUser");
+  const role = localStorage.getItem("userRole");
 
-    if(!loggedUser) {
-      window.location.href = "login.html";
-    } else if(loggedRole !== "admin") {
-      alert("Nur Administratoren dürfen die Benutzerverwaltung öffnen!");
-      window.location.href = "index.html";
-    }
+  if (!user) window.location.href = "login.html";
 
-    // Logout-Funktion
-    const logoutBtn = document.getElementById("logoutBtn");
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("loggedInUser");
-      localStorage.removeItem("userRole");
-      alert("Du wurdest abgemeldet.");
-      window.location.href = "login.html";
+  if (role !== "admin") {
+    alert("Zugriff verweigert – Nur Admins dürfen Benutzer verwalten.");
+    window.location.href = "index.html";
+  }
+
+  // Benutzerliste laden
+  const tbody = document.querySelector("#userTable tbody");
+  let userList = JSON.parse(localStorage.getItem("userList")) || [];
+
+  function renderUsers() {
+    tbody.innerHTML = "";
+    userList.forEach((u, i) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${u.username}</td>
+        <td>${u.role}</td>
+        <td>
+          <button class="btn delete" data-index="${i}">🗑️ Löschen</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
     });
 
-    // Benutzerliste aus localStorage laden oder Standard-Admin setzen
-    let users = JSON.parse(localStorage.getItem("userList")) || [];
-    if(users.length === 0) {
-      users.push({
-        username: "admin",
-        email: "admin@gor.com",
-        password: "1234",
-        role: "admin",
-        status: "Aktiv"
-      });
-      localStorage.setItem("userList", JSON.stringify(users));
-    }
-
-    const tbody = document.querySelector("#userTable tbody");
-
-    function renderUsers() {
-      tbody.innerHTML = "";
-      users.forEach(u => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${u.username}</td>
-          <td>${u.email}</td>
-          <td>${u.role}</td>
-          <td>${u.status}</td>
-          <td>
-            <button class="btn edit">✏️ Edit</button>
-            <button class="btn delete">🗑️ Delete</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-        bindActions(tr, u);
-      });
-    }
-
-    // Benutzer hinzufügen
-    document.getElementById('userForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const newUser = {
-        username: this.username.value,
-        email: this.email.value,
-        password: this.password.value,
-        role: this.role.value,
-        status: this.status.value
-      };
-      users.push(newUser);
-      localStorage.setItem("userList", JSON.stringify(users));
-      renderUsers();
-      this.reset();
-    });
-
-    // Aktionen binden
-    function bindActions(row, userObj) {
-      row.querySelector('.edit').addEventListener('click', () => {
-        const newPass = prompt("Neues Passwort für " + userObj.username, userObj.password);
-        if(newPass !== null) {
-          userObj.password = newPass;
-          localStorage.setItem("userList", JSON.stringify(users));
-          renderUsers();
-        }
-      });
-
-      row.querySelector('.delete').addEventListener('click', () => {
+    document.querySelectorAll(".delete").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const index = btn.getAttribute("data-index");
         if(confirm("Willst du diesen Benutzer wirklich löschen?")) {
-          users = users.filter(u => u !== userObj);
-          localStorage.setItem("userList", JSON.stringify(users));
+          userList.splice(index, 1);
+          localStorage.setItem("userList", JSON.stringify(userList));
           renderUsers();
         }
       });
-    }
+    });
+  }
+  renderUsers();
 
-    // Initial render
+  // Neuen Benutzer speichern
+  document.getElementById("userForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const newUser = {
+      username: document.getElementById("username").value,
+      role: document.getElementById("role").value
+    };
+    userList.push(newUser);
+    localStorage.setItem("userList", JSON.stringify(userList));
+    alert("✅ Benutzer gespeichert!");
     renderUsers();
-  </script>
+    document.getElementById("userForm").reset();
+  });
+
+  // Logout
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("userRole");
+    alert("Du wurdest abgemeldet.");
+    window.location.href = "login.html";
+  });
+</script>
 </body>
 </html>
