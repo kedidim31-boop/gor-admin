@@ -5,6 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gaming of Republic – Produkte</title>
   <link rel="stylesheet" href="assets/css/layout.css">
+  <style>
+    .hidden { display: none; }
+    .edit-form {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      margin-top: 1rem;
+      background: #222;
+      color: #fff;
+    }
+    .edit-form input, .edit-form textarea, .edit-form select {
+      display: block;
+      margin-bottom: 0.5rem;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
   <nav class="navbar">
@@ -36,173 +51,181 @@
           <th>Aktionen</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>Aktiv</td>
-          <td>Export Test Pr</td>
-          <td>Produkt für CSV Export</td>
-          <td>19</td>
-          <td>50</td>
-          <td class="actions">
-            <button class="btn edit">✏️ Edit</button>
-            <button class="btn delete">🗑️ Delete</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Entwurf</td>
-          <td>Bulk Product 1</td>
-          <td>Erstes Bulk Produkt</td>
-          <td>29</td>
-          <td>25</td>
-          <td class="actions">
-            <button class="btn edit">✏️ Edit</button>
-            <button class="btn delete">🗑️ Delete</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Aktiv</td>
-          <td>Bulk Product 2</td>
-          <td>Zweites Bulk Produkt</td>
-          <td>39</td>
-          <td>30</td>
-          <td class="actions">
-            <button class="btn edit">✏️ Edit</button>
-            <button class="btn delete">🗑️ Delete</button>
-          </td>
-        </tr>
-      </tbody>
+      <tbody></tbody>
     </table>
+
+    <!-- Edit Formular -->
+    <div id="editForm" class="edit-form hidden">
+      <h2>Produkt bearbeiten</h2>
+      <form id="formEdit">
+        <label>Status</label>
+        <select id="editStatus">
+          <option value="Aktiv">Aktiv</option>
+          <option value="Entwurf">Entwurf</option>
+        </select>
+
+        <label>Titel</label>
+        <input type="text" id="editTitle" required>
+
+        <label>Beschreibung</label>
+        <textarea id="editDescription" rows="3" required></textarea>
+
+        <label>Preis (CHF)</label>
+        <input type="number" id="editPrice" step="0.01" required>
+
+        <label>Lager</label>
+        <input type="number" id="editStock" required>
+
+        <button type="submit" class="btn">💾 Änderungen speichern</button>
+        <button type="button" id="cancelEdit" class="btn delete">❌ Abbrechen</button>
+      </form>
+    </div>
   </main>
+<script>
+  // Zugriffsschutz
+  const user = localStorage.getItem("loggedInUser");
+  const role = localStorage.getItem("userRole");
+  if(!user) window.location.href = "login.html";
 
-  <script>
-    // Zugriffsschutz
-    const user = localStorage.getItem("loggedInUser");
-    const role = localStorage.getItem("userRole");
+  // Navigation anpassen
+  if(role === "admin") document.getElementById("userNav").style.display = "inline-block";
+  if(role === "viewer") {
+    document.getElementById("exportBtn").style.display = "none";
+    document.getElementById("importFile").style.display = "none";
+    document.getElementById("navAddProduct").style.display = "none";
+  }
 
-    if(!user) {
-      window.location.href = "login.html";
-    }
+  // Produktliste laden oder Default setzen
+  let productList = JSON.parse(localStorage.getItem("productList")) || [
+    {status:"Aktiv", title:"Export Test Pr", description:"Produkt für CSV Export", price:"19", stock:"50"},
+    {status:"Entwurf", title:"Bulk Product 1", description:"Erstes Bulk Produkt", price:"29", stock:"25"},
+    {status:"Aktiv", title:"Bulk Product 2", description:"Zweites Bulk Produkt", price:"39", stock:"30"}
+  ];
+  localStorage.setItem("productList", JSON.stringify(productList));
 
-    // Navigation: Benutzerverwaltung nur für Admin
-    if(role === "admin") {
-      document.getElementById("userNav").style.display = "inline-block";
-    }
+  const tbody = document.querySelector("#productTable tbody");
+  const editForm = document.getElementById("editForm");
+  const formEdit = document.getElementById("formEdit");
+  let editIndex = null;
 
-    // Rollenbasierte Rechte
-    const actionCells = document.querySelectorAll(".actions");
-
-    actionCells.forEach(cell => {
-      if(role === "admin") {
-        // Admin darf alles
-      } else if(role === "editor") {
-        // Editor darf bearbeiten, aber nicht löschen
-        const deleteBtn = cell.querySelector(".delete");
-        if(deleteBtn) deleteBtn.style.display = "none";
-      } else if(role === "viewer") {
-        // Viewer darf nur ansehen
-        cell.innerHTML = "Nur Ansicht";
-      }
+  // Tabelle rendern
+  function renderTable() {
+    tbody.innerHTML = "";
+    productList.forEach((p, i) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${p.status}</td>
+        <td>${p.title}</td>
+        <td>${p.description}</td>
+        <td>${p.price}</td>
+        <td>${p.stock}</td>
+        <td class="actions">
+          ${role !== "viewer" ? `<button class="btn edit" data-index="${i}">✏️ Edit</button>` : "Nur Ansicht"}
+          ${role === "admin" ? `<button class="btn delete" data-index="${i}">🗑️ Delete</button>` : ""}
+        </td>
+      `;
+      tbody.appendChild(tr);
     });
 
-    // CSV Export & Bulk Import nur für Admin/Editor
-    if(role === "viewer") {
-      document.getElementById("exportBtn").style.display = "none";
-      document.getElementById("importFile").style.display = "none";
-      document.getElementById("navAddProduct").style.display = "none";
-    }
+    // Edit Buttons
+    document.querySelectorAll(".edit").forEach(btn => {
+      btn.addEventListener("click", () => {
+        editIndex = btn.getAttribute("data-index");
+        const product = productList[editIndex];
+        document.getElementById("editStatus").value = product.status;
+        document.getElementById("editTitle").value = product.title;
+        document.getElementById("editDescription").value = product.description;
+        document.getElementById("editPrice").value = product.price;
+        document.getElementById("editStock").value = product.stock;
+        editForm.classList.remove("hidden");
+      });
+    });
 
-    // Edit/Delete Logik
-    document.querySelectorAll('.edit').forEach(btn => {
-      btn.addEventListener('click', () => {
-        if(role === "viewer") {
-          alert("Nur Ansicht – keine Bearbeitung erlaubt.");
-        } else {
-          alert("Produkt bearbeiten – hier kannst du ein Edit-Formular öffnen.");
+    // Delete Buttons
+    document.querySelectorAll(".delete").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const index = btn.getAttribute("data-index");
+        if(confirm("Willst du dieses Produkt wirklich löschen?")) {
+          productList.splice(index, 1);
+          localStorage.setItem("productList", JSON.stringify(productList));
+          renderTable();
         }
       });
     });
+  }
+  renderTable();
 
-    document.querySelectorAll('.delete').forEach(btn => {
-      btn.addEventListener('click', () => {
-        if(role === "admin") {
-          if(confirm("Willst du dieses Produkt wirklich löschen?")) {
-            btn.closest('tr').remove();
-          }
-        } else {
-          alert("Löschen ist nur für Admin erlaubt.");
-        }
-      });
-    });
-
-    // CSV Export Funktion
-    document.getElementById('exportBtn').addEventListener('click', () => {
-      if(role === "viewer") {
-        alert("Export ist nur für Admin/Editor erlaubt.");
-        return;
-      }
-      const table = document.getElementById('productTable');
-      let csv = [];
-      const rows = table.querySelectorAll('tr');
-
-      rows.forEach(row => {
-        const cols = row.querySelectorAll('td, th');
-        const rowData = [];
-        cols.forEach(col => rowData.push(col.innerText.replace(/,/g, "")));
-        csv.push(rowData.join(","));
-      });
-
-      const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
-      const link = document.createElement("a");
-      link.setAttribute("href", csvContent);
-      link.setAttribute("download", "produkte_export.csv");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    });
-
-    // Bulk Import Funktion
-    document.getElementById('importFile').addEventListener('change', function(e) {
-      if(role === "viewer") {
-        alert("Import ist nur für Admin/Editor erlaubt.");
-        return;
-      }
-      const file = e.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        const text = event.target.result;
-        const rows = text.split("\n").map(r => r.split(","));
-
-        const tbody = document.querySelector("#productTable tbody");
-        rows.slice(1).forEach(row => {
-          if(row.length < 5) return;
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${row[0]}</td>
-            <td>${row[1]}</td>
-            <td>${row[2]}</td>
-            <td>${row[3]}</td>
-            <td>${row[4]}</td>
-            <td class="actions">
-              <button class="btn edit">✏️ Edit</button>
-              <button class="btn delete">🗑️ Delete</button>
-            </td>
-          `;
-          tbody.appendChild(tr);
-        });
+  // Edit speichern
+  formEdit.addEventListener("submit", e => {
+    e.preventDefault();
+    if(editIndex !== null) {
+      productList[editIndex] = {
+        status: document.getElementById("editStatus").value,
+        title: document.getElementById("editTitle").value,
+        description: document.getElementById("editDescription").value,
+        price: document.getElementById("editPrice").value,
+        stock: document.getElementById("editStock").value
       };
-      reader.readAsText(file);
-    });
+      localStorage.setItem("productList", JSON.stringify(productList));
+      editForm.classList.add("hidden");
+      editIndex = null;
+      renderTable();
+    }
+  });
 
-    // Logout-Funktion
-    const logoutBtn = document.getElementById("logoutBtn");
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("loggedInUser");
-      localStorage.removeItem("userRole");
-      alert("Du wurdest abgemeldet.");
-      window.location.href = "login.html";
+  // Edit abbrechen
+  document.getElementById("cancelEdit").addEventListener("click", () => {
+    editForm.classList.add("hidden");
+    editIndex = null;
+  });
+
+  // CSV Export
+  document.getElementById("exportBtn").addEventListener("click", () => {
+    if(role === "viewer") return;
+    let csv = ["Status,Titel,Beschreibung,Preis,Lager"];
+    productList.forEach(p => {
+      csv.push(`${p.status},${p.title},${p.description},${p.price},${p.stock}`);
     });
-  </script>
+    const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+    const link = document.createElement("a");
+    link.setAttribute("href", csvContent);
+    link.setAttribute("download", "produkte_export.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+
+  // Bulk Import
+  document.getElementById("importFile").addEventListener("change", function(e) {
+    if(role === "viewer") return;
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      const rows = event.target.result.split("\n").map(r => r.split(","));
+      rows.slice(1).forEach(row => {
+        if(row.length < 5) return;
+        productList.push({
+          status: row[0],
+          title: row[1],
+          description: row[2],
+          price: row[3],
+          stock: row[4]
+        });
+      });
+      localStorage.setItem("productList", JSON.stringify(productList));
+      renderTable();
+    };
+    reader.readAsText(file);
+  });
+
+  // Logout-Funktion
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("userRole");
+    alert("Du wurdest abgemeldet.");
+    window.location.href = "login.html";
+  });
+</script>
 </body>
 </html>
