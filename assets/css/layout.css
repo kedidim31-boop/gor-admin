@@ -157,7 +157,7 @@ html, body {
     box-shadow: var(--shadow-soft);
 }
 
-/* LOGIN LOGO */
+/* LOGIN LOGO mit Puls- und Hover-Effekt */
 .login-logo {
     width: 120px;
     height: auto;
@@ -165,12 +165,36 @@ html, body {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    transition: 0.3s ease;
+    transition: transform 0.4s ease, filter 0.4s ease;
+    animation: pulseGlow 2.5s infinite;
 }
 
+/* Hover-Effekt: leichtes Drehen + stärkerer Glow */
+.login-logo:hover {
+    transform: rotate(-3deg) scale(1.08);
+    filter: drop-shadow(0 0 16px var(--color-secondary));
+}
+
+/* Responsive: Logo auf Mobile kleiner */
 @media (max-width: 600px) {
     .login-logo {
         width: 90px;
+    }
+}
+
+/* Puls-Animation */
+@keyframes pulseGlow {
+    0% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 4px var(--color-primary));
+    }
+    50% {
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 12px var(--color-primary));
+    }
+    100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 4px var(--color-primary));
     }
 }
 
@@ -198,7 +222,6 @@ html, body {
 .login-card button:active {
     transform: scale(0.96);
 }
-
 
 /* PRODUCT PREVIEW */
 .product-preview {
@@ -253,5 +276,3 @@ html, body {
         transform: translateX(0);
     }
 }
-
-
