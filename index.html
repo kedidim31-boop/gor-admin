@@ -52,10 +52,11 @@
     <!-- Statistiken -->
     <div class="card">
       <h2>Statistik</h2>
-      <p>Produkte: 0</p>
-      <p>Benutzer: 0</p>
-      <p>Offene Aufgaben: 0</p>
-      <p>Letzte Aktivität: Keine</p>
+      <p contenteditable="true" id="statProducts">Produkte: 0</p>
+      <p contenteditable="true" id="statUsers">Benutzer: 0</p>
+      <p contenteditable="true" id="statTasks">Offene Aufgaben: 0</p>
+      <p contenteditable="true" id="statActivity">Letzte Aktivität: Keine</p>
+      <button id="saveStatsBtn" class="btn">💾 Speichern</button>
     </div>
   </main>
 
@@ -68,6 +69,32 @@
   <script src="assets/js/auth.js"></script>
   <script>
     document.getElementById("logoutBtn").addEventListener("click", handleLogout);
+
+    // Statistik speichern
+    document.getElementById("saveStatsBtn").addEventListener("click", () => {
+      const products = document.getElementById("statProducts").innerText;
+      const users = document.getElementById("statUsers").innerText;
+      const tasks = document.getElementById("statTasks").innerText;
+      const activity = document.getElementById("statActivity").innerText;
+
+      localStorage.setItem("statsProducts", products);
+      localStorage.setItem("statsUsers", users);
+      localStorage.setItem("statsTasks", tasks);
+      localStorage.setItem("statsActivity", activity);
+
+      alert("Statistik gespeichert!");
+    });
+
+    // Statistik beim Laden anzeigen
+    const savedProducts = localStorage.getItem("statsProducts");
+    const savedUsers = localStorage.getItem("statsUsers");
+    const savedTasks = localStorage.getItem("statsTasks");
+    const savedActivity = localStorage.getItem("statsActivity");
+
+    if (savedProducts) document.getElementById("statProducts").innerText = savedProducts;
+    if (savedUsers) document.getElementById("statUsers").innerText = savedUsers;
+    if (savedTasks) document.getElementById("statTasks").innerText = savedTasks;
+    if (savedActivity) document.getElementById("statActivity").innerText = savedActivity;
   </script>
 </body>
 </html>
