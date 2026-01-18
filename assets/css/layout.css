@@ -156,6 +156,19 @@ th {
   border-radius: 6px;
 }
 
+/* Beschreibung Textarea */
+.description-area {
+  width: 100%;
+  min-height: 80px;
+  background-color: #191833;
+  color: #ffd700;
+  border: 2px solid #ffd700;
+  border-radius: 6px;
+  padding: 0.5rem;
+  resize: vertical;
+  font-family: 'Segoe UI', sans-serif;
+}
+
 /* Footer */
 .footer {
   background-color: #111827;
