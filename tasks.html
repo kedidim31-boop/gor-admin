@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aufgaben – Gaming of Republic</title>
+  <link rel="stylesheet" href="assets/css/layout.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">🕹️ Gaming of Republic</div>
+    <ul>
+      <li><a href="index.html">🏠 Dashboard</a></li>
+      <li><a href="products.html">📦 Produkte</a></li>
+      <li><a href="users.html">👥 Benutzerverwaltung</a></li>
+      <li><a href="tasks.html" class="active">✅ Aufgaben</a></li>
+      <li><a href="logs.html">📑 Aktivitäts-Logs</a></li>
+      <li><a href="settings.html">⚙️ Einstellungen</a></li>
+    </ul>
+    <button id="logoutBtn" class="btn delete">🚪 Abmelden</button>
+  </aside>
+
+  <main class="content">
+    <h1>Team‑Aufgaben</h1>
+
+    <div class="card">
+      <h2>Offene Aufgaben</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Aufgabe</th>
+            <th>Zugewiesen an</th>
+            <th>Status</th>
+            <th>Aktionen</th>
+          </tr>
+        </thead>
+        <tbody id="taskTable">
+          <tr>
+            <td>Produktbilder aktualisieren</td>
+            <td>Editor</td>
+            <td>Offen</td>
+            <td><button class="btn doneBtn">✔️ Erledigt</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Neue Aufgabe hinzufügen</h2>
+      <input type="text" id="newTask" placeholder="Aufgabe">
+      <input type="text" id="assignedTo" placeholder="Zugewiesen an">
+      <button id="addTaskBtn" class="btn">➕ Hinzufügen</button>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p id="footerText"></p>
+  </footer>
+
+<script>
+  const user = localStorage.getItem("loggedInUser");
+  if (!user) window.location.href = "login.html";
+
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("userRole");
+    alert("Du wurdest abgemeldet.");
+    window.location.href = "login.html";
+  });
+
+  document.getElementById("addTaskBtn").addEventListener("click", () => {
+    const task = document.getElementById("newTask").value;
+    const assigned = document.getElementById("assignedTo").value;
+    if (!task || !assigned) {
+      alert("Bitte Aufgabe und Zuweisung eingeben!");
+      return;
+    }
+    const row = document.createElement("tr");
+    row.innerHTML = `<td>${task}</td><td>${assigned}</td><td>Offen</td><td><button class="btn doneBtn">✔️ Erledigt</button></td>`;
+    document.getElementById("taskTable").appendChild(row);
+    document.getElementById("newTask").value = "";
+    document.getElementById("assignedTo").value = "";
+  });
+
+  document.addEventListener("click", e => {
+    if (e.target.classList.contains("doneBtn")) {
+      const row = e.target.closest("tr");
+      row.cells[2].textContent = "Erledigt";
+      e.target.remove();
+    }
+  });
+
+  const year = new Date().getFullYear();
+  document.getElementById("footerText").textContent =
+    `© ${year} Gaming of Republic - Alle Rechte vorbehalten.`;
+</script>
+</body>
+</html>
