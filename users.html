@@ -10,6 +10,7 @@
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="logo">🕹️ Gaming of Republic</div>
+    <button id="logoutBtn" class="btn delete top-right">Abmelden</button>
     <ul>
       <li><a href="index.html">🏠 Übersicht</a></li>
       <li><a href="products.html">📦 Produkte</a></li>
@@ -20,7 +21,6 @@
     </ul>
     <button id="addUserBtn" class="btn">➕ Benutzer hinzufügen</button>
     <button id="exportUsersBtn" class="btn">📤 Benutzer exportieren</button>
-    <button id="logoutBtn" class="btn delete">Abmelden</button>
   </aside>
 
   <!-- Main Content -->
@@ -57,7 +57,8 @@
               </select>
             </td>
             <td>
-              <button class="btn changePass">🔑 Passwort ändern</button>
+              <button class="btn changePass">🔑 Passwort</button>
+              <button class="btn editUser">✏️ Bearbeiten</button>
               <button class="btn delete">🗑️ Löschen</button>
             </td>
           </tr>
@@ -78,7 +79,8 @@
               </select>
             </td>
             <td>
-              <button class="btn changePass">🔑 Passwort ändern</button>
+              <button class="btn changePass">🔑 Passwort</button>
+              <button class="btn editUser">✏️ Bearbeiten</button>
               <button class="btn delete">🗑️ Löschen</button>
             </td>
           </tr>
@@ -119,7 +121,8 @@
           </select>
         </td>
         <td>
-          <button class="btn changePass">🔑 Passwort ändern</button>
+          <button class="btn changePass">🔑 Passwort</button>
+          <button class="btn editUser">✏️ Bearbeiten</button>
           <button class="btn delete">🗑️ Löschen</button>
         </td>
       `;
@@ -159,6 +162,9 @@
       row.querySelector(".changePass").addEventListener("click", () => {
         const newPass = prompt("Neues Passwort eingeben:");
         if (newPass) alert("Passwort erfolgreich geändert!");
+      });
+      row.querySelector(".editUser").addEventListener("click", () => {
+        alert("Bearbeiten-Modus: Felder sind direkt editierbar.");
       });
       row.querySelector(".delete").addEventListener("click", () => row.remove());
     }
