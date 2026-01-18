@@ -11,14 +11,14 @@
   <aside class="sidebar">
     <div class="logo">🕹️ Gaming of Republic</div>
     <ul>
-      <li><a href="index.html">🏠 Dashboard</a></li>
+      <li><a href="index.html">🏠 Übersicht</a></li>
       <li><a href="products.html">📦 Produkte</a></li>
-      <li><a href="users.html">👥 Benutzerverwaltung</a></li>
+      <li><a href="users.html">👥 Benutzer</a></li>
       <li><a href="tasks.html">✅ Aufgaben</a></li>
-      <li><a href="logs.html" class="active">📑 Logs</a></li>
+      <li><a href="logs.html" class="active">📑 Aktivitäts-Logs</a></li>
       <li><a href="settings.html">⚙️ Einstellungen</a></li>
     </ul>
-    <button id="logoutBtn" class="btn delete">🚪 Abmelden</button>
+    <button id="logoutBtn" class="btn delete">Abmelden</button>
   </aside>
 
   <!-- Main Content -->
@@ -47,13 +47,13 @@
         </thead>
         <tbody id="logTable">
           <tr>
-            <td>2026-01-18 04:00</td>
-            <td>admin</td>
+            <td>2026-01-18 05:00</td>
+            <td>admin@gamingofrepublic.com</td>
             <td>Produkt "Energy Drink Neon" hinzugefügt</td>
           </tr>
           <tr>
-            <td>2026-01-18 04:05</td>
-            <td>editor</td>
+            <td>2026-01-18 05:10</td>
+            <td>editor@gamingofrepublic.com</td>
             <td>Bild für Produkt "Gaming Chair" aktualisiert</td>
           </tr>
         </tbody>
@@ -62,8 +62,8 @@
 
     <!-- Neue Aktion hinzufügen -->
     <div class="card">
-      <h2>Neue Aktion manuell protokollieren</h2>
-      <input type="text" id="logUser" placeholder="Benutzername">
+      <h2>Neue Aktion protokollieren</h2>
+      <input type="text" id="logUser" placeholder="Benutzername oder E-Mail">
       <input type="text" id="logAction" placeholder="Aktion">
       <button id="addLogBtn" class="btn">➕ Hinzufügen</button>
     </div>
@@ -84,7 +84,7 @@
       const logUser = document.getElementById("logUser").value.trim();
       const logAction = document.getElementById("logAction").value.trim();
       if (!logUser || !logAction) {
-        alert("Bitte Benutzername und Aktion eingeben!");
+        alert("Bitte Benutzer und Aktion eingeben!");
         return;
       }
       const now = new Date();
