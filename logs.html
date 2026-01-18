@@ -20,6 +20,10 @@
         <li><a href="logs.html" class="active">📑 Aktivitäts-Logs</a></li>
         <li><a href="settings.html">⚙️ Einstellungen</a></li>
       </ul>
+
+      <div class="sidebar-actions">
+        <button id="exportLogsBtn" class="btn">📤 Logs exportieren</button>
+      </div>
     </div>
   </aside>
 
@@ -27,32 +31,24 @@
   <main class="content">
     <h1>Aktivitäts-Logs</h1>
 
-    <!-- Filter -->
     <div class="card">
-      <h2>Filter</h2>
-      <input type="text" id="filterUser" placeholder="Benutzer filtern">
-      <input type="text" id="filterAction" placeholder="Aktion filtern">
-      <button id="applyFilterBtn" class="btn">🔍 Anwenden</button>
-      <button id="resetFilterBtn" class="btn delete">❌ Zurücksetzen</button>
-    </div>
-
-    <!-- Logs Tabelle -->
-    <div class="card">
-      <h2>Protokollierte Aktionen</h2>
+      <h2>Log-Einträge</h2>
       <table>
         <thead>
           <tr>
             <th>Zeitstempel</th>
             <th>Benutzer</th>
             <th>Aktion</th>
+            <th>Details</th>
             <th>Aktionen</th>
           </tr>
         </thead>
         <tbody id="logTable">
           <tr>
-            <td contenteditable="true">2026-01-18 05:00</td>
-            <td contenteditable="true">admin@gamingofrepublic.com</td>
-            <td contenteditable="true">Produkt „Energy Drink Neon“ hinzugefügt</td>
+            <td>2026-01-18 07:00</td>
+            <td>admin</td>
+            <td>Login</td>
+            <td>Admin hat sich erfolgreich eingeloggt</td>
             <td>
               <button class="btn saveLog">💾 Speichern</button>
               <button class="btn editLog">✏️ Bearbeiten</button>
@@ -61,14 +57,6 @@
           </tr>
         </tbody>
       </table>
-    </div>
-
-    <!-- Neue Aktion hinzufügen -->
-    <div class="card">
-      <h2>Neue Aktion protokollieren</h2>
-      <input type="text" id="logUser" placeholder="Benutzername oder E-Mail">
-      <input type="text" id="logAction" placeholder="Aktion">
-      <button id="addLogBtn" class="btn">➕ Hinzufügen</button>
     </div>
   </main>
 
@@ -82,51 +70,37 @@
   <script>
     document.getElementById("logoutBtn").addEventListener("click", handleLogout);
 
-    // Neue Logs hinzufügen
-    document.getElementById("addLogBtn").addEventListener("click", () => {
-      const logUser = document.getElementById("logUser").value.trim();
-      const logAction = document.getElementById("logAction").value.trim();
-      if (!logUser || !logAction) {
-        alert("Bitte Benutzer und Aktion eingeben!");
-        return;
-      }
-      const now = new Date();
-      const timestamp = now.toISOString().slice(0,16).replace("T"," ");
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td contenteditable="true">${timestamp}</td>
-        <td contenteditable="true">${logUser}</td>
-        <td contenteditable="true">${logAction}</td>
-        <td>
-          <button class="btn saveLog">💾 Speichern</button>
-          <button class="btn editLog">✏️ Bearbeiten</button>
-          <button class="btn delete">🗑️ Löschen</button>
-        </td>
-      `;
-      document.getElementById("logTable").appendChild(row);
-      attachRowEvents(row);
-      document.getElementById("logUser").value = "";
-      document.getElementById("logAction").value = "";
-    });
+    const currentUser = localStorage.getItem("loggedInUser");
 
-    // Filter anwenden
-    document.getElementById("applyFilterBtn").addEventListener("click", () => {
-      const userFilter = document.getElementById("filterUser").value.toLowerCase();
-      const actionFilter = document.getElementById("filterAction").value.toLowerCase();
-      const rows = document.querySelectorAll("#logTable tr");
+    // Nur Admin darf Logs sehen
+    if (currentUser !== "admin") {
+      alert("Nur Admin darf die Aktivitäts-Logs sehen!");
+      window.location.href = "index.html";
+    }
+
+    const tbody = document.getElementById("logTable");
+
+    // CSV Export
+    document.getElementById("exportLogsBtn").addEventListener("click", () => {
+      let csv = ["Zeitstempel,Benutzer,Aktion,Details"];
+      const rows = tbody.querySelectorAll("tr");
       rows.forEach(row => {
-        const user = row.cells[1].textContent.toLowerCase();
-        const action = row.cells[2].textContent.toLowerCase();
-        row.style.display = (user.includes(userFilter) && action.includes(actionFilter)) ? "" : "none";
+        const cells = row.querySelectorAll("td");
+        csv.push([
+          cells[0].innerText,
+          cells[1].innerText,
+          cells[2].innerText,
+          cells[3].innerText
+        ].join(","));
       });
-    });
 
-    // Filter zurücksetzen
-    document.getElementById("resetFilterBtn").addEventListener("click", () => {
-      document.getElementById("filterUser").value = "";
-      document.getElementById("filterAction").value = "";
-      const rows = document.querySelectorAll("#logTable tr");
-      rows.forEach(row => row.style.display = "");
+      const csvContent = "data:text/csv;charset=utf-8," + csv.join("\\n");
+      const link = document.createElement("a");
+      link.setAttribute("href", csvContent);
+      link.setAttribute("download", "logs.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     });
 
     // Events für bestehende Zeilen
@@ -134,15 +108,18 @@
 
     function attachRowEvents(row) {
       row.querySelector(".saveLog").addEventListener("click", () => {
-        const timestamp = row.cells[0].innerText;
+        const time = row.cells[0].innerText;
         const user = row.cells[1].innerText;
         const action = row.cells[2].innerText;
-        alert(`Log gespeichert: ${timestamp}, Benutzer: ${user}, Aktion: ${action}`);
+        const details = row.cells[3].innerText;
+        alert(`Log gespeichert: ${time}, ${user}, Aktion: ${action}`);
       });
       row.querySelector(".editLog").addEventListener("click", () => {
         alert("Bearbeiten-Modus: Felder sind direkt editierbar.");
       });
-      row.querySelector(".delete").addEventListener("click", () => row.remove());
+      row.querySelector(".delete").addEventListener("click", () => {
+        row.remove();
+      });
     }
   </script>
 </body>
