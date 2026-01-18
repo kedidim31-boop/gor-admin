@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aktivitäts-Logs – Gaming of Republic</title>
+  <link rel="stylesheet" href="assets/css/layout.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">🕹️ Gaming of Republic</div>
+    <ul>
+      <li><a href="index.html">🏠 Dashboard</a></li>
+      <li><a href="products.html">📦 Produkte</a></li>
+      <li><a href="users.html">👥 Benutzerverwaltung</a></li>
+      <li><a href="tasks.html">✅ Aufgaben</a></li>
+      <li><a href="logs.html" class="active">📑 Aktivitäts-Logs</a></li>
+      <li><a href="settings.html">⚙️ Einstellungen</a></li>
+    </ul>
+    <button id="exportLogsBtn" class="btn">📤 CSV Export</button>
+    <button id="logoutBtn" class="btn delete">🚪 Abmelden</button>
+  </aside>
+
+  <main class="content">
+    <h1>Aktivitäts-Logs</h1>
+
+    <!-- Filter -->
+    <div class="card">
+      <h2>Filter</h2>
+      <input type="text" id="filterUser" placeholder="Benutzer filtern">
+      <input type="text" id="filterAction" placeholder="Aktion filtern">
+      <button id="applyFilterBtn" class="btn">🔍 Anwenden</button>
+      <button id="resetFilterBtn" class="btn delete">❌ Zurücksetzen</button>
+    </div>
+
+    <!-- Logs Tabelle -->
+    <div class="card">
+      <h2>Protokollierte Aktionen</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Zeitstempel</th>
+            <th>Benutzer</th>
+            <th>Aktion</th>
+          </tr>
+        </thead>
+        <tbody id="logTable">
+          <tr>
+            <td>2026-01-18 04:00</td>
+            <td>admin</td>
+            <td>Produkt "Energy Drink Neon" hinzugefügt</td>
+          </tr>
+          <tr>
+            <td>2026-01-18 04:05</td>
+            <td>editor</td>
+            <td>Bild für Produkt "Gaming Chair" aktualisiert</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Neue Aktion hinzufügen -->
+    <div class="card">
+      <h2>Neue Aktion manuell protokollieren</h2>
+      <input type="text" id="logUser" placeholder="Benutzername">
+      <input type="text" id="logAction" placeholder="Aktion">
+      <button id="addLogBtn" class="btn">➕ Hinzufügen</button>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p id="footerText"></p>
+  </footer>
+
+<script>
+  // Zugriffsschutz
+  const user = localStorage.getItem("loggedInUser");
+  if (!user) window.location.href = "login.html";
+
+  // Logout
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    localStorage.removeItem("loggedInUser");
+    alert("Du wurdest abgemeldet.");
+    window.location.href = "login.html";
+  });
+
+  // Neue Logs hinzufügen
+  document.getElementById("addLogBtn").addEventListener("click", () => {
+    const logUser = document.getElementById("logUser").value.trim();
+    const logAction = document.getElementById("logAction").value.trim();
+    if (!logUser || !logAction) {
+      alert("Bitte Benutzername und Aktion eingeben!");
+      return;
+    }
+    const now = new Date();
+    const timestamp = now.toISOString().slice(0,16).replace("T"," ");
+    const row = document.createElement("tr");
+    row.innerHTML = `<td>${timestamp}</td><td>${logUser}</td><td>${logAction}</td>`;
+    document.getElementById("logTable").appendChild(row);
+    document.getElementById("logUser").value = "";
+    document.getElementById("logAction").value = "";
+  });
+
+  // Filter anwenden
+  document.getElementById("applyFilterBtn").addEventListener("click", () => {
+    const userFilter = document.getElementById("filterUser").value.toLowerCase();
+    const actionFilter = document.getElementById("filterAction").value.toLowerCase();
+    const rows = document.querySelectorAll("#logTable tr");
+    rows.forEach(row => {
+      const user = row.cells[1].textContent.toLowerCase();
+      const action = row.cells[2].textContent.toLowerCase();
+      row.style.display = (user.includes(userFilter) && action.includes(actionFilter)) ? "" : "none";
+    });
+  });
+
+  // Filter zurücksetzen
+  document.getElementById("resetFilterBtn").addEventListener("click", () => {
+    document.getElementById("filterUser").value = "";
+    document.getElementById("filterAction").value = "";
+    const rows = document.querySelectorAll("#logTable tr");
+    rows.forEach(row => row.style.display = "");
+  });
+
+  // CSV Export
+  document.getElementById("exportLogsBtn").addEventListener("click", () => {
+    let csv = ["Zeitstempel,Benutzer,Aktion"];
+    const rows = document.querySelectorAll("#logTable tr");
+    rows.forEach(row => {
+      const cells = row.querySelectorAll("td");
+      csv.push([cells[0].innerText, cells[1].innerText, cells[2].innerText].join(","));
+    });
+    const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+    const link = document.createElement("a");
+    link.setAttribute("href", csvContent);
+    link.setAttribute("download", "logs.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+
+  // Footer Jahr automatisch
+  const year = new Date().getFullYear();
+  document.getElementById("footerText").textContent =
+    `© ${year} Gaming of Republic - Alle Rechte vorbehalten.`;
+</script>
+</body>
+</html>
