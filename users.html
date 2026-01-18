@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Benutzerverwaltung – Gaming of Republic</title>
+  <title>Benutzer – Gaming of Republic</title>
   <link rel="stylesheet" href="assets/css/layout.css">
 </head>
 <body>
@@ -11,37 +11,22 @@
   <aside class="sidebar">
     <div class="logo">🕹️ Gaming of Republic</div>
     <ul>
-      <li><a href="index.html">🏠 Dashboard</a></li>
+      <li><a href="index.html">🏠 Übersicht</a></li>
       <li><a href="products.html">📦 Produkte</a></li>
-      <li><a href="users.html" class="active">👥 Benutzerverwaltung</a></li>
+      <li><a href="users.html" class="active">👥 Benutzer</a></li>
       <li><a href="tasks.html">✅ Aufgaben</a></li>
-      <li><a href="logs.html">📑 Logs</a></li>
+      <li><a href="logs.html">📑 Aktivitäts-Logs</a></li>
       <li><a href="settings.html">⚙️ Einstellungen</a></li>
     </ul>
-    <button id="addUserBtn" class="btn">➕ Neuer Benutzer</button>
-    <button id="exportUsersBtn" class="btn">📤 CSV Export</button>
-    <button id="logoutBtn" class="btn delete">🚪 Abmelden</button>
+    <button id="addUserBtn" class="btn">➕ Benutzer hinzufügen</button>
+    <button id="exportUsersBtn" class="btn">📤 Benutzer exportieren</button>
+    <button id="logoutBtn" class="btn delete">Abmelden</button>
   </aside>
 
   <!-- Main Content -->
   <main class="content">
     <h1>Benutzerverwaltung</h1>
 
-    <!-- Filter -->
-    <div class="card">
-      <h2>Filter</h2>
-      <input type="text" id="filterName" placeholder="Nach Benutzername filtern">
-      <select id="filterRole">
-        <option value="">Alle Rollen</option>
-        <option value="Admin">Admin</option>
-        <option value="Editor">Editor</option>
-        <option value="Viewer">Viewer</option>
-      </select>
-      <button id="applyFilterBtn" class="btn">🔍 Anwenden</button>
-      <button id="resetFilterBtn" class="btn delete">❌ Zurücksetzen</button>
-    </div>
-
-    <!-- Benutzer Tabelle -->
     <div class="card">
       <h2>Benutzerliste</h2>
       <table>
@@ -56,18 +41,46 @@
         </thead>
         <tbody id="userTable">
           <tr>
-            <td>admin</td>
-            <td>admin@gor.com</td>
-            <td>Admin</td>
-            <td>Aktiv</td>
-            <td><button class="btn delete">🗑️ Löschen</button></td>
+            <td contenteditable="true">admin</td>
+            <td contenteditable="true">admin@gamingofrepublic.com</td>
+            <td>
+              <select>
+                <option value="Admin" selected>Admin</option>
+                <option value="Editor">Editor</option>
+                <option value="Viewer">Viewer</option>
+              </select>
+            </td>
+            <td>
+              <select>
+                <option value="Aktiv" selected>Aktiv</option>
+                <option value="Inaktiv">Inaktiv</option>
+              </select>
+            </td>
+            <td>
+              <button class="btn changePass">🔑 Passwort ändern</button>
+              <button class="btn delete">🗑️ Löschen</button>
+            </td>
           </tr>
           <tr>
-            <td>editor</td>
-            <td>editor@gor.com</td>
-            <td>Editor</td>
-            <td>Aktiv</td>
-            <td><button class="btn delete">🗑️ Löschen</button></td>
+            <td contenteditable="true">editor</td>
+            <td contenteditable="true">editor@gamingofrepublic.com</td>
+            <td>
+              <select>
+                <option value="Admin">Admin</option>
+                <option value="Editor" selected>Editor</option>
+                <option value="Viewer">Viewer</option>
+              </select>
+            </td>
+            <td>
+              <select>
+                <option value="Aktiv" selected>Aktiv</option>
+                <option value="Inaktiv">Inaktiv</option>
+              </select>
+            </td>
+            <td>
+              <button class="btn changePass">🔑 Passwort ändern</button>
+              <button class="btn delete">🗑️ Löschen</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -86,12 +99,12 @@
 
     const tbody = document.getElementById("userTable");
 
-    // Neuer Benutzer hinzufügen
+    // Benutzer hinzufügen
     document.getElementById("addUserBtn").addEventListener("click", () => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td contenteditable="true">Neuer Benutzer</td>
-        <td contenteditable="true">email@example.com</td>
+        <td contenteditable="true">neueruser</td>
+        <td contenteditable="true">neueruser@gamingofrepublic.com</td>
         <td>
           <select>
             <option value="Admin">Admin</option>
@@ -105,11 +118,13 @@
             <option value="Inaktiv">Inaktiv</option>
           </select>
         </td>
-        <td><button class="btn delete">🗑️ Löschen</button></td>
+        <td>
+          <button class="btn changePass">🔑 Passwort ändern</button>
+          <button class="btn delete">🗑️ Löschen</button>
+        </td>
       `;
       tbody.appendChild(tr);
-
-      tr.querySelector(".delete").addEventListener("click", () => tr.remove());
+      attachRowEvents(tr);
     });
 
     // CSV Export
@@ -118,13 +133,13 @@
       const rows = tbody.querySelectorAll("tr");
       rows.forEach(row => {
         const cells = row.querySelectorAll("td");
-        const roleCell = row.querySelector("select") ? row.querySelectorAll("select")[0].value : cells[2].innerText;
-        const statusCell = row.querySelector("select") ? row.querySelectorAll("select")[1].value : cells[3].innerText;
+        const role = row.querySelectorAll("select")[0].value;
+        const status = row.querySelectorAll("select")[1].value;
         csv.push([
           cells[0].innerText,
           cells[1].innerText,
-          roleCell,
-          statusCell
+          role,
+          status
         ].join(","));
       });
 
@@ -137,25 +152,16 @@
       document.body.removeChild(link);
     });
 
-    // Filter anwenden
-    document.getElementById("applyFilterBtn").addEventListener("click", () => {
-      const nameFilter = document.getElementById("filterName").value.toLowerCase();
-      const roleFilter = document.getElementById("filterRole").value;
-      const rows = tbody.querySelectorAll("tr");
-      rows.forEach(row => {
-        const name = row.cells[0].textContent.toLowerCase();
-        const role = row.querySelector("select") ? row.querySelectorAll("select")[0].value : row.cells[2].textContent;
-        row.style.display = (name.includes(nameFilter) && (roleFilter === "" || role === roleFilter)) ? "" : "none";
-      });
-    });
+    // Events für bestehende Zeilen
+    document.querySelectorAll("#userTable tr").forEach(attachRowEvents);
 
-    // Filter zurücksetzen
-    document.getElementById("resetFilterBtn").addEventListener("click", () => {
-      document.getElementById("filterName").value = "";
-      document.getElementById("filterRole").value = "";
-      const rows = tbody.querySelectorAll("tr");
-      rows.forEach(row => row.style.display = "");
-    });
+    function attachRowEvents(row) {
+      row.querySelector(".changePass").addEventListener("click", () => {
+        const newPass = prompt("Neues Passwort eingeben:");
+        if (newPass) alert("Passwort erfolgreich geändert!");
+      });
+      row.querySelector(".delete").addEventListener("click", () => row.remove());
+    }
   </script>
 </body>
 </html>
