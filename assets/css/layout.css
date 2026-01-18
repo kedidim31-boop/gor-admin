@@ -1,26 +1,20 @@
-/* ===== Global Layout ===== */
+/* Grundlayout */
 body {
   background-color: #191833;
   color: #fff;
   font-family: 'Segoe UI', sans-serif;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
-}
-
-h1, h2 {
-  color: #ffd700;
-  margin-bottom: 1rem;
 }
 
 main.content {
   margin-left: 240px;
   padding: 2rem;
-  min-height: calc(100vh - 80px); /* Platz für Footer */
+  min-height: calc(100vh - 60px);
   box-sizing: border-box;
 }
 
-/* ===== Sidebar Navigation ===== */
+/* Sidebar */
 .sidebar {
   position: fixed;
   top: 0;
@@ -31,10 +25,7 @@ main.content {
   color: #fff;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   padding: 1rem;
-  box-shadow: 2px 0 6px rgba(0,0,0,0.5);
-  z-index: 1000;
 }
 
 .sidebar .logo {
@@ -62,12 +53,11 @@ main.content {
   display: block;
   padding: 0.6rem 1rem;
   border-radius: 6px;
-  transition: background-color 0.2s ease;
+  transition: background 0.2s ease;
 }
 
 .sidebar ul li a:hover {
   background-color: #222244;
-  color: #ffd700;
 }
 
 .sidebar ul li a.active {
@@ -75,22 +65,17 @@ main.content {
   color: #ffd700;
 }
 
-.sidebar .btn {
-  margin-top: 1rem;
-  width: 100%;
-}
-
-/* ===== Buttons ===== */
+/* Buttons */
 .btn {
   background-color: #ffd700;
   color: #000;
-  padding: 0.6rem 1.2rem;
+  padding: 0.6rem;
   border: none;
   font-weight: bold;
   cursor: pointer;
   border-radius: 6px;
-  margin-right: 0.5rem;
-  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+  transition: background 0.2s ease;
 }
 
 .btn:hover {
@@ -103,16 +88,31 @@ main.content {
 }
 
 .btn.delete:hover {
-  background-color: #c53030;
+  background-color: #c62839;
 }
 
-/* ===== Tables ===== */
+/* Logout Button fixiert unten */
+#logoutBtn {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+}
+
+/* Karten */
+.card, .login-card {
+  background-color: #111827;
+  padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+/* Tabellen */
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
-  border-radius: 8px;
-  overflow: hidden;
 }
 
 th, td {
@@ -126,85 +126,28 @@ th {
   color: #ffd700;
 }
 
-tbody tr:nth-child(even) {
-  background-color: #222244;
-}
-
-tbody tr:hover {
-  background-color: #333355;
-}
-
-/* ===== Dropzones ===== */
+/* Dropzone für Bilder */
 .dropzone {
   border: 2px dashed #ffd700;
-  padding: 0.7rem;
+  padding: 1rem;
   text-align: center;
-  color: #ffd700;
-  background-color: #191833;
-  cursor: pointer;
   border-radius: 6px;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.dropzone:hover {
-  background-color: #222244;
-  color: #fff;
+  cursor: pointer;
 }
 
 .dropzone img {
-  max-width: 80px;
-  border: 2px solid #ffd700;
-  border-radius: 4px;
-  margin-top: 0.5rem;
-}
-
-/* ===== Cards ===== */
-.card, .login-card {
-  background-color: #111827;
-  padding: 2rem;
-  border-radius: 10px;
-  margin-bottom: 2rem;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-}
-
-.login-card h1 {
-  color: #ffd700;
-  margin-bottom: 1.5rem;
-}
-
-.login-card label {
-  display: block;
-  margin-bottom: 0.3rem;
-  font-weight: bold;
-  color: #ffd700;
-  text-align: left;
-}
-
-.login-card input, .login-card select {
-  width: 100%;
-  padding: 0.7rem;
-  margin-bottom: 1rem;
-  border: 2px solid #ffd700;
-  background-color: #191833;
-  color: #fff;
+  max-width: 100px;
   border-radius: 6px;
 }
 
-.login-card .btn {
-  width: 100%;
-  padding: 0.9rem;
-  font-size: 1rem;
-}
-
-/* ===== Footer ===== */
+/* Footer */
 .footer {
   background-color: #111827;
   color: #ffd700;
   text-align: center;
   padding: 1rem;
-  font-weight: bold;
-  box-shadow: 0 -2px 6px rgba(0,0,0,0.5);
-  position: relative;
-  z-index: 10;
+  position: fixed;
+  bottom: 0;
+  left: 240px;
+  right: 0;
 }
