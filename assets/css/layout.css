@@ -1,174 +1,157 @@
-/* Grundlayout */
+/* ===== Allgemeines Layout ===== */
 body {
-  background-color: #191833;
-  color: #fff;
-  font-family: 'Segoe UI', sans-serif;
   margin: 0;
-  padding: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: #0f0e1c;
+  color: #f0f0f0;
+}
+
+h1, h2 {
+  color: #ffd700;
+  margin-bottom: 1rem;
 }
 
 main.content {
-  margin-left: 240px;
+  margin-left: 220px;
   padding: 2rem;
-  min-height: calc(100vh - 60px);
-  box-sizing: border-box;
 }
 
-/* Sidebar */
+/* ===== Sidebar ===== */
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
-  width: 240px;
-  height: 100vh;
-  background-color: #111827;
-  color: #fff;
+  width: 220px;
+  height: 100%;
+  background: #111827;
+  color: #ffd700;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
-  box-sizing: border-box;
-  overflow: hidden;
 }
 
 .sidebar .logo {
+  font-size: 1.2rem;
   font-weight: bold;
-  color: #ffd700;
-  font-size: 1.4rem;
-  margin-bottom: 2rem;
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 2px solid #ffd700;
 }
 
-/* Scrollbarer Bereich */
-.sidebar-scroll {
-  flex-grow: 1;
-  overflow-y: auto;
-  padding-right: 0.5rem;
-}
-
-.sidebar-actions {
-  margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-/* Navigation */
 .sidebar ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.sidebar ul li {
-  margin-bottom: 1rem;
+.sidebar ul li a {
+  display: block;
+  padding: 0.8rem 1rem;
+  color: #ffd700;
+  text-decoration: none;
+  transition: background 0.3s;
 }
 
-.sidebar ul li a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: bold;
-  display: block;
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+  background: rgba(255, 215, 0, 0.2);
+}
+
+.sidebar-actions {
+  margin-top: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* ===== Buttons ===== */
+.btn {
+  background: #ffd700;
+  color: #111827;
+  border: none;
   padding: 0.6rem 1rem;
   border-radius: 6px;
-  transition: background 0.2s ease;
-}
-
-.sidebar ul li a:hover {
-  background-color: #222244;
-}
-
-.sidebar ul li a.active {
-  background-color: #333355;
-  color: #ffd700;
-}
-
-/* Buttons */
-.btn {
-  background-color: #ffd700;
-  color: #000;
-  padding: 0.6rem;
-  border: none;
-  font-weight: bold;
   cursor: pointer;
-  border-radius: 6px;
-  margin-top: 0.5rem;
-  transition: background 0.2s ease;
+  font-weight: bold;
+  transition: all 0.3s;
 }
 
 .btn:hover {
-  background-color: #e6c200;
+  background: #ffea00;
 }
 
 .btn.delete {
-  background-color: #e63946;
+  background: #ff4d4d;
   color: #fff;
 }
 
 .btn.delete:hover {
-  background-color: #c62839;
+  background: #ff6666;
 }
 
-.btn.saveProduct,
-.btn.saveUser,
-.btn.saveTask,
-.btn.saveLog,
-.btn.saveProfile,
-#saveStatsBtn,
-#saveLoginBtn {
-  background-color: #4caf50;
+.btn.saveUser, .btn.saveProduct, .btn.saveTask, .btn.saveLog, .btn.saveProfile {
+  background: #32cd32;
   color: #fff;
 }
 
-.btn.saveProduct:hover,
 .btn.saveUser:hover,
+.btn.saveProduct:hover,
 .btn.saveTask:hover,
 .btn.saveLog:hover,
-.btn.saveProfile:hover,
-#saveStatsBtn:hover,
-#saveLoginBtn:hover {
-  background-color: #3e8e41;
+.btn.saveProfile:hover {
+  background: #3ee63e;
 }
 
-/* Abmelden Button oben rechts */
-.top-right {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 10;
-}
-
-/* Karten */
-.card, .login-card {
-  background-color: #111827;
-  padding: 2rem;
-  border-radius: 10px;
+/* ===== Karten ===== */
+.card {
+  background: #191833;
+  border: 2px solid #ffd700;
+  border-radius: 8px;
+  padding: 1.5rem;
   margin-bottom: 2rem;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
 }
 
-/* Tabellen */
+/* ===== Tabellen ===== */
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
 }
 
-th, td {
-  border: 1px solid #444;
-  padding: 0.7rem;
-  text-align: center;
+table th, table td {
+  border: 1px solid #ffd700;
+  padding: 0.6rem;
+  text-align: left;
 }
 
-th {
-  background-color: #111827;
+table th {
+  background: #111827;
   color: #ffd700;
 }
 
-/* Dropzone für Bilder */
+table td {
+  background: #191833;
+}
+
+/* ===== Textarea ===== */
+textarea.description-area {
+  width: 100%;
+  min-height: 60px;
+  background: #191833;
+  color: #fff;
+  border: 1px solid #ffd700;
+  border-radius: 6px;
+  padding: 0.5rem;
+}
+
+/* ===== Dropzone für Bilder ===== */
 .dropzone {
   border: 2px dashed #ffd700;
+  border-radius: 6px;
   padding: 1rem;
   text-align: center;
-  border-radius: 6px;
+  color: #ffd700;
   cursor: pointer;
 }
 
@@ -177,27 +160,22 @@ th {
   border-radius: 6px;
 }
 
-/* Beschreibung Textarea */
-.description-area {
-  width: 100%;
-  min-height: 80px;
-  background-color: #191833;
-  color: #ffd700;
-  border: 2px solid #ffd700;
-  border-radius: 6px;
-  padding: 0.5rem;
-  resize: vertical;
-  font-family: 'Segoe UI', sans-serif;
-}
-
-/* Footer */
+/* ===== Footer ===== */
 .footer {
-  background-color: #111827;
+  background: #111827;
   color: #ffd700;
   text-align: center;
-  padding: 1rem;
+  padding: 0.8rem;
   position: fixed;
   bottom: 0;
-  left: 240px;
+  left: 220px;
   right: 0;
+  border-top: 2px solid #ffd700;
+}
+
+/* ===== Top-right Logout Button ===== */
+.top-right {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
