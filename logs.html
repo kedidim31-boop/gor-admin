@@ -15,13 +15,13 @@
       <li><a href="products.html">📦 Produkte</a></li>
       <li><a href="users.html">👥 Benutzerverwaltung</a></li>
       <li><a href="tasks.html">✅ Aufgaben</a></li>
-      <li><a href="logs.html" class="active">📑 Aktivitäts-Logs</a></li>
+      <li><a href="logs.html" class="active">📑 Logs</a></li>
       <li><a href="settings.html">⚙️ Einstellungen</a></li>
     </ul>
-    <button id="exportLogsBtn" class="btn">📤 CSV Export</button>
     <button id="logoutBtn" class="btn delete">🚪 Abmelden</button>
   </aside>
 
+  <!-- Main Content -->
   <main class="content">
     <h1>Aktivitäts-Logs</h1>
 
@@ -74,76 +74,47 @@
     <p id="footerText"></p>
   </footer>
 
-<script>
-  // Zugriffsschutz
-  const user = localStorage.getItem("loggedInUser");
-  if (!user) window.location.href = "login.html";
+  <!-- Auth und Logik -->
+  <script src="assets/js/auth.js"></script>
+  <script>
+    document.getElementById("logoutBtn").addEventListener("click", handleLogout);
 
-  // Logout
-  document.getElementById("logoutBtn").addEventListener("click", () => {
-    localStorage.removeItem("loggedInUser");
-    alert("Du wurdest abgemeldet.");
-    window.location.href = "login.html";
-  });
-
-  // Neue Logs hinzufügen
-  document.getElementById("addLogBtn").addEventListener("click", () => {
-    const logUser = document.getElementById("logUser").value.trim();
-    const logAction = document.getElementById("logAction").value.trim();
-    if (!logUser || !logAction) {
-      alert("Bitte Benutzername und Aktion eingeben!");
-      return;
-    }
-    const now = new Date();
-    const timestamp = now.toISOString().slice(0,16).replace("T"," ");
-    const row = document.createElement("tr");
-    row.innerHTML = `<td>${timestamp}</td><td>${logUser}</td><td>${logAction}</td>`;
-    document.getElementById("logTable").appendChild(row);
-    document.getElementById("logUser").value = "";
-    document.getElementById("logAction").value = "";
-  });
-
-  // Filter anwenden
-  document.getElementById("applyFilterBtn").addEventListener("click", () => {
-    const userFilter = document.getElementById("filterUser").value.toLowerCase();
-    const actionFilter = document.getElementById("filterAction").value.toLowerCase();
-    const rows = document.querySelectorAll("#logTable tr");
-    rows.forEach(row => {
-      const user = row.cells[1].textContent.toLowerCase();
-      const action = row.cells[2].textContent.toLowerCase();
-      row.style.display = (user.includes(userFilter) && action.includes(actionFilter)) ? "" : "none";
+    // Neue Logs hinzufügen
+    document.getElementById("addLogBtn").addEventListener("click", () => {
+      const logUser = document.getElementById("logUser").value.trim();
+      const logAction = document.getElementById("logAction").value.trim();
+      if (!logUser || !logAction) {
+        alert("Bitte Benutzername und Aktion eingeben!");
+        return;
+      }
+      const now = new Date();
+      const timestamp = now.toISOString().slice(0,16).replace("T"," ");
+      const row = document.createElement("tr");
+      row.innerHTML = `<td>${timestamp}</td><td>${logUser}</td><td>${logAction}</td>`;
+      document.getElementById("logTable").appendChild(row);
+      document.getElementById("logUser").value = "";
+      document.getElementById("logAction").value = "";
     });
-  });
 
-  // Filter zurücksetzen
-  document.getElementById("resetFilterBtn").addEventListener("click", () => {
-    document.getElementById("filterUser").value = "";
-    document.getElementById("filterAction").value = "";
-    const rows = document.querySelectorAll("#logTable tr");
-    rows.forEach(row => row.style.display = "");
-  });
-
-  // CSV Export
-  document.getElementById("exportLogsBtn").addEventListener("click", () => {
-    let csv = ["Zeitstempel,Benutzer,Aktion"];
-    const rows = document.querySelectorAll("#logTable tr");
-    rows.forEach(row => {
-      const cells = row.querySelectorAll("td");
-      csv.push([cells[0].innerText, cells[1].innerText, cells[2].innerText].join(","));
+    // Filter anwenden
+    document.getElementById("applyFilterBtn").addEventListener("click", () => {
+      const userFilter = document.getElementById("filterUser").value.toLowerCase();
+      const actionFilter = document.getElementById("filterAction").value.toLowerCase();
+      const rows = document.querySelectorAll("#logTable tr");
+      rows.forEach(row => {
+        const user = row.cells[1].textContent.toLowerCase();
+        const action = row.cells[2].textContent.toLowerCase();
+        row.style.display = (user.includes(userFilter) && action.includes(actionFilter)) ? "" : "none";
+      });
     });
-    const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
-    const link = document.createElement("a");
-    link.setAttribute("href", csvContent);
-    link.setAttribute("download", "logs.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  });
 
-  // Footer Jahr automatisch
-  const year = new Date().getFullYear();
-  document.getElementById("footerText").textContent =
-    `© ${year} Gaming of Republic - Alle Rechte vorbehalten.`;
-</script>
+    // Filter zurücksetzen
+    document.getElementById("resetFilterBtn").addEventListener("click", () => {
+      document.getElementById("filterUser").value = "";
+      document.getElementById("filterAction").value = "";
+      const rows = document.querySelectorAll("#logTable tr");
+      rows.forEach(row => row.style.display = "");
+    });
+  </script>
 </body>
 </html>
