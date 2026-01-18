@@ -22,7 +22,7 @@
       </ul>
 
       <div class="sidebar-actions">
-        <button id="addTaskBtn" class="btn">➕ Aufgabe erstellen</button>
+        <button id="addTaskBtn" class="btn">➕ Aufgabe hinzufügen</button>
         <button id="exportTasksBtn" class="btn">📤 Aufgaben exportieren</button>
       </div>
     </div>
@@ -30,24 +30,26 @@
 
   <!-- Main Content -->
   <main class="content">
-    <h1>Team-Aufgaben</h1>
+    <h1>Aufgabenverwaltung</h1>
 
     <div class="card">
       <h2>Aufgabenliste</h2>
       <table>
         <thead>
           <tr>
-            <th>Aufgabe</th>
-            <th>Zugewiesen an</th>
+            <th>Titel</th>
+            <th>Beschreibung</th>
+            <th>Zuständig</th>
             <th>Status</th>
-            <th>Deadline</th>
+            <th>Fälligkeitsdatum</th>
             <th>Aktionen</th>
           </tr>
         </thead>
         <tbody id="taskTable">
           <tr>
-            <td contenteditable="true">Produktbilder aktualisieren</td>
-            <td contenteditable="true">editor@gamingofrepublic.com</td>
+            <td contenteditable="true">Testaufgabe</td>
+            <td contenteditable="true">Beschreibung der Aufgabe</td>
+            <td contenteditable="true">admin</td>
             <td>
               <select>
                 <option value="Offen" selected>Offen</option>
@@ -55,7 +57,7 @@
                 <option value="Erledigt">Erledigt</option>
               </select>
             </td>
-            <td contenteditable="true">2026-01-20</td>
+            <td contenteditable="true">2026-01-31</td>
             <td>
               <button class="btn saveTask">💾 Speichern</button>
               <button class="btn editTask">✏️ Bearbeiten</button>
@@ -79,15 +81,16 @@
 
     const tbody = document.getElementById("taskTable");
 
-    // Neue Aufgabe hinzufügen
+    // Aufgabe hinzufügen
     document.getElementById("addTaskBtn").addEventListener("click", () => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td contenteditable="true">Neue Aufgabe</td>
-        <td contenteditable="true">benutzer@gamingofrepublic.com</td>
+        <td contenteditable="true">Beschreibung</td>
+        <td contenteditable="true">Benutzer</td>
         <td>
           <select>
-            <option value="Offen">Offen</option>
+            <option value="Offen" selected>Offen</option>
             <option value="In Bearbeitung">In Bearbeitung</option>
             <option value="Erledigt">Erledigt</option>
           </select>
@@ -105,7 +108,7 @@
 
     // CSV Export
     document.getElementById("exportTasksBtn").addEventListener("click", () => {
-      let csv = ["Aufgabe,Zugewiesen an,Status,Deadline"];
+      let csv = ["Titel,Beschreibung,Zuständig,Status,Fälligkeitsdatum"];
       const rows = tbody.querySelectorAll("tr");
       rows.forEach(row => {
         const cells = row.querySelectorAll("td");
@@ -113,8 +116,9 @@
         csv.push([
           cells[0].innerText,
           cells[1].innerText,
+          cells[2].innerText,
           status,
-          cells[3].innerText
+          cells[4].innerText
         ].join(","));
       });
 
@@ -132,16 +136,19 @@
 
     function attachRowEvents(row) {
       row.querySelector(".saveTask").addEventListener("click", () => {
-        const aufgabe = row.cells[0].innerText;
-        const assigned = row.cells[1].innerText;
+        const title = row.cells[0].innerText;
+        const desc = row.cells[1].innerText;
+        const user = row.cells[2].innerText;
         const status = row.querySelector("select").value;
-        const deadline = row.cells[3].innerText;
-        alert(`Aufgabe gespeichert: ${aufgabe}, Zugewiesen an: ${assigned}, Status: ${status}, Deadline: ${deadline}`);
+        const due = row.cells[4].innerText;
+        alert(`Aufgabe gespeichert: ${title}, Status: ${status}, Fällig: ${due}`);
       });
       row.querySelector(".editTask").addEventListener("click", () => {
         alert("Bearbeiten-Modus: Felder sind direkt editierbar.");
       });
-      row.querySelector(".delete").addEventListener("click", () => row.remove());
+      row.querySelector(".delete").addEventListener("click", () => {
+        row.remove();
+      });
     }
   </script>
 </body>
