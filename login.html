@@ -76,6 +76,7 @@
       <input type="password" id="password" placeholder="Passwort" required>
 
       <button type="submit" class="btn">➡️ Login</button>
+      <button type="button" id="saveLoginBtn" class="btn">💾 Speichern</button>
     </form>
   </div>
 
@@ -104,6 +105,23 @@
         alert("Falsches Passwort!");
       }
     });
+
+    // Login-Daten speichern
+    document.getElementById("saveLoginBtn").addEventListener("click", () => {
+      const username = document.getElementById("username").value.trim();
+      if (!username) {
+        alert("Bitte Benutzername eingeben!");
+        return;
+      }
+      localStorage.setItem("savedLoginUser", username);
+      alert(`Login-Daten gespeichert: ${username}`);
+    });
+
+    // Gespeicherten Benutzer anzeigen
+    const savedUser = localStorage.getItem("savedLoginUser");
+    if (savedUser) {
+      document.getElementById("username").value = savedUser;
+    }
   </script>
 </body>
 </html>
