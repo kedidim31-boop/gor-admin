@@ -151,7 +151,7 @@
         ].join(","));
       });
 
-      const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+      const csvContent = "data:text/csv;charset=utf-8," + csv.join("\\n");
       const link = document.createElement("a");
       link.setAttribute("href", csvContent);
       link.setAttribute("download", "benutzer.csv");
