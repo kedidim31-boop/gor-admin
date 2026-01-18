@@ -15,19 +15,24 @@
       <li><a href="products.html">📦 Produkte</a></li>
       <li><a href="users.html">👥 Benutzerverwaltung</a></li>
       <li><a href="tasks.html">✅ Aufgaben</a></li>
-      <li><a href="logs.html">📑 Aktivitäts-Logs</a></li>
+      <li><a href="logs.html">📑 Logs</a></li>
       <li><a href="settings.html">⚙️ Einstellungen</a></li>
     </ul>
   </aside>
 
+  <!-- Main Content -->
   <main class="content">
     <div class="login-card">
       <h1>Login</h1>
-      <label for="username">Benutzername</label>
-      <input type="text" id="username" placeholder="Dein Benutzername">
-      <label for="password">Passwort</label>
-      <input type="password" id="password" placeholder="Passwort eingeben">
-      <button id="loginBtn" class="btn">➡️ Anmelden</button>
+      <form id="loginForm">
+        <label for="username">Benutzername</label>
+        <input type="text" id="username" placeholder="Dein Benutzername" required>
+
+        <label for="password">Passwort</label>
+        <input type="password" id="password" placeholder="Dein Passwort" required>
+
+        <button type="submit" class="btn">➡️ Anmelden</button>
+      </form>
     </div>
   </main>
 
@@ -36,40 +41,29 @@
     <p id="footerText"></p>
   </footer>
 
-<script>
-  // Redirect-System: Wenn schon eingeloggt, direkt ins Dashboard
-  (function() {
-    const user = localStorage.getItem("loggedInUser");
-    if (user) {
-      window.location.href = "index.html";
-    }
-  })();
+  <!-- Auth -->
+  <script src="assets/js/auth.js"></script>
+  <script>
+    // Login Logik
+    document.getElementById("loginForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
 
-  // Login Logik
-  document.getElementById("loginBtn").addEventListener("click", () => {
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
+      if (!username || !password) {
+        alert("Bitte Benutzername und Passwort eingeben!");
+        return;
+      }
 
-    if (!username || !password) {
-      alert("Bitte Benutzername und Passwort eingeben!");
-      return;
-    }
-
-    // Beispiel: Passwortprüfung (später durch echte Authentifizierung ersetzen)
-    if (password === "1234") {
-      localStorage.setItem("loggedInUser", username);
-      alert("Login erfolgreich!");
-      window.location.href = "index.html";
-    } else {
-      alert("Falsches Passwort!");
-    }
-  });
-
-  // Footer Jahr automatisch
-  const year = new Date().getFullYear();
-  document.getElementById("footerText").textContent =
-    `© ${year} Gaming of Republic - Alle Rechte vorbehalten.`;
-</script>
+      // Beispiel: Passwortprüfung (später durch echte Auth ersetzen)
+      if (password === "1234") {
+        localStorage.setItem("loggedInUser", username);
+        alert("Login erfolgreich!");
+        window.location.href = "index.html";
+      } else {
+        alert("Falsches Passwort!");
+      }
+    });
+  </script>
 </body>
 </html>
-
