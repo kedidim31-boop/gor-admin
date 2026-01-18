@@ -10,6 +10,7 @@
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="logo">🕹️ Gaming of Republic</div>
+    <button id="logoutBtn" class="btn delete top-right">Abmelden</button>
     <ul>
       <li><a href="index.html">🏠 Übersicht</a></li>
       <li><a href="products.html">📦 Produkte</a></li>
@@ -18,7 +19,6 @@
       <li><a href="logs.html" class="active">📑 Aktivitäts-Logs</a></li>
       <li><a href="settings.html">⚙️ Einstellungen</a></li>
     </ul>
-    <button id="logoutBtn" class="btn delete">Abmelden</button>
   </aside>
 
   <!-- Main Content -->
@@ -43,6 +43,7 @@
             <th>Zeitstempel</th>
             <th>Benutzer</th>
             <th>Aktion</th>
+            <th>Aktionen</th>
           </tr>
         </thead>
         <tbody id="logTable">
@@ -50,11 +51,19 @@
             <td>2026-01-18 05:00</td>
             <td>admin@gamingofrepublic.com</td>
             <td>Produkt "Energy Drink Neon" hinzugefügt</td>
+            <td>
+              <button class="btn editLog">✏️ Bearbeiten</button>
+              <button class="btn delete">🗑️ Löschen</button>
+            </td>
           </tr>
           <tr>
             <td>2026-01-18 05:10</td>
             <td>editor@gamingofrepublic.com</td>
             <td>Bild für Produkt "Gaming Chair" aktualisiert</td>
+            <td>
+              <button class="btn editLog">✏️ Bearbeiten</button>
+              <button class="btn delete">🗑️ Löschen</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -90,8 +99,17 @@
       const now = new Date();
       const timestamp = now.toISOString().slice(0,16).replace("T"," ");
       const row = document.createElement("tr");
-      row.innerHTML = `<td>${timestamp}</td><td>${logUser}</td><td>${logAction}</td>`;
+      row.innerHTML = `
+        <td>${timestamp}</td>
+        <td>${logUser}</td>
+        <td>${logAction}</td>
+        <td>
+          <button class="btn editLog">✏️ Bearbeiten</button>
+          <button class="btn delete">🗑️ Löschen</button>
+        </td>
+      `;
       document.getElementById("logTable").appendChild(row);
+      attachRowEvents(row);
       document.getElementById("logUser").value = "";
       document.getElementById("logAction").value = "";
     });
@@ -115,6 +133,18 @@
       const rows = document.querySelectorAll("#logTable tr");
       rows.forEach(row => row.style.display = "");
     });
+
+    // Events für bestehende Zeilen
+    document.querySelectorAll("#logTable tr").forEach(attachRowEvents);
+
+    function attachRowEvents(row) {
+      row.querySelector(".editLog").addEventListener("click", () => {
+        alert("Bearbeiten-Modus: Felder sind direkt editierbar.");
+        row.cells[1].setAttribute("contenteditable", "true");
+        row.cells[2].setAttribute("contenteditable", "true");
+      });
+      row.querySelector(".delete").addEventListener("click", () => row.remove());
+    }
   </script>
 </body>
 </html>
