@@ -7,33 +7,50 @@
   <link rel="stylesheet" href="assets/css/layout.css">
 </head>
 <body>
-  <!-- Navigation -->
-  <nav class="navbar">
-    <div class="logo">🕹️ Gaming of Republic | Dashboard</div>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">🕹️ Gaming of Republic</div>
     <ul>
-      <li><a href="index.html" class="active">Dashboard</a></li>
-      <li><a href="products.html">Produkte</a></li>
-      <li id="userNav" style="display:none;"><a href="users.html">Benutzerverwaltung</a></li>
-      <li><button id="logoutBtn" class="btn delete">🚪 Abmelden</button></li>
+      <li><a href="index.html" class="active">🏠 Dashboard</a></li>
+      <li><a href="products.html">📦 Produkte</a></li>
+      <li><a href="users.html">👥 Benutzerverwaltung</a></li>
+      <li><a href="tasks.html">✅ Aufgaben</a></li>
+      <li><a href="logs.html">📑 Aktivitäts-Logs</a></li>
+      <li><a href="settings.html">⚙️ Einstellungen</a></li>
     </ul>
-  </nav>
+    <button id="logoutBtn" class="btn delete">🚪 Abmelden</button>
+  </aside>
 
   <main class="content">
     <h1>Willkommen im Dashboard</h1>
 
+    <!-- Übersicht -->
     <div class="card">
       <h2>Übersicht</h2>
       <p>Hier findest du die wichtigsten Funktionen deiner App:</p>
       <ul>
         <li>📦 Produkte verwalten (hinzufügen, bearbeiten, löschen, importieren/exportieren)</li>
-        <li>👥 Benutzerverwaltung (nur für Admin sichtbar)</li>
-        <li>📊 CSV Export und Bulk Import</li>
+        <li>👥 Benutzerverwaltung mit Rollen & Rechten</li>
+        <li>✅ Aufgaben für dein Team</li>
+        <li>📑 Aktivitäts-Logs für volle Transparenz</li>
+        <li>⚙️ Einstellungen inkl. Dark/Light Mode</li>
       </ul>
     </div>
 
+    <!-- Team Widgets -->
     <div class="card">
       <h2>Schnellzugriff</h2>
-      <button onclick="window.location.href='products.html'" class="btn">➡️ Zur Produktverwaltung</button>
+      <button onclick="window.location.href='products.html'" class="btn">➡️ Produktverwaltung</button>
+      <button onclick="window.location.href='tasks.html'" class="btn">➡️ Aufgaben</button>
+      <button onclick="window.location.href='logs.html'" class="btn">➡️ Logs</button>
+    </div>
+
+    <!-- Statistiken -->
+    <div class="card">
+      <h2>Statistik</h2>
+      <p>Produkte insgesamt: <span id="productCount">0</span></p>
+      <p>Benutzer insgesamt: <span id="userCount">0</span></p>
+      <p>Offene Aufgaben: <span id="taskCount">0</span></p>
     </div>
   </main>
 
@@ -43,11 +60,11 @@
   </footer>
 
 <script>
+  // Zugriffsschutz
   const user = localStorage.getItem("loggedInUser");
-  const role = localStorage.getItem("userRole");
   if (!user) window.location.href = "login.html";
-  if (role === "admin") document.getElementById("userNav").style.display = "inline-block";
 
+  // Logout
   document.getElementById("logoutBtn").addEventListener("click", () => {
     localStorage.removeItem("loggedInUser");
     localStorage.removeItem("userRole");
@@ -55,9 +72,15 @@
     window.location.href = "login.html";
   });
 
+  // Footer Jahr automatisch
   const year = new Date().getFullYear();
   document.getElementById("footerText").textContent =
     `© ${year} Gaming of Republic - Alle Rechte vorbehalten.`;
+
+  // Beispielwerte für Statistik (später dynamisch aus DB/API)
+  document.getElementById("productCount").textContent = 12;
+  document.getElementById("userCount").textContent = 5;
+  document.getElementById("taskCount").textContent = 3;
 </script>
 </body>
 </html>
