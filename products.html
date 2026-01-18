@@ -20,7 +20,6 @@
         <li><a href="logs.html">📑 Aktivitäts-Logs</a></li>
         <li><a href="settings.html">⚙️ Einstellungen</a></li>
       </ul>
-
       <div class="sidebar-actions">
         <button id="addRowBtn" class="btn">➕ Produkt hinzufügen</button>
         <button id="bulkImportBtn" class="btn">📥 Produkte importieren</button>
@@ -32,7 +31,6 @@
   <!-- Main Content -->
   <main class="content">
     <h1>Produktverwaltung</h1>
-
     <div class="card">
       <h2>Produkte</h2>
       <table id="productTable">
@@ -67,17 +65,15 @@
   <script src="assets/js/auth.js"></script>
   <script>
     document.getElementById("logoutBtn").addEventListener("click", handleLogout);
-
     const tbody = document.querySelector("#productTable tbody");
     let productList = [];
 
-    // Neue Produktzeile hinzufügen
     function addRow(p) {
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td contenteditable="true">${p.status}</td>
         <td contenteditable="true">${p.title}</td>
-        <td contenteditable="true">${p.description}</td>
+        <td><textarea class="description-area">${p.description}</textarea></td>
         <td contenteditable="true">${p.provider}</td>
         <td contenteditable="true">${p.type}</td>
         <td contenteditable="true">${p.collections}</td>
@@ -86,9 +82,7 @@
         <td>${p.sku} <button class="btn generate">🔄 SKU</button></td>
         <td contenteditable="true">${p.ean}</td>
         <td contenteditable="true">${p.stock}</td>
-        <td>
-          <div class="dropzone">${p.image ? `<img src="${p.image}">` : "📁 Bild hier ablegen"}</div>
-        </td>
+        <td><div class="dropzone">${p.image ? `<img src="${p.image}">` : "📁 Bild hier ablegen"}</div></td>
         <td>
           <button class="btn editProduct">✏️ Bearbeiten</button>
           <button class="btn delete">🗑️ Löschen</button>
@@ -129,7 +123,6 @@
       });
     }
 
-    // Button: Neues Produkt
     document.getElementById("addRowBtn").addEventListener("click", () => {
       const newProduct = {
         status: "Entwurf",
@@ -149,17 +142,17 @@
       addRow(newProduct);
     });
 
-    // Button: CSV Export
     document.getElementById("exportBtn").addEventListener("click", () => {
       let csv = ["Status,Titel,Beschreibung,Anbieter,Typ,Kategorien,Tags,Preis,SKU,EAN,Bestand,Bild"];
       const rows = tbody.querySelectorAll("tr");
       rows.forEach(row => {
         const cells = row.querySelectorAll("td");
         const imageCell = row.querySelector("img");
+        const description = row.querySelector(".description-area").value;
         csv.push([
           cells[0].innerText,
           cells[1].innerText,
-          cells[2].innerText,
+          description,
           cells[3].innerText,
           cells[4].innerText,
           cells[5].innerText,
@@ -172,7 +165,7 @@
         ].join(","));
       });
 
-      const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+      const csvContent = "data:text/csv;charset=utf-8," + csv.join("\\n");
       const link = document.createElement("a");
       link.setAttribute("href", csvContent);
       link.setAttribute("download", "produkte.csv");
@@ -181,7 +174,6 @@
       document.body.removeChild(link);
     });
 
-    // Button: Bulk Import (Platzhalter)
     document.getElementById("bulkImportBtn").addEventListener("click", () => {
       alert("Bulk Import ist noch nicht implementiert.");
     });
