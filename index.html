@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard – Gaming of Republic</title>
+  <title>Übersicht – Gaming of Republic</title>
   <link rel="stylesheet" href="assets/css/layout.css">
 </head>
 <body>
@@ -11,50 +11,49 @@
   <aside class="sidebar">
     <div class="logo">🕹️ Gaming of Republic</div>
     <ul>
-      <li><a href="index.html" class="active">🏠 Dashboard</a></li>
+      <li><a href="index.html" class="active">🏠 Übersicht</a></li>
       <li><a href="products.html">📦 Produkte</a></li>
-      <li><a href="users.html">👥 Benutzerverwaltung</a></li>
+      <li><a href="users.html">👥 Benutzer</a></li>
       <li><a href="tasks.html">✅ Aufgaben</a></li>
-      <li><a href="logs.html">📑 Logs</a></li>
+      <li><a href="logs.html">📑 Aktivitäts-Logs</a></li>
       <li><a href="settings.html">⚙️ Einstellungen</a></li>
     </ul>
-    <button id="logoutBtn" class="btn delete">🚪 Abmelden</button>
+    <button id="logoutBtn" class="btn delete">Abmelden</button>
   </aside>
 
   <!-- Main Content -->
   <main class="content">
-    <h1>Willkommen im Dashboard</h1>
+    <h1>Willkommen bei Gaming of Republic</h1>
 
     <!-- Übersicht -->
     <div class="card">
-      <h2>Übersicht</h2>
-      <p>Hier findest du die wichtigsten Funktionen deiner App:</p>
+      <h2>Zentrale Funktionen</h2>
       <ul style="text-align:left;">
         <li>📦 Produkte verwalten</li>
-        <li>👥 Benutzerverwaltung mit Rollen & Rechten</li>
+        <li>👥 Benutzer mit Rollen</li>
         <li>✅ Aufgaben für dein Team</li>
-        <li>📑 Aktivitäts-Logs für volle Transparenz</li>
-        <li>⚙️ Einstellungen für dein System</li>
+        <li>📑 Aktivitäts-Logs</li>
+        <li>⚙️ Einstellungen</li>
       </ul>
     </div>
 
     <!-- Schnellzugriff -->
     <div class="card">
       <h2>Schnellzugriff</h2>
-      <button onclick="window.location.href='products.html'" class="btn">➡️ Produktverwaltung</button>
-      <button onclick="window.location.href='users.html'" class="btn">➡️ Benutzer</button>
-      <button onclick="window.location.href='tasks.html'" class="btn">➡️ Aufgaben</button>
-      <button onclick="window.location.href='logs.html'" class="btn">➡️ Logs</button>
-      <button onclick="window.location.href='settings.html'" class="btn">➡️ Einstellungen</button>
+      <button onclick="location.href='products.html'" class="btn">Produkte</button>
+      <button onclick="location.href='users.html'" class="btn">Benutzer</button>
+      <button onclick="location.href='tasks.html'" class="btn">Aufgaben</button>
+      <button onclick="location.href='logs.html'" class="btn">Logs</button>
+      <button onclick="location.href='settings.html'" class="btn">Einstellungen</button>
     </div>
 
     <!-- Statistiken -->
     <div class="card">
       <h2>Statistik</h2>
-      <p>Produkte insgesamt: <span id="productCount">0</span></p>
-      <p>Benutzer insgesamt: <span id="userCount">0</span></p>
-      <p>Offene Aufgaben: <span id="taskCount">0</span></p>
-      <p>Letzte Aktion: <span id="lastLog">Keine</span></p>
+      <p>Produkte: 0</p>
+      <p>Benutzer: 0</p>
+      <p>Offene Aufgaben: 0</p>
+      <p>Letzte Aktivität: Keine</p>
     </div>
   </main>
 
@@ -63,16 +62,10 @@
     <p id="footerText"></p>
   </footer>
 
-  <!-- Auth und Logik -->
+  <!-- Auth -->
   <script src="assets/js/auth.js"></script>
   <script>
     document.getElementById("logoutBtn").addEventListener("click", handleLogout);
-
-    // Statistiken zurückgesetzt auf 0
-    document.getElementById("productCount").textContent = 0;
-    document.getElementById("userCount").textContent = 0;
-    document.getElementById("taskCount").textContent = 0;
-    document.getElementById("lastLog").textContent = "Keine";
   </script>
 </body>
 </html>
