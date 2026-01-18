@@ -10,6 +10,7 @@
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="logo">🕹️ Gaming of Republic</div>
+    <button id="logoutBtn" class="btn delete top-right">Abmelden</button>
     <ul>
       <li><a href="index.html">🏠 Übersicht</a></li>
       <li><a href="products.html" class="active">📦 Produkte</a></li>
@@ -21,7 +22,6 @@
     <button id="addRowBtn" class="btn">➕ Produkt hinzufügen</button>
     <button id="bulkImportBtn" class="btn">📥 Produkte importieren</button>
     <button id="exportBtn" class="btn">📤 Produkte exportieren</button>
-    <button id="logoutBtn" class="btn delete">Abmelden</button>
   </aside>
 
   <!-- Main Content -->
@@ -84,7 +84,10 @@
         <td>
           <div class="dropzone">${p.image ? `<img src="${p.image}">` : "📁 Bild hier ablegen"}</div>
         </td>
-        <td><button class="btn delete">🗑️ Löschen</button></td>
+        <td>
+          <button class="btn editProduct">✏️ Bearbeiten</button>
+          <button class="btn delete">🗑️ Löschen</button>
+        </td>
       `;
       tbody.appendChild(tr);
 
@@ -107,6 +110,11 @@
       tr.querySelector(".generate").addEventListener("click", () => {
         p.sku = "SKU-" + Math.random().toString(36).substring(2, 8).toUpperCase();
         tr.cells[8].innerHTML = `${p.sku} <button class="btn generate">🔄 SKU</button>`;
+      });
+
+      // Bearbeiten
+      tr.querySelector(".editProduct").addEventListener("click", () => {
+        alert("Bearbeiten-Modus: Felder sind direkt editierbar.");
       });
 
       // Löschen
