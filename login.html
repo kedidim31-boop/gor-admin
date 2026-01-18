@@ -7,29 +7,27 @@
   <link rel="stylesheet" href="assets/css/layout.css">
 </head>
 <body>
-  <!-- Navigation -->
-  <nav class="navbar">
+  <!-- Sidebar -->
+  <aside class="sidebar">
     <div class="logo">🕹️ Gaming of Republic</div>
     <ul>
-      <li><a href="index.html">Dashboard</a></li>
-      <li><a href="products.html">Produkte</a></li>
-      <li><a href="users.html">Benutzerverwaltung</a></li>
+      <li><a href="index.html">🏠 Dashboard</a></li>
+      <li><a href="products.html">📦 Produkte</a></li>
+      <li><a href="users.html">👥 Benutzerverwaltung</a></li>
+      <li><a href="tasks.html">✅ Aufgaben</a></li>
+      <li><a href="logs.html">📑 Aktivitäts-Logs</a></li>
+      <li><a href="settings.html">⚙️ Einstellungen</a></li>
     </ul>
-  </nav>
+  </aside>
 
   <main class="content">
     <div class="login-card">
       <h1>Login</h1>
       <label for="username">Benutzername</label>
-      <input type="text" id="username" />
+      <input type="text" id="username" placeholder="Dein Benutzername">
       <label for="password">Passwort</label>
-      <input type="password" id="password" />
-      <select id="role">
-        <option value="viewer">Viewer</option>
-        <option value="editor">Editor</option>
-        <option value="admin">Admin</option>
-      </select>
-      <button id="loginBtn" class="btn">Anmelden</button>
+      <input type="password" id="password" placeholder="Dein Passwort">
+      <button id="loginBtn" class="btn">➡️ Anmelden</button>
     </div>
   </main>
 
@@ -39,21 +37,27 @@
   </footer>
 
 <script>
+  // Login Logik ohne Rollen-Auswahl
   document.getElementById("loginBtn").addEventListener("click", () => {
     const username = document.getElementById("username").value;
-    const role = document.getElementById("role").value;
+    const password = document.getElementById("password").value;
 
-    if (!username) {
-      alert("Bitte Benutzername eingeben!");
+    if (!username || !password) {
+      alert("Bitte Benutzername und Passwort eingeben!");
       return;
     }
 
-    localStorage.setItem("loggedInUser", username);
-    localStorage.setItem("userRole", role);
-    alert("Login erfolgreich!");
-    window.location.href = "index.html";
+    // Beispiel: Passwortprüfung (später durch echte Authentifizierung ersetzen)
+    if (password === "1234") {
+      localStorage.setItem("loggedInUser", username);
+      alert("Login erfolgreich!");
+      window.location.href = "index.html";
+    } else {
+      alert("Falsches Passwort!");
+    }
   });
 
+  // Footer Jahr automatisch
   const year = new Date().getFullYear();
   document.getElementById("footerText").textContent =
     `© ${year} Gaming of Republic - Alle Rechte vorbehalten.`;
