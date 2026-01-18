@@ -11,37 +11,22 @@
   <aside class="sidebar">
     <div class="logo">🕹️ Gaming of Republic</div>
     <ul>
-      <li><a href="index.html">🏠 Dashboard</a></li>
+      <li><a href="index.html">🏠 Übersicht</a></li>
       <li><a href="products.html">📦 Produkte</a></li>
-      <li><a href="users.html">👥 Benutzerverwaltung</a></li>
+      <li><a href="users.html">👥 Benutzer</a></li>
       <li><a href="tasks.html" class="active">✅ Aufgaben</a></li>
-      <li><a href="logs.html">📑 Logs</a></li>
+      <li><a href="logs.html">📑 Aktivitäts-Logs</a></li>
       <li><a href="settings.html">⚙️ Einstellungen</a></li>
     </ul>
-    <button id="addTaskBtn" class="btn">➕ Neue Aufgabe</button>
-    <button id="exportTasksBtn" class="btn">📤 CSV Export</button>
-    <button id="logoutBtn" class="btn delete">🚪 Abmelden</button>
+    <button id="addTaskBtn" class="btn">➕ Aufgabe erstellen</button>
+    <button id="exportTasksBtn" class="btn">📤 Aufgaben exportieren</button>
+    <button id="logoutBtn" class="btn delete">Abmelden</button>
   </aside>
 
   <!-- Main Content -->
   <main class="content">
     <h1>Team-Aufgaben</h1>
 
-    <!-- Filter -->
-    <div class="card">
-      <h2>Filter</h2>
-      <input type="text" id="filterUser" placeholder="Nach Benutzer filtern">
-      <select id="filterStatus">
-        <option value="">Alle Status</option>
-        <option value="Offen">Offen</option>
-        <option value="In Bearbeitung">In Bearbeitung</option>
-        <option value="Erledigt">Erledigt</option>
-      </select>
-      <button id="applyFilterBtn" class="btn">🔍 Anwenden</button>
-      <button id="resetFilterBtn" class="btn delete">❌ Zurücksetzen</button>
-    </div>
-
-    <!-- Aufgaben Tabelle -->
     <div class="card">
       <h2>Aufgabenliste</h2>
       <table>
@@ -55,19 +40,30 @@
           </tr>
         </thead>
         <tbody id="taskTable">
-          <!-- Beispielaufgaben -->
           <tr>
-            <td>Produktbilder aktualisieren</td>
-            <td>editor</td>
-            <td>Offen</td>
-            <td>2026-01-20</td>
+            <td contenteditable="true">Produktbilder aktualisieren</td>
+            <td contenteditable="true">editor@gamingofrepublic.com</td>
+            <td>
+              <select>
+                <option value="Offen" selected>Offen</option>
+                <option value="In Bearbeitung">In Bearbeitung</option>
+                <option value="Erledigt">Erledigt</option>
+              </select>
+            </td>
+            <td contenteditable="true">2026-01-20</td>
             <td><button class="btn delete">🗑️ Löschen</button></td>
           </tr>
           <tr>
-            <td>Neue Kategorie hinzufügen</td>
-            <td>admin</td>
-            <td>In Bearbeitung</td>
-            <td>2026-01-25</td>
+            <td contenteditable="true">Neue Kategorie hinzufügen</td>
+            <td contenteditable="true">admin@gamingofrepublic.com</td>
+            <td>
+              <select>
+                <option value="Offen">Offen</option>
+                <option value="In Bearbeitung" selected>In Bearbeitung</option>
+                <option value="Erledigt">Erledigt</option>
+              </select>
+            </td>
+            <td contenteditable="true">2026-01-25</td>
             <td><button class="btn delete">🗑️ Löschen</button></td>
           </tr>
         </tbody>
@@ -92,7 +88,7 @@
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td contenteditable="true">Neue Aufgabe</td>
-        <td contenteditable="true">Benutzer</td>
+        <td contenteditable="true">benutzer@gamingofrepublic.com</td>
         <td>
           <select>
             <option value="Offen">Offen</option>
@@ -104,8 +100,7 @@
         <td><button class="btn delete">🗑️ Löschen</button></td>
       `;
       tbody.appendChild(tr);
-
-      tr.querySelector(".delete").addEventListener("click", () => tr.remove());
+      attachRowEvents(tr);
     });
 
     // CSV Export
@@ -114,11 +109,11 @@
       const rows = tbody.querySelectorAll("tr");
       rows.forEach(row => {
         const cells = row.querySelectorAll("td");
-        const statusCell = row.querySelector("select") ? row.querySelector("select").value : cells[2].innerText;
+        const status = row.querySelector("select").value;
         csv.push([
           cells[0].innerText,
           cells[1].innerText,
-          statusCell,
+          status,
           cells[3].innerText
         ].join(","));
       });
@@ -132,25 +127,12 @@
       document.body.removeChild(link);
     });
 
-    // Filter anwenden
-    document.getElementById("applyFilterBtn").addEventListener("click", () => {
-      const userFilter = document.getElementById("filterUser").value.toLowerCase();
-      const statusFilter = document.getElementById("filterStatus").value;
-      const rows = tbody.querySelectorAll("tr");
-      rows.forEach(row => {
-        const user = row.cells[1].textContent.toLowerCase();
-        const status = row.querySelector("select") ? row.querySelector("select").value : row.cells[2].textContent;
-        row.style.display = (user.includes(userFilter) && (statusFilter === "" || status === statusFilter)) ? "" : "none";
-      });
-    });
+    // Events für bestehende Zeilen
+    document.querySelectorAll("#taskTable tr").forEach(attachRowEvents);
 
-    // Filter zurücksetzen
-    document.getElementById("resetFilterBtn").addEventListener("click", () => {
-      document.getElementById("filterUser").value = "";
-      document.getElementById("filterStatus").value = "";
-      const rows = tbody.querySelectorAll("tr");
-      rows.forEach(row => row.style.display = "");
-    });
+    function attachRowEvents(row) {
+      row.querySelector(".delete").addEventListener("click", () => row.remove());
+    }
   </script>
 </body>
 </html>
