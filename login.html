@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="assets/css/layout.css">
 </head>
 <body>
-  <!-- Einheitliche Navigation -->
+  <!-- Navigation -->
   <nav class="navbar">
     <div class="logo">🕹️ Gaming of Republic</div>
     <ul>
@@ -33,6 +33,11 @@
     </div>
   </main>
 
+  <!-- Footer -->
+  <footer class="footer">
+    <p id="footerText"></p>
+  </footer>
+
 <script>
   document.getElementById("loginBtn").addEventListener("click", () => {
     const username = document.getElementById("username").value;
@@ -48,6 +53,10 @@
     alert("Login erfolgreich!");
     window.location.href = "index.html";
   });
+
+  const year = new Date().getFullYear();
+  document.getElementById("footerText").textContent =
+    `© ${year} Gaming of Republic - Alle Rechte vorbehalten.`;
 </script>
 </body>
 </html>
