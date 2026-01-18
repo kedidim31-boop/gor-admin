@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Produktverwaltung – Gaming of Republic</title>
-  <link rel="stylesheet" href="assets/css/layout.css" />
+  <link rel="stylesheet" href="assets/css/layout.css">
 </head>
 <body>
-  <nav class="navbar">
-    <div class="logo">🕹️ Gaming of Republic | Produktverwaltung</div>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">🕹️ Gaming of Republic</div>
     <ul>
-      <li><button id="addRowBtn" class="btn">+ NEUES PRODUKT</button></li>
-      <li><button id="bulkImportBtn" class="btn">Bulk Import</button></li>
-      <li><button id="exportBtn" class="btn">CSV Export</button></li>
-      <li><button id="logoutBtn" class="btn delete">🚪 Abmelden</button></li>
+      <li><a href="index.html">🏠 Dashboard</a></li>
+      <li><a href="products.html" class="active">📦 Produkte</a></li>
+      <li><a href="users.html">👥 Benutzerverwaltung</a></li>
+      <li><a href="tasks.html">✅ Aufgaben</a></li>
+      <li><a href="logs.html">📑 Aktivitäts-Logs</a></li>
+      <li><a href="settings.html">⚙️ Einstellungen</a></li>
     </ul>
-  </nav>
+    <button id="addRowBtn" class="btn">➕ Neues Produkt</button>
+    <button id="bulkImportBtn" class="btn">📥 Bulk Import</button>
+    <button id="exportBtn" class="btn">📤 CSV Export</button>
+    <button id="logoutBtn" class="btn delete">🚪 Abmelden</button>
+  </aside>
 
   <main class="content">
     <h1>Produktverwaltung</h1>
@@ -23,30 +30,35 @@
     <table id="productTable">
       <thead>
         <tr>
-          <th>STATUS</th>
-          <th>TITEL</th>
-          <th>BESCHREIBUNG</th>
-          <th>ANBIETER</th>
-          <th>TYP</th>
-          <th>KOLLEKTIONEN</th>
-          <th>TAGS</th>
-          <th>PREIS</th>
-          <th>SKU + GENERATOR</th>
+          <th>Status</th>
+          <th>Titel</th>
+          <th>Beschreibung</th>
+          <th>Anbieter</th>
+          <th>Typ</th>
+          <th>Kategorien</th>
+          <th>Tags</th>
+          <th>Preis</th>
+          <th>SKU</th>
           <th>EAN</th>
-          <th>BESTAND</th>
-          <th>BILDER</th>
-          <th>AKTIONEN</th>
+          <th>Bestand</th>
+          <th>Bilder</th>
+          <th>Aktionen</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
   </main>
 
+  <!-- Footer -->
+  <footer class="footer">
+    <p id="footerText"></p>
+  </footer>
+
 <script>
   const tbody = document.querySelector("#productTable tbody");
   let productList = [];
 
-  // Funktion zum Hinzufügen einer einzelnen Zeile
+  // Neue Produktzeile hinzufügen
   function addRow(p) {
     const tr = document.createElement("tr");
     tr.innerHTML = `
@@ -58,13 +70,11 @@
       <td contenteditable="true">${p.collections}</td>
       <td contenteditable="true">${p.tags}</td>
       <td contenteditable="true">${p.price}</td>
-      <td contenteditable="true">${p.sku} <button class="btn generate">SKU GENERIEREN</button></td>
+      <td>${p.sku} <button class="btn generate">🔄 SKU</button></td>
       <td contenteditable="true">${p.ean}</td>
       <td contenteditable="true">${p.stock}</td>
       <td>
-        <div class="dropzone">
-          ${p.image ? `<img src="${p.image}">` : "📁 Bilder hier ablegen oder klicken"}
-        </div>
+        <div class="dropzone">${p.image ? `<img src="${p.image}">` : "📁 Bild hier ablegen"}</div>
       </td>
       <td><button class="btn delete">🗑️ Löschen</button></td>
     `;
@@ -78,7 +88,7 @@
       const file = e.dataTransfer.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = function(ev) {
+      reader.onload = ev => {
         p.image = ev.target.result;
         zone.innerHTML = `<img src="${p.image}">`;
       };
@@ -88,7 +98,7 @@
     // SKU Generator
     tr.querySelector(".generate").addEventListener("click", () => {
       p.sku = "SKU-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-      tr.cells[8].innerHTML = `${p.sku} <button class="btn generate">SKU GENERIEREN</button>`;
+      tr.cells[8].innerHTML = `${p.sku} <button class="btn generate">🔄 SKU</button>`;
     });
 
     // Löschen
@@ -98,7 +108,7 @@
     });
   }
 
-  // Neue Zeile hinzufügen
+  // Button: Neues Produkt
   document.getElementById("addRowBtn").addEventListener("click", () => {
     const newProduct = {
       status: "Entwurf",
@@ -118,9 +128,9 @@
     addRow(newProduct);
   });
 
-  // CSV Export
+  // Button: CSV Export
   document.getElementById("exportBtn").addEventListener("click", () => {
-    let csv = ["STATUS,TITEL,BESCHREIBUNG,ANBIETER,TYP,KOLLEKTIONEN,TAGS,PREIS,SKU,EAN,BESTAND,BILD"];
+    let csv = ["Status,Titel,Beschreibung,Anbieter,Typ,Kategorien,Tags,Preis,SKU,EAN,Bestand,Bild"];
     const rows = tbody.querySelectorAll("tr");
     rows.forEach(row => {
       const cells = row.querySelectorAll("td");
@@ -134,7 +144,7 @@
         cells[5].innerText,
         cells[6].innerText,
         cells[7].innerText,
-        cells[8].innerText.split(" ")[0], // nur SKU Text
+        cells[8].innerText.split(" ")[0],
         cells[9].innerText,
         cells[10].innerText,
         imageCell ? "Bild vorhanden" : ""
@@ -150,16 +160,26 @@
     document.body.removeChild(link);
   });
 
-  // Bulk Import Platzhalter
+  // Button: Bulk Import (Platzhalter)
   document.getElementById("bulkImportBtn").addEventListener("click", () => {
-    alert("Bulk Import ist noch nicht aktiviert.");
+    alert("Bulk Import ist noch nicht implementiert.");
   });
+
+  // Zugriffsschutz
+  const user = localStorage.getItem("loggedInUser");
+  if (!user) window.location.href = "login.html";
 
   // Logout
   document.getElementById("logoutBtn").addEventListener("click", () => {
+    localStorage.removeItem("loggedInUser");
     alert("Du wurdest abgemeldet.");
     window.location.href = "login.html";
   });
+
+  // Footer Jahr automatisch
+  const year = new Date().getFullYear();
+  document.getElementById("footerText").textContent =
+    `© ${year} Gaming of Republic - Alle Rechte vorbehalten.`;
 </script>
 </body>
 </html>
