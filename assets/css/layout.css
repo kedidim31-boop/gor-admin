@@ -107,6 +107,27 @@ main.content {
   background-color: #c62839;
 }
 
+.btn.saveProduct,
+.btn.saveUser,
+.btn.saveTask,
+.btn.saveLog,
+.btn.saveProfile,
+#saveStatsBtn,
+#saveLoginBtn {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.btn.saveProduct:hover,
+.btn.saveUser:hover,
+.btn.saveTask:hover,
+.btn.saveLog:hover,
+.btn.saveProfile:hover,
+#saveStatsBtn:hover,
+#saveLoginBtn:hover {
+  background-color: #3e8e41;
+}
+
 /* Abmelden Button oben rechts */
 .top-right {
   position: absolute;
