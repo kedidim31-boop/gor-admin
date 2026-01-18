@@ -1,17 +1,16 @@
-// auth.js – Zentrales Authentifizierungssystem
-
 (function() {
+  // Aktuelle Seite ermitteln
   const currentPage = window.location.pathname.split("/").pop();
 
-  // Wenn User nicht eingeloggt ist → Redirect zu login.html
-  if (currentPage !== "login.html") {
+  // Wenn nicht Login-Seite → prüfen ob User eingeloggt ist
+  if (currentPage !== "login.html" && currentPage !== "register.html") {
     const user = localStorage.getItem("loggedInUser");
     if (!user) {
       window.location.href = "login.html";
     }
   }
 
-  // Logout-Funktion global verfügbar machen
+  // Logout-Funktion
   window.handleLogout = function() {
     localStorage.removeItem("loggedInUser");
     alert("Du wurdest abgemeldet.");
