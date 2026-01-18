@@ -84,6 +84,7 @@
         <td contenteditable="true">${p.stock}</td>
         <td><div class="dropzone">${p.image ? `<img src="${p.image}">` : "📁 Bild hier ablegen"}</div></td>
         <td>
+          <button class="btn saveProduct">💾 Speichern</button>
           <button class="btn editProduct">✏️ Bearbeiten</button>
           <button class="btn delete">🗑️ Löschen</button>
         </td>
@@ -109,6 +110,22 @@
       tr.querySelector(".generate").addEventListener("click", () => {
         p.sku = "SKU-" + Math.random().toString(36).substring(2, 8).toUpperCase();
         tr.cells[8].innerHTML = `${p.sku} <button class="btn generate">🔄 SKU</button>`;
+      });
+
+      // Speichern
+      tr.querySelector(".saveProduct").addEventListener("click", () => {
+        p.status = tr.cells[0].innerText;
+        p.title = tr.cells[1].innerText;
+        p.description = tr.querySelector(".description-area").value;
+        p.provider = tr.cells[3].innerText;
+        p.type = tr.cells[4].innerText;
+        p.collections = tr.cells[5].innerText;
+        p.tags = tr.cells[6].innerText;
+        p.price = tr.cells[7].innerText;
+        p.sku = tr.cells[8].innerText.split(" ")[0];
+        p.ean = tr.cells[9].innerText;
+        p.stock = tr.cells[10].innerText;
+        alert("Produkt gespeichert!");
       });
 
       // Bearbeiten
@@ -179,4 +196,3 @@
     });
   </script>
 </body>
-</html>
