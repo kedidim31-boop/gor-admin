@@ -34,7 +34,7 @@
         <li>👥 Benutzerverwaltung mit Rollen & Rechten</li>
         <li>✅ Aufgaben für dein Team</li>
         <li>📑 Aktivitäts-Logs für volle Transparenz</li>
-        <li>⚙️ Einstellungen inkl. Dark/Light Mode</li>
+        <li>⚙️ Einstellungen für dein System</li>
       </ul>
     </div>
 
@@ -68,11 +68,11 @@
   <script>
     document.getElementById("logoutBtn").addEventListener("click", handleLogout);
 
-    // Beispielwerte für Statistik (später dynamisch aus DB/API)
-    document.getElementById("productCount").textContent = 12;
-    document.getElementById("userCount").textContent = 5;
-    document.getElementById("taskCount").textContent = 3;
-    document.getElementById("lastLog").textContent = "Editor hat Produktbild aktualisiert";
+    // Statistiken zurückgesetzt auf 0
+    document.getElementById("productCount").textContent = 0;
+    document.getElementById("userCount").textContent = 0;
+    document.getElementById("taskCount").textContent = 0;
+    document.getElementById("lastLog").textContent = "Keine";
   </script>
 </body>
 </html>
