@@ -15,49 +15,62 @@
       <li><a href="products.html">📦 Produkte</a></li>
       <li><a href="users.html" class="active">👥 Benutzerverwaltung</a></li>
       <li><a href="tasks.html">✅ Aufgaben</a></li>
-      <li><a href="logs.html">📑 Aktivitäts-Logs</a></li>
+      <li><a href="logs.html">📑 Logs</a></li>
       <li><a href="settings.html">⚙️ Einstellungen</a></li>
     </ul>
+    <button id="addUserBtn" class="btn">➕ Neuer Benutzer</button>
+    <button id="exportUsersBtn" class="btn">📤 CSV Export</button>
     <button id="logoutBtn" class="btn delete">🚪 Abmelden</button>
   </aside>
 
+  <!-- Main Content -->
   <main class="content">
     <h1>Benutzerverwaltung</h1>
 
+    <!-- Filter -->
+    <div class="card">
+      <h2>Filter</h2>
+      <input type="text" id="filterName" placeholder="Nach Benutzername filtern">
+      <select id="filterRole">
+        <option value="">Alle Rollen</option>
+        <option value="Admin">Admin</option>
+        <option value="Editor">Editor</option>
+        <option value="Viewer">Viewer</option>
+      </select>
+      <button id="applyFilterBtn" class="btn">🔍 Anwenden</button>
+      <button id="resetFilterBtn" class="btn delete">❌ Zurücksetzen</button>
+    </div>
+
+    <!-- Benutzer Tabelle -->
     <div class="card">
       <h2>Benutzerliste</h2>
       <table>
         <thead>
           <tr>
             <th>Benutzername</th>
+            <th>E-Mail</th>
             <th>Rolle</th>
+            <th>Status</th>
             <th>Aktionen</th>
           </tr>
         </thead>
         <tbody id="userTable">
           <tr>
             <td>admin</td>
-            <td>Administrator</td>
+            <td>admin@gor.com</td>
+            <td>Admin</td>
+            <td>Aktiv</td>
             <td><button class="btn delete">🗑️ Löschen</button></td>
           </tr>
           <tr>
             <td>editor</td>
+            <td>editor@gor.com</td>
             <td>Editor</td>
+            <td>Aktiv</td>
             <td><button class="btn delete">🗑️ Löschen</button></td>
           </tr>
         </tbody>
       </table>
-    </div>
-
-    <div class="card">
-      <h2>Neuen Benutzer hinzufügen</h2>
-      <input type="text" id="newUser" placeholder="Benutzername">
-      <select id="newRole">
-        <option value="viewer">Viewer</option>
-        <option value="editor">Editor</option>
-        <option value="admin">Admin</option>
-      </select>
-      <button id="addUserBtn" class="btn">➕ Hinzufügen</button>
     </div>
   </main>
 
@@ -66,38 +79,83 @@
     <p id="footerText"></p>
   </footer>
 
-<script>
-  const user = localStorage.getItem("loggedInUser");
-  const role = localStorage.getItem("userRole");
-  if (!user) window.location.href = "login.html";
-  if (role !== "admin") {
-    alert("Zugriff verweigert – nur Admin darf Benutzer verwalten.");
-    window.location.href = "index.html";
-  }
+  <!-- Auth und Logik -->
+  <script src="assets/js/auth.js"></script>
+  <script>
+    document.getElementById("logoutBtn").addEventListener("click", handleLogout);
 
-  document.getElementById("logoutBtn").addEventListener("click", () => {
-    localStorage.removeItem("loggedInUser");
-    localStorage.removeItem("userRole");
-    alert("Du wurdest abgemeldet.");
-    window.location.href = "login.html";
-  });
+    const tbody = document.getElementById("userTable");
 
-  document.getElementById("addUserBtn").addEventListener("click", () => {
-    const name = document.getElementById("newUser").value;
-    const role = document.getElementById("newRole").value;
-    if (!name) {
-      alert("Bitte Benutzername eingeben!");
-      return;
-    }
-    const row = document.createElement("tr");
-    row.innerHTML = `<td>${name}</td><td>${role}</td><td><button class="btn delete">🗑️ Löschen</button></td>`;
-    document.getElementById("userTable").appendChild(row);
-    document.getElementById("newUser").value = "";
-  });
+    // Neuer Benutzer hinzufügen
+    document.getElementById("addUserBtn").addEventListener("click", () => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td contenteditable="true">Neuer Benutzer</td>
+        <td contenteditable="true">email@example.com</td>
+        <td>
+          <select>
+            <option value="Admin">Admin</option>
+            <option value="Editor">Editor</option>
+            <option value="Viewer">Viewer</option>
+          </select>
+        </td>
+        <td>
+          <select>
+            <option value="Aktiv">Aktiv</option>
+            <option value="Inaktiv">Inaktiv</option>
+          </select>
+        </td>
+        <td><button class="btn delete">🗑️ Löschen</button></td>
+      `;
+      tbody.appendChild(tr);
 
-  const year = new Date().getFullYear();
-  document.getElementById("footerText").textContent =
-    `© ${year} Gaming of Republic - Alle Rechte vorbehalten.`;
-</script>
+      tr.querySelector(".delete").addEventListener("click", () => tr.remove());
+    });
+
+    // CSV Export
+    document.getElementById("exportUsersBtn").addEventListener("click", () => {
+      let csv = ["Benutzername,E-Mail,Rolle,Status"];
+      const rows = tbody.querySelectorAll("tr");
+      rows.forEach(row => {
+        const cells = row.querySelectorAll("td");
+        const roleCell = row.querySelector("select") ? row.querySelectorAll("select")[0].value : cells[2].innerText;
+        const statusCell = row.querySelector("select") ? row.querySelectorAll("select")[1].value : cells[3].innerText;
+        csv.push([
+          cells[0].innerText,
+          cells[1].innerText,
+          roleCell,
+          statusCell
+        ].join(","));
+      });
+
+      const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+      const link = document.createElement("a");
+      link.setAttribute("href", csvContent);
+      link.setAttribute("download", "benutzer.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    // Filter anwenden
+    document.getElementById("applyFilterBtn").addEventListener("click", () => {
+      const nameFilter = document.getElementById("filterName").value.toLowerCase();
+      const roleFilter = document.getElementById("filterRole").value;
+      const rows = tbody.querySelectorAll("tr");
+      rows.forEach(row => {
+        const name = row.cells[0].textContent.toLowerCase();
+        const role = row.querySelector("select") ? row.querySelectorAll("select")[0].value : row.cells[2].textContent;
+        row.style.display = (name.includes(nameFilter) && (roleFilter === "" || role === roleFilter)) ? "" : "none";
+      });
+    });
+
+    // Filter zurücksetzen
+    document.getElementById("resetFilterBtn").addEventListener("click", () => {
+      document.getElementById("filterName").value = "";
+      document.getElementById("filterRole").value = "";
+      const rows = tbody.querySelectorAll("tr");
+      rows.forEach(row => row.style.display = "");
+    });
+  </script>
 </body>
 </html>
