@@ -15,12 +15,13 @@
       <li><a href="products.html">📦 Produkte</a></li>
       <li><a href="users.html">👥 Benutzerverwaltung</a></li>
       <li><a href="tasks.html">✅ Aufgaben</a></li>
-      <li><a href="logs.html">📑 Aktivitäts-Logs</a></li>
+      <li><a href="logs.html">📑 Logs</a></li>
       <li><a href="settings.html">⚙️ Einstellungen</a></li>
     </ul>
     <button id="logoutBtn" class="btn delete">🚪 Abmelden</button>
   </aside>
 
+  <!-- Main Content -->
   <main class="content">
     <h1>Willkommen im Dashboard</h1>
 
@@ -28,8 +29,8 @@
     <div class="card">
       <h2>Übersicht</h2>
       <p>Hier findest du die wichtigsten Funktionen deiner App:</p>
-      <ul>
-        <li>📦 Produkte verwalten (hinzufügen, bearbeiten, löschen, importieren/exportieren)</li>
+      <ul style="text-align:left;">
+        <li>📦 Produkte verwalten</li>
         <li>👥 Benutzerverwaltung mit Rollen & Rechten</li>
         <li>✅ Aufgaben für dein Team</li>
         <li>📑 Aktivitäts-Logs für volle Transparenz</li>
@@ -37,12 +38,14 @@
       </ul>
     </div>
 
-    <!-- Team Widgets -->
+    <!-- Schnellzugriff -->
     <div class="card">
       <h2>Schnellzugriff</h2>
       <button onclick="window.location.href='products.html'" class="btn">➡️ Produktverwaltung</button>
+      <button onclick="window.location.href='users.html'" class="btn">➡️ Benutzer</button>
       <button onclick="window.location.href='tasks.html'" class="btn">➡️ Aufgaben</button>
       <button onclick="window.location.href='logs.html'" class="btn">➡️ Logs</button>
+      <button onclick="window.location.href='settings.html'" class="btn">➡️ Einstellungen</button>
     </div>
 
     <!-- Statistiken -->
@@ -51,6 +54,7 @@
       <p>Produkte insgesamt: <span id="productCount">0</span></p>
       <p>Benutzer insgesamt: <span id="userCount">0</span></p>
       <p>Offene Aufgaben: <span id="taskCount">0</span></p>
+      <p>Letzte Aktion: <span id="lastLog">Keine</span></p>
     </div>
   </main>
 
@@ -59,28 +63,16 @@
     <p id="footerText"></p>
   </footer>
 
-<script>
-  // Zugriffsschutz
-  const user = localStorage.getItem("loggedInUser");
-  if (!user) window.location.href = "login.html";
+  <!-- Auth und Logik -->
+  <script src="assets/js/auth.js"></script>
+  <script>
+    document.getElementById("logoutBtn").addEventListener("click", handleLogout);
 
-  // Logout
-  document.getElementById("logoutBtn").addEventListener("click", () => {
-    localStorage.removeItem("loggedInUser");
-    localStorage.removeItem("userRole");
-    alert("Du wurdest abgemeldet.");
-    window.location.href = "login.html";
-  });
-
-  // Footer Jahr automatisch
-  const year = new Date().getFullYear();
-  document.getElementById("footerText").textContent =
-    `© ${year} Gaming of Republic - Alle Rechte vorbehalten.`;
-
-  // Beispielwerte für Statistik (später dynamisch aus DB/API)
-  document.getElementById("productCount").textContent = 12;
-  document.getElementById("userCount").textContent = 5;
-  document.getElementById("taskCount").textContent = 3;
-</script>
+    // Beispielwerte für Statistik (später dynamisch aus DB/API)
+    document.getElementById("productCount").textContent = 12;
+    document.getElementById("userCount").textContent = 5;
+    document.getElementById("taskCount").textContent = 3;
+    document.getElementById("lastLog").textContent = "Editor hat Produktbild aktualisiert";
+  </script>
 </body>
 </html>
