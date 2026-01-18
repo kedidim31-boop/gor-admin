@@ -41,6 +41,15 @@
             <th>E-Mail</th>
             <th>Rolle</th>
             <th>Status</th>
+            <!-- Admin-spezifische Spalten -->
+            <th class="admin-only">Vorname</th>
+            <th class="admin-only">Nachname</th>
+            <th class="admin-only">Adresse</th>
+            <th class="admin-only">PLZ</th>
+            <th class="admin-only">Ort</th>
+            <th class="admin-only">Land</th>
+            <th class="admin-only">Geburtstag</th>
+            <th class="admin-only">Handy</th>
             <th>Aktionen</th>
           </tr>
         </thead>
@@ -61,6 +70,15 @@
                 <option value="Inaktiv">Inaktiv</option>
               </select>
             </td>
+            <!-- Admin-spezifische Felder -->
+            <td class="admin-only" contenteditable="true">Max</td>
+            <td class="admin-only" contenteditable="true">Mustermann</td>
+            <td class="admin-only" contenteditable="true">Musterstraße 1</td>
+            <td class="admin-only" contenteditable="true">8000</td>
+            <td class="admin-only" contenteditable="true">Zürich</td>
+            <td class="admin-only" contenteditable="true">Schweiz</td>
+            <td class="admin-only" contenteditable="true">1990-01-01</td>
+            <td class="admin-only" contenteditable="true">+41 79 123 45 67</td>
             <td>
               <button class="btn saveUser">💾 Speichern</button>
               <button class="btn changePass">🔑 Passwort</button>
@@ -84,6 +102,12 @@
     document.getElementById("logoutBtn").addEventListener("click", handleLogout);
 
     const tbody = document.getElementById("userTable");
+    const currentUser = localStorage.getItem("loggedInUser");
+
+    // Admin-Check: Nur Admin sieht die Personalien
+    if (currentUser !== "admin") {
+      document.querySelectorAll(".admin-only").forEach(el => el.style.display = "none");
+    }
 
     // Benutzer hinzufügen
     document.getElementById("addUserBtn").addEventListener("click", () => {
@@ -104,6 +128,14 @@
             <option value="Inaktiv">Inaktiv</option>
           </select>
         </td>
+        <td class="admin-only" contenteditable="true"></td>
+        <td class="admin-only" contenteditable="true"></td>
+        <td class="admin-only" contenteditable="true"></td>
+        <td class="admin-only" contenteditable="true"></td>
+        <td class="admin-only" contenteditable="true"></td>
+        <td class="admin-only" contenteditable="true"></td>
+        <td class="admin-only" contenteditable="true"></td>
+        <td class="admin-only" contenteditable="true"></td>
         <td>
           <button class="btn saveUser">💾 Speichern</button>
           <button class="btn changePass">🔑 Passwort</button>
@@ -113,21 +145,27 @@
       `;
       tbody.appendChild(tr);
       attachRowEvents(tr);
+      if (currentUser !== "admin") {
+        tr.querySelectorAll(".admin-only").forEach(el => el.style.display = "none");
+      }
     });
 
     // CSV Export
     document.getElementById("exportUsersBtn").addEventListener("click", () => {
-      let csv = ["Benutzername,E-Mail,Rolle,Status"];
+      let csv = ["Benutzername,E-Mail,Rolle,Status,Vorname,Nachname,Adresse,PLZ,Ort,Land,Geburtstag,Handy"];
       const rows = tbody.querySelectorAll("tr");
       rows.forEach(row => {
         const cells = row.querySelectorAll("td");
-        const role = row.querySelectorAll("select")[0].value;
-        const status = row.querySelectorAll("select")[1].value;
+        const selects = row.querySelectorAll("select");
+        const role = selects[0].value;
+        const status = selects[1].value;
+        const personal = Array.from(row.querySelectorAll(".admin-only")).map(el => el.innerText);
         csv.push([
           cells[0].innerText,
           cells[1].innerText,
           role,
-          status
+          status,
+          ...personal
         ].join(","));
       });
 
@@ -158,7 +196,9 @@
       row.querySelector(".editUser").addEventListener("click", () => {
         alert("Bearbeiten-Modus: Felder sind direkt editierbar.");
       });
-      row.querySelector(".delete").addEventListener("click", () => row.remove());
+      row.querySelector(".delete").addEventListener("click", () => {
+        row.remove();
+      });
     }
   </script>
 </body>
