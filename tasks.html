@@ -10,6 +10,7 @@
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="logo">🕹️ Gaming of Republic</div>
+    <button id="logoutBtn" class="btn delete top-right">Abmelden</button>
     <ul>
       <li><a href="index.html">🏠 Übersicht</a></li>
       <li><a href="products.html">📦 Produkte</a></li>
@@ -20,7 +21,6 @@
     </ul>
     <button id="addTaskBtn" class="btn">➕ Aufgabe erstellen</button>
     <button id="exportTasksBtn" class="btn">📤 Aufgaben exportieren</button>
-    <button id="logoutBtn" class="btn delete">Abmelden</button>
   </aside>
 
   <!-- Main Content -->
@@ -51,7 +51,10 @@
               </select>
             </td>
             <td contenteditable="true">2026-01-20</td>
-            <td><button class="btn delete">🗑️ Löschen</button></td>
+            <td>
+              <button class="btn editTask">✏️ Bearbeiten</button>
+              <button class="btn delete">🗑️ Löschen</button>
+            </td>
           </tr>
           <tr>
             <td contenteditable="true">Neue Kategorie hinzufügen</td>
@@ -64,7 +67,10 @@
               </select>
             </td>
             <td contenteditable="true">2026-01-25</td>
-            <td><button class="btn delete">🗑️ Löschen</button></td>
+            <td>
+              <button class="btn editTask">✏️ Bearbeiten</button>
+              <button class="btn delete">🗑️ Löschen</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -97,7 +103,10 @@
           </select>
         </td>
         <td contenteditable="true">YYYY-MM-DD</td>
-        <td><button class="btn delete">🗑️ Löschen</button></td>
+        <td>
+          <button class="btn editTask">✏️ Bearbeiten</button>
+          <button class="btn delete">🗑️ Löschen</button>
+        </td>
       `;
       tbody.appendChild(tr);
       attachRowEvents(tr);
@@ -131,6 +140,9 @@
     document.querySelectorAll("#taskTable tr").forEach(attachRowEvents);
 
     function attachRowEvents(row) {
+      row.querySelector(".editTask").addEventListener("click", () => {
+        alert("Bearbeiten-Modus: Felder sind direkt editierbar.");
+      });
       row.querySelector(".delete").addEventListener("click", () => row.remove());
     }
   </script>
