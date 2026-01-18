@@ -62,28 +62,7 @@
               </select>
             </td>
             <td>
-              <button class="btn changePass">🔑 Passwort</button>
-              <button class="btn editUser">✏️ Bearbeiten</button>
-              <button class="btn delete">🗑️ Löschen</button>
-            </td>
-          </tr>
-          <tr>
-            <td contenteditable="true">editor</td>
-            <td contenteditable="true">editor@gamingofrepublic.com</td>
-            <td>
-              <select>
-                <option value="Admin">Admin</option>
-                <option value="Editor" selected>Editor</option>
-                <option value="Viewer">Viewer</option>
-              </select>
-            </td>
-            <td>
-              <select>
-                <option value="Aktiv" selected>Aktiv</option>
-                <option value="Inaktiv">Inaktiv</option>
-              </select>
-            </td>
-            <td>
+              <button class="btn saveUser">💾 Speichern</button>
               <button class="btn changePass">🔑 Passwort</button>
               <button class="btn editUser">✏️ Bearbeiten</button>
               <button class="btn delete">🗑️ Löschen</button>
@@ -126,6 +105,7 @@
           </select>
         </td>
         <td>
+          <button class="btn saveUser">💾 Speichern</button>
           <button class="btn changePass">🔑 Passwort</button>
           <button class="btn editUser">✏️ Bearbeiten</button>
           <button class="btn delete">🗑️ Löschen</button>
@@ -164,6 +144,13 @@
     document.querySelectorAll("#userTable tr").forEach(attachRowEvents);
 
     function attachRowEvents(row) {
+      row.querySelector(".saveUser").addEventListener("click", () => {
+        const username = row.cells[0].innerText;
+        const email = row.cells[1].innerText;
+        const role = row.querySelectorAll("select")[0].value;
+        const status = row.querySelectorAll("select")[1].value;
+        alert(`Benutzer gespeichert: ${username}, ${email}, Rolle: ${role}, Status: ${status}`);
+      });
       row.querySelector(".changePass").addEventListener("click", () => {
         const newPass = prompt("Neues Passwort eingeben:");
         if (newPass) alert("Passwort erfolgreich geändert!");
