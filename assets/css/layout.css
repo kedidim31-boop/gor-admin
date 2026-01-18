@@ -19,13 +19,15 @@ main.content {
   position: fixed;
   top: 0;
   left: 0;
-  width: 220px;
+  width: 240px;
   height: 100vh;
   background-color: #111827;
   color: #fff;
   display: flex;
   flex-direction: column;
   padding: 1rem;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .sidebar .logo {
@@ -35,12 +37,25 @@ main.content {
   margin-bottom: 2rem;
 }
 
+/* Scrollbarer Bereich */
+.sidebar-scroll {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.sidebar-actions {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 /* Navigation */
 .sidebar ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  flex-grow: 1;
 }
 
 .sidebar ul li {
@@ -97,6 +112,7 @@ main.content {
   position: absolute;
   top: 1rem;
   right: 1rem;
+  z-index: 10;
 }
 
 /* Karten */
