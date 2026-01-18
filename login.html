@@ -5,47 +5,85 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login – Gaming of Republic</title>
   <link rel="stylesheet" href="assets/css/layout.css">
+  <style>
+    body {
+      background: radial-gradient(circle at top, #1f1d3a, #0f0e1c);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-card {
+      background-color: #111827;
+      padding: 3rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-card h1 {
+      color: #ffd700;
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+    }
+
+    .login-card label {
+      display: block;
+      text-align: left;
+      margin-bottom: 0.3rem;
+      font-weight: bold;
+      color: #ffd700;
+    }
+
+    .login-card input {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1.2rem;
+      border: 2px solid #ffd700;
+      background-color: #191833;
+      color: #fff;
+      border-radius: 6px;
+    }
+
+    .login-card .btn {
+      width: 100%;
+      padding: 0.9rem;
+      font-size: 1rem;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 1rem;
+      width: 100%;
+      text-align: center;
+      color: #ffd700;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 <body>
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="logo">🕹️ Gaming of Republic</div>
-    <ul>
-      <li><a href="index.html">🏠 Dashboard</a></li>
-      <li><a href="products.html">📦 Produkte</a></li>
-      <li><a href="users.html">👥 Benutzerverwaltung</a></li>
-      <li><a href="tasks.html">✅ Aufgaben</a></li>
-      <li><a href="logs.html">📑 Logs</a></li>
-      <li><a href="settings.html">⚙️ Einstellungen</a></li>
-    </ul>
-  </aside>
+  <div class="login-card">
+    <h1>🕹️ Gaming of Republic</h1>
+    <form id="loginForm">
+      <label for="username">Benutzername</label>
+      <input type="text" id="username" placeholder="Benutzername" required>
 
-  <!-- Main Content -->
-  <main class="content">
-    <div class="login-card">
-      <h1>Login</h1>
-      <form id="loginForm">
-        <label for="username">Benutzername</label>
-        <input type="text" id="username" placeholder="Dein Benutzername" required>
+      <label for="password">Passwort</label>
+      <input type="password" id="password" placeholder="Passwort" required>
 
-        <label for="password">Passwort</label>
-        <input type="password" id="password" placeholder="Dein Passwort" required>
+      <button type="submit" class="btn">➡️ Login</button>
+    </form>
+  </div>
 
-        <button type="submit" class="btn">➡️ Anmelden</button>
-      </form>
-      <p style="margin-top:1rem;">Noch kein Konto? <a href="register.html" style="color:#ffd700;">Jetzt registrieren</a></p>
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
+  <div class="footer">
     <p id="footerText"></p>
-  </footer>
+  </div>
 
-  <!-- Auth -->
   <script src="assets/js/auth.js"></script>
   <script>
-    // Login Logik
     document.getElementById("loginForm").addEventListener("submit", (e) => {
       e.preventDefault();
       const username = document.getElementById("username").value.trim();
@@ -56,7 +94,7 @@
         return;
       }
 
-      // Beispiel: Passwortprüfung (später durch echte Auth ersetzen)
+      // Beispiel: Passwortprüfung
       if (password === "1234") {
         localStorage.setItem("loggedInUser", username);
         alert("Login erfolgreich!");
