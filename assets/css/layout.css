@@ -35,6 +35,7 @@ main.content {
   margin-bottom: 2rem;
 }
 
+/* Navigation */
 .sidebar ul {
   list-style: none;
   padding: 0;
@@ -91,11 +92,10 @@ main.content {
   background-color: #c62839;
 }
 
-/* Logout Button fixiert unten */
-#logoutBtn {
+/* Abmelden Button oben rechts */
+.top-right {
   position: absolute;
-  bottom: 1rem;
-  left: 1rem;
+  top: 1rem;
   right: 1rem;
 }
 
