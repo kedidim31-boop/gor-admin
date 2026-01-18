@@ -3,49 +3,77 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gaming of Republic – Registrieren</title>
+  <title>Registrierung – Gaming of Republic</title>
   <link rel="stylesheet" href="assets/css/layout.css">
 </head>
 <body>
-  <main class="content login-container">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">🕹️ Gaming of Republic</div>
+    <ul>
+      <li><a href="index.html">🏠 Dashboard</a></li>
+      <li><a href="products.html">📦 Produkte</a></li>
+      <li><a href="users.html">👥 Benutzerverwaltung</a></li>
+      <li><a href="tasks.html">✅ Aufgaben</a></li>
+      <li><a href="logs.html">📑 Logs</a></li>
+      <li><a href="settings.html">⚙️ Einstellungen</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="content">
     <div class="login-card">
-      <h1 class="logo">🕹️ Gaming of Republic</h1>
-      <h2>Registrieren</h2>
+      <h1>Registrierung</h1>
       <form id="registerForm">
-        <label>Benutzername</label>
-        <input type="text" name="username" placeholder="Dein Benutzername" required>
+        <label for="username">Benutzername</label>
+        <input type="text" id="username" placeholder="Wähle einen Benutzernamen" required>
 
-        <label>E-Mail</label>
-        <input type="email" name="email" placeholder="deine@email.de" required>
+        <label for="email">E-Mail</label>
+        <input type="email" id="email" placeholder="Deine E-Mail-Adresse" required>
 
-        <label>Passwort</label>
-        <input type="password" name="password" placeholder="********" required>
+        <label for="password">Passwort</label>
+        <input type="password" id="password" placeholder="Wähle ein Passwort" required>
 
-        <label>Passwort bestätigen</label>
-        <input type="password" name="confirmPassword" placeholder="********" required>
+        <label for="confirmPassword">Passwort bestätigen</label>
+        <input type="password" id="confirmPassword" placeholder="Passwort erneut eingeben" required>
 
-        <button type="submit" class="btn">📝 Konto erstellen</button>
+        <button type="submit" class="btn">➡️ Registrieren</button>
       </form>
-      <p class="register-link">Schon ein Konto? <a href="login.html">Login</a></p>
+      <p style="margin-top:1rem;">Schon registriert? <a href="login.html" style="color:#ffd700;">Hier einloggen</a></p>
     </div>
   </main>
 
-  <script>
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const username = this.username.value;
-      const email = this.email.value;
-      const password = this.password.value;
-      const confirmPassword = this.confirmPassword.value;
+  <!-- Footer -->
+  <footer class="footer">
+    <p id="footerText"></p>
+  </footer>
 
-      if(password !== confirmPassword) {
+  <!-- Auth -->
+  <script src="assets/js/auth.js"></script>
+  <script>
+    document.getElementById("registerForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+      if (!username || !email || !password || !confirmPassword) {
+        alert("Bitte alle Felder ausfüllen!");
+        return;
+      }
+
+      if (password !== confirmPassword) {
         alert("Passwörter stimmen nicht überein!");
         return;
       }
 
-      // Dummy-Registrierung (später mit Backend/API verbinden)
-      alert("Konto erfolgreich erstellt für: " + username + " (" + email + ")");
-      window.location.href = "login.html"; // Weiterleitung zur Login-Seite
+      // Beispiel: Speicherung im localStorage (später durch echte DB ersetzen)
+      const userData = { username, email, password };
+      localStorage.setItem("registeredUser", JSON.stringify(userData));
+
+      alert("Registrierung erfolgreich! Du kannst dich jetzt einloggen.");
+      window.location.href = "login.html";
     });
   </script>
 </body>
