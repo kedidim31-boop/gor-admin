@@ -50,19 +50,11 @@
         </thead>
         <tbody id="logTable">
           <tr>
-            <td>2026-01-18 05:00</td>
-            <td>admin@gamingofrepublic.com</td>
-            <td>Produkt „Energy Drink Neon“ hinzugefügt</td>
+            <td contenteditable="true">2026-01-18 05:00</td>
+            <td contenteditable="true">admin@gamingofrepublic.com</td>
+            <td contenteditable="true">Produkt „Energy Drink Neon“ hinzugefügt</td>
             <td>
-              <button class="btn editLog">✏️ Bearbeiten</button>
-              <button class="btn delete">🗑️ Löschen</button>
-            </td>
-          </tr>
-          <tr>
-            <td>2026-01-18 05:10</td>
-            <td>editor@gamingofrepublic.com</td>
-            <td>Bild für Produkt „Gaming Chair“ aktualisiert</td>
-            <td>
+              <button class="btn saveLog">💾 Speichern</button>
               <button class="btn editLog">✏️ Bearbeiten</button>
               <button class="btn delete">🗑️ Löschen</button>
             </td>
@@ -102,10 +94,11 @@
       const timestamp = now.toISOString().slice(0,16).replace("T"," ");
       const row = document.createElement("tr");
       row.innerHTML = `
-        <td>${timestamp}</td>
-        <td>${logUser}</td>
-        <td>${logAction}</td>
+        <td contenteditable="true">${timestamp}</td>
+        <td contenteditable="true">${logUser}</td>
+        <td contenteditable="true">${logAction}</td>
         <td>
+          <button class="btn saveLog">💾 Speichern</button>
           <button class="btn editLog">✏️ Bearbeiten</button>
           <button class="btn delete">🗑️ Löschen</button>
         </td>
@@ -140,10 +133,14 @@
     document.querySelectorAll("#logTable tr").forEach(attachRowEvents);
 
     function attachRowEvents(row) {
+      row.querySelector(".saveLog").addEventListener("click", () => {
+        const timestamp = row.cells[0].innerText;
+        const user = row.cells[1].innerText;
+        const action = row.cells[2].innerText;
+        alert(`Log gespeichert: ${timestamp}, Benutzer: ${user}, Aktion: ${action}`);
+      });
       row.querySelector(".editLog").addEventListener("click", () => {
         alert("Bearbeiten-Modus: Felder sind direkt editierbar.");
-        row.cells[1].setAttribute("contenteditable", "true");
-        row.cells[2].setAttribute("contenteditable", "true");
       });
       row.querySelector(".delete").addEventListener("click", () => row.remove());
     }
