@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="assets/css/layout.css">
 </head>
 <body>
-  <!-- Einheitliche Navigation -->
+  <!-- Navigation -->
   <nav class="navbar">
     <div class="logo">🕹️ Gaming of Republic | Benutzerverwaltung</div>
     <ul>
@@ -47,24 +47,30 @@
     </div>
   </main>
 
+  <!-- Footer -->
+  <footer class="footer">
+    <p id="footerText"></p>
+  </footer>
+
 <script>
-  // Zugriffsschutz
   const user = localStorage.getItem("loggedInUser");
   const role = localStorage.getItem("userRole");
-
   if (!user) window.location.href = "login.html";
   if (role !== "admin") {
     alert("Zugriff verweigert – nur Admin darf Benutzer verwalten.");
     window.location.href = "index.html";
   }
 
-  // Logout
   document.getElementById("logoutBtn").addEventListener("click", () => {
     localStorage.removeItem("loggedInUser");
     localStorage.removeItem("userRole");
     alert("Du wurdest abgemeldet.");
     window.location.href = "login.html";
   });
+
+  const year = new Date().getFullYear();
+  document.getElementById("footerText").textContent =
+    `© ${year} Gaming of Republic - Alle Rechte vorbehalten.`;
 </script>
 </body>
 </html>
