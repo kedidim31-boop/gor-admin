@@ -13,56 +13,67 @@ h1, h2 {
 }
 
 main.content {
+  margin-left: 240px; /* Platz für Sidebar */
   padding: 2rem;
 }
 
-/* ===== Navigation ===== */
-.navbar {
-  background-color: #111827;
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-  position: sticky;
+/* ===== Sidebar Navigation ===== */
+.sidebar {
+  position: fixed;
   top: 0;
-  z-index: 100;
+  left: 0;
+  width: 220px;
+  height: 100%;
+  background-color: #111827;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+  box-shadow: 2px 0 6px rgba(0,0,0,0.5);
 }
 
-.navbar .logo {
+.sidebar .logo {
   font-weight: bold;
   color: #ffd700;
   font-size: 1.4rem;
+  margin-bottom: 2rem;
 }
 
-.navbar ul {
+.sidebar ul {
   list-style: none;
-  display: flex;
-  gap: 1rem;
-  margin: 0;
   padding: 0;
+  margin: 0;
+  flex-grow: 1;
 }
 
-.navbar ul li a,
-.navbar ul li button {
+.sidebar ul li {
+  margin-bottom: 1rem;
+}
+
+.sidebar ul li a {
   color: #fff;
   text-decoration: none;
   font-weight: bold;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  transition: all 0.2s ease;
+  display: block;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
 }
 
-.navbar ul li a:hover,
-.navbar ul li button:hover {
+.sidebar ul li a:hover {
+  background-color: #222244;
   color: #ffd700;
 }
 
-.navbar ul li a.active {
+.sidebar ul li a.active {
+  background-color: #333355;
   color: #ffd700;
-  border-bottom: 2px solid #ffd700;
+}
+
+.sidebar .btn.delete {
+  margin-top: auto;
+  width: 100%;
 }
 
 /* ===== Buttons ===== */
@@ -119,7 +130,7 @@ tbody tr:hover {
   background-color: #333355;
 }
 
-/* ===== Dropzones für Bilder ===== */
+/* ===== Dropzones ===== */
 .dropzone {
   border: 2px dashed #ffd700;
   padding: 0.7rem;
@@ -143,7 +154,7 @@ tbody tr:hover {
   margin-top: 0.5rem;
 }
 
-/* ===== Cards (Dashboard, Login, Settings) ===== */
+/* ===== Cards ===== */
 .card, .login-card {
   background-color: #111827;
   padding: 2rem;
