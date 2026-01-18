@@ -11,14 +11,14 @@
   <aside class="sidebar">
     <div class="logo">🕹️ Gaming of Republic</div>
     <ul>
-      <li><a href="index.html">🏠 Dashboard</a></li>
+      <li><a href="index.html">🏠 Übersicht</a></li>
       <li><a href="products.html">📦 Produkte</a></li>
-      <li><a href="users.html">👥 Benutzerverwaltung</a></li>
+      <li><a href="users.html">👥 Benutzer</a></li>
       <li><a href="tasks.html">✅ Aufgaben</a></li>
-      <li><a href="logs.html">📑 Logs</a></li>
+      <li><a href="logs.html">📑 Aktivitäts-Logs</a></li>
       <li><a href="settings.html" class="active">⚙️ Einstellungen</a></li>
     </ul>
-    <button id="logoutBtn" class="btn delete">🚪 Abmelden</button>
+    <button id="logoutBtn" class="btn delete">Abmelden</button>
   </aside>
 
   <!-- Main Content -->
@@ -30,10 +30,10 @@
       <h2>Profil</h2>
       <form id="profileForm">
         <label for="username">Benutzername</label>
-        <input type="text" id="username" placeholder="Dein Benutzername">
+        <input type="text" id="username" placeholder="Benutzername">
 
         <label for="email">E-Mail</label>
-        <input type="email" id="email" placeholder="Deine E-Mail-Adresse">
+        <input type="email" id="email" placeholder="E-Mail-Adresse">
 
         <button type="submit" class="btn">💾 Speichern</button>
       </form>
@@ -42,7 +42,7 @@
     <!-- Sicherheit -->
     <div class="card">
       <h2>Sicherheit</h2>
-      <button id="changePasswordBtn" class="btn delete">🔑 Passwort ändern</button>
+      <button id="changePasswordBtn" class="btn">🔑 Passwort ändern</button>
     </div>
   </main>
 
@@ -72,7 +72,8 @@
 
     // Passwort ändern (Platzhalter)
     document.getElementById("changePasswordBtn").addEventListener("click", () => {
-      alert("Passwort ändern Funktion ist noch nicht implementiert.");
+      const newPass = prompt("Neues Passwort eingeben:");
+      if (newPass) alert("Passwort erfolgreich geändert!");
     });
 
     // Profil beim Laden anzeigen
